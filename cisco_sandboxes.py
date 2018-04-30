@@ -19,17 +19,17 @@ iosxe_restconf = {
 # DevNet Always-On Sandbox APIC-EM
 # https://devnetsandbox.cisco.com/RM/Diagram/Index/2e0f9525-5f46-4f46-973e-0f0c1bf934fa?diagramType=Topology
 apicem = {
-             "host": "sandboxapicem.cisco.com",
+             "address": "sandboxapicem.cisco.com",
+             "port": 443,
              "username": "devnetuser",
-             "password": "Cisco123!",
-             "port": 443
+             "password": "Cisco123!"
          }
 
 # DevNet Always-On Sandbox ACI APIC
 # https://devnetsandbox.cisco.com/RM/Diagram/Index/5a229a7c-95d5-4cfd-a651-5ee9bc1b30e2?diagramType=Topology
 apicdc = {
-             "host": "https://sandboxapicdc.cisco.com",
+             "address": "https://sandboxapicdc.cisco.com",
+             "port": 443,
              "username": "admin",
-             "password": "ciscopsdt",
-             "port": 443
+             "password": "ciscopsdt"
          }
