@@ -5,8 +5,19 @@ Some network-oriented developments using APIs/Netconf/Yang/etc. (self-trainings,
 
 ## Yang
 
-``pyang -f tree <yang_module>``
-
 ``pyang --tree-help``
 
+``pyang -f tree <yang_module>``
+
+``pyang -f tree --tree-path path/to/target <yang_module>``
+
+``pyang -f tree --tree-depth 2 <yang_module>``
+
+**Getting Netconf ready formats :** (the output might need some corrections though)
+``pyang -f sample-xml-skeleton --sample-xml-skeleton-path path/to/target <yang_module>``
+
+``pyang -f sample-xml-skeleton --sample-xml-skeleton-path path/to/target --sample-xml-skeleton-doctype=config  <yang_module>``
+
+
+**Validating modules :**
 ``pyang --lint <yang_module>``
