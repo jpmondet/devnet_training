@@ -108,6 +108,6 @@ if __name__ == '__main__':
     print(response)
     print(response.text)
 
-    response = get_api_url(URIS_TO_TEST[4])
+    response = get_api_url(URIS_TO_TEST[0])
     print(response)
     print(response.text)
