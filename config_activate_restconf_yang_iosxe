@@ -1,0 +1,4 @@
+ip http server
+ip http secure-server
+restconf
+netconf-yang

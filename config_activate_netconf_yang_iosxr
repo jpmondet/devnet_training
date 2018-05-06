@@ -1,0 +1,8 @@
+username cisco password cisco
+username cisco group root-lr
+
+ssh server v2
+ssh server netconf vrf default
+
+netconf-yang agent
+ssh
