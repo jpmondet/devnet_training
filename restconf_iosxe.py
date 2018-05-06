@@ -32,7 +32,7 @@ DATA = '''
 { "Cisco-IOS-XE-native:Port-channel":
 		[
 			{ 
-                      "name": "2",
+              "name": "2",
 			  "description": "This is a port-channel interface",
 			  "delay": 22222, 
 			  "load-interval": 30, 
@@ -46,15 +46,17 @@ def get_api_url(uri):
     """
      Formats the REST Get request and launch it.
     """
-
+    
+    # Preparing the content & url
     urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+    http_auth = requests.auth.HTTPBasicAuth(iosxe_restconf['username'], iosxe_restconf['password'])
     headers = {'Content-Type': 'application/yang-data+json',
                'Accept': 'application/yang-data+json'}
-
     url = "https://{host}:{port}/{uri}".format(host=iosxe_restconf['address'],
                                                port=iosxe_restconf['port'], uri=uri)
+    # Actual Get request is thrown
     resp = requests.get(url,
-                        auth=(iosxe_restconf['username'], iosxe_restconf['password']),
+                        auth=http_auth,
                         verify=False,
                         headers=headers
                        )
