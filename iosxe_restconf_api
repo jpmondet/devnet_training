@@ -1,0 +1,5 @@
+<restconf xmlns="urn:ietf:params:xml:ns:yang:ietf-restconf">
+  <data/>
+  <operations/>
+  <yang-library-version>2016-06-21</yang-library-version>
+</restconf>

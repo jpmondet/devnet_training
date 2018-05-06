@@ -1,0 +1,34 @@
+<restconf xmlns="urn:ietf:params:xml:ns:yang:ietf-restconf">
+  <operations>
+    <ios-xe-rpc:switch xmlns:ios-xe-rpc="http://cisco.com/ns/yang/Cisco-IOS-XE-rpc">/restconf/operations/Cisco-IOS-XE-rpc:switch</ios-xe-rpc:switch>
+    <ios-xe-rpc:default xmlns:ios-xe-rpc="http://cisco.com/ns/yang/Cisco-IOS-XE-rpc">/restconf/operations/Cisco-IOS-XE-rpc:default</ios-xe-rpc:default>
+    <ios-xe-rpc:clear xmlns:ios-xe-rpc="http://cisco.com/ns/yang/Cisco-IOS-XE-rpc">/restconf/operations/Cisco-IOS-XE-rpc:clear</ios-xe-rpc:clear>
+    <ios-xe-rpc:release xmlns:ios-xe-rpc="http://cisco.com/ns/yang/Cisco-IOS-XE-rpc">/restconf/operations/Cisco-IOS-XE-rpc:release</ios-xe-rpc:release>
+    <ios-xe-rpc:reload xmlns:ios-xe-rpc="http://cisco.com/ns/yang/Cisco-IOS-XE-rpc">/restconf/operations/Cisco-IOS-XE-rpc:reload</ios-xe-rpc:reload>
+    <ios-xe-rpc:cellular xmlns:ios-xe-rpc="http://cisco.com/ns/yang/Cisco-IOS-XE-rpc">/restconf/operations/Cisco-IOS-XE-rpc:cellular</ios-xe-rpc:cellular>
+    <ios-xe-rpc:license xmlns:ios-xe-rpc="http://cisco.com/ns/yang/Cisco-IOS-XE-rpc">/restconf/operations/Cisco-IOS-XE-rpc:license</ios-xe-rpc:license>
+    <ios-xe-rpc:service xmlns:ios-xe-rpc="http://cisco.com/ns/yang/Cisco-IOS-XE-rpc">/restconf/operations/Cisco-IOS-XE-rpc:service</ios-xe-rpc:service>
+    <ios-xe-rpc:virtual-service xmlns:ios-xe-rpc="http://cisco.com/ns/yang/Cisco-IOS-XE-rpc">/restconf/operations/Cisco-IOS-XE-rpc:virtual-service</ios-xe-rpc:virtual-service>
+    <ios-xe-rpc:copy xmlns:ios-xe-rpc="http://cisco.com/ns/yang/Cisco-IOS-XE-rpc">/restconf/operations/Cisco-IOS-XE-rpc:copy</ios-xe-rpc:copy>
+    <ios-xe-rpc:delete xmlns:ios-xe-rpc="http://cisco.com/ns/yang/Cisco-IOS-XE-rpc">/restconf/operations/Cisco-IOS-XE-rpc:delete</ios-xe-rpc:delete>
+    <ios-xe-rpc:app-hosting xmlns:ios-xe-rpc="http://cisco.com/ns/yang/Cisco-IOS-XE-rpc">/restconf/operations/Cisco-IOS-XE-rpc:app-hosting</ios-xe-rpc:app-hosting>
+    <ios-xe-rpc:guestshell xmlns:ios-xe-rpc="http://cisco.com/ns/yang/Cisco-IOS-XE-rpc">/restconf/operations/Cisco-IOS-XE-rpc:guestshell</ios-xe-rpc:guestshell>
+    <bd:clear-bridge-domain xmlns:bd="urn:cisco:params:xml:ns:yang:cisco-bridge-domain">/restconf/operations/cisco-bridge-domain:clear-bridge-domain</bd:clear-bridge-domain>
+    <bd:clear-mac-address xmlns:bd="urn:cisco:params:xml:ns:yang:cisco-bridge-domain">/restconf/operations/cisco-bridge-domain:clear-mac-address</bd:clear-mac-address>
+    <bd:create-parameterized-bridge-domains xmlns:bd="urn:cisco:params:xml:ns:yang:cisco-bridge-domain">/restconf/operations/cisco-bridge-domain:create-parameterized-bridge-domains</bd:create-parameterized-bridge-domains>
+    <cisco-ia:sync-from xmlns:cisco-ia="http://cisco.com/yang/cisco-ia">/restconf/operations/cisco-ia:sync-from</cisco-ia:sync-from>
+    <cisco-ia:save-config xmlns:cisco-ia="http://cisco.com/yang/cisco-ia">/restconf/operations/cisco-ia:save-config</cisco-ia:save-config>
+    <cisco-ia:is-syncing xmlns:cisco-ia="http://cisco.com/yang/cisco-ia">/restconf/operations/cisco-ia:is-syncing</cisco-ia:is-syncing>
+    <cisco-ia:checkpoint xmlns:cisco-ia="http://cisco.com/yang/cisco-ia">/restconf/operations/cisco-ia:checkpoint</cisco-ia:checkpoint>
+    <cisco-ia:revert xmlns:cisco-ia="http://cisco.com/yang/cisco-ia">/restconf/operations/cisco-ia:revert</cisco-ia:revert>
+    <cisco-ia:rollback xmlns:cisco-ia="http://cisco.com/yang/cisco-ia">/restconf/operations/cisco-ia:rollback</cisco-ia:rollback>
+    <cisco-smart-license:register-id-token xmlns:cisco-smart-license="http://cisco.com/ns/yang/cisco-smart-license">/restconf/operations/cisco-smart-license:register-id-token</cisco-smart-license:register-id-token>
+    <cisco-smart-license:de-register xmlns:cisco-smart-license="http://cisco.com/ns/yang/cisco-smart-license">/restconf/operations/cisco-smart-license:de-register</cisco-smart-license:de-register>
+    <cisco-smart-license:renew-id xmlns:cisco-smart-license="http://cisco.com/ns/yang/cisco-smart-license">/restconf/operations/cisco-smart-license:renew-id</cisco-smart-license:renew-id>
+    <cisco-smart-license:renew-auth xmlns:cisco-smart-license="http://cisco.com/ns/yang/cisco-smart-license">/restconf/operations/cisco-smart-license:renew-auth</cisco-smart-license:renew-auth>
+    <notif-bis:establish-subscription xmlns:notif-bis="urn:ietf:params:xml:ns:yang:ietf-event-notifications">/restconf/operations/ietf-event-notifications:establish-subscription</notif-bis:establish-subscription>
+    <notif-bis:create-subscription xmlns:notif-bis="urn:ietf:params:xml:ns:yang:ietf-event-notifications">/restconf/operations/ietf-event-notifications:create-subscription</notif-bis:create-subscription>
+    <notif-bis:delete-subscription xmlns:notif-bis="urn:ietf:params:xml:ns:yang:ietf-event-notifications">/restconf/operations/ietf-event-notifications:delete-subscription</notif-bis:delete-subscription>
+    <rt:fib-route xmlns:rt="urn:ietf:params:xml:ns:yang:ietf-routing">/restconf/operations/ietf-routing:fib-route</rt:fib-route>
+  </operations>
+</restconf>
