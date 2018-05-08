@@ -33,3 +33,40 @@ apicdc = {
              "username": "admin",
              "password": "ciscopsdt"
          }
+
+# DevNet Always-On Sandbox N9kv !
+# https://devnetsandbox.cisco.com/RM/Diagram/Index/dae38dd8-e8ee-4d7c-a21c-6036bed7a804?diagramType=Topology
+n9kv_ssh = {
+             "address": "sbx-nxos-mgmt.cisco.com",
+             "port": 8181,
+             "username": "admin",
+             "password": "Admin_1234!"
+         }
+
+n9kv_nxapi = {
+             "address": "http://sbx-nxos-mgmt.cisco.com",
+             "port": 80,
+             "username": "admin",
+             "password": "Admin_1234!"
+         }
+
+n9kv_nxapi_s = {
+             "address": "http://sbx-nxos-mgmt.cisco.com",
+             "port": 443,
+             "username": "admin",
+             "password": "Admin_1234!"
+         }
+
+n9kv_restconf = {
+             "address": "sbx-nxos-mgmt.cisco.com",
+             "port": 443,
+             "username": "admin",
+             "password": "Admin_1234!"
+         }
+
+n9kv_netconf = {
+             "address": "sbx-nxos-mgmt.cisco.com",
+             "port": 10000,
+             "username": "admin",
+             "password": "Admin_1234!"
+         }
