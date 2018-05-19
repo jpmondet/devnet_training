@@ -21,3 +21,8 @@ Some network-oriented developments using APIs/Netconf/Yang/etc. (self-trainings,
 
 **Validating modules :**
 ``pyang --lint <yang_module>``
+
+**Generating python :**
+``export PYBINDPLUGIN=`/usr/bin/env python -c 'import pyangbind; import os; print("%s/plugin" % os.path.dirname(pyangbind.__file__))'```
+``pyang -p /path/to/target --plugindir $PYBINDPLUGIN -f pybind openconfig-bgp.yang > openconfig-bgp.py``
+

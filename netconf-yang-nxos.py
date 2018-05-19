@@ -5,6 +5,8 @@
 
 import sys
 from lxml import etree
+import xml.dom.minidom
+#import xmltodict
 from ncclient import manager
 from cisco_sandboxes import n9kv_netconf
 
@@ -31,16 +33,89 @@ def get_nc(manager, filter='', xmlns='', target=''):
     response = etree.tostring(response, pretty_print=True)
     return response
 
+def config_bgp_openconfig(nc_manager):
+    """
+        Trying to configure a whole bgp config with openconfig models
+    """
+    config_bgp = """
+<config>
+    <bgp xmlns="http://openconfig.net/yang/bgp">
+        <global>
+            <config>
+                <as>100</as>
+                <router-id>100.100.100.100</router-id>
+            </config>
+            <use-multiple-paths>
+            </use-multiple-paths>
+        </global>
+        <peer-groups>
+            <peer-group peer-group-name='eBGP_peer'>
+                <config>
+                    <peer-group-name>eBGP_peer</peer-group-name>
+                </config>
+            </peer-group>
+        </peer-groups>
+        <neighbors>
+            <neighbor>
+                <config>
+                    <description>Configured_by_netconfig_based_on_openconfig_yang</description>
+                    <peer-as>1234</peer-as>
+                    <local-as>5678</local-as>
+                    <neighbor-address>1.2.3.4</neighbor-address>
+                    <peer-group>eBGP_peer</peer-group>
+                    <send-community>BOTH</send-community>
+                </config>
+                <ebgp-multihop>
+                    <config>
+                        <multihop-ttl>10</multihop-ttl>
+                    </config>
+                </ebgp-multihop>
+                <logging-options>
+                    <config>
+                        <log-neighbor-state-changes>true</log-neighbor-state-changes>
+                    </config>
+                </logging-options>
+                <route-reflector>
+                    <config>
+                        <route-reflector-cluster-id>1234</route-reflector-cluster-id>
+                    </config>
+                </route-reflector>
+                <timers>
+                    <config>
+                        <hold-time>30</hold-time>
+                        <keepalive-interval>10</keepalive-interval>
+                        <minimum-advertisement-interval>0</minimum-advertisement-interval>
+                        <connect-retry>35</connect-retry>
+                    </config>
+                </timers>
+                <transport>
+                    <config>
+                        <passive-mode>true</passive-mode>
+                    </config>
+                </transport>
+                <neighbor-address>1.2.3.4</neighbor-address>
+            </neighbor>
+        </neighbors>
+    </bgp>
+</config>
+    """
+
+    success = nc_manager.edit_config(config_bgp, target='running')
+    print(success)
+
+
+
+
 def main():
     """
     Main method to connect to devices
     """
+    #<global>
+    #    <config/>
+    #</global>
 
     get_oc_bgp = """
 <bgp xmlns="http://openconfig.net/yang/bgp">
-    <global>
-        <state/>
-    </global>
 </bgp>
     """   
 
@@ -56,13 +131,28 @@ def main():
                          look_for_keys=False, allow_agent=False) as m:
 
         # print all NETCONF capabilities
-        for capability in m.server_capabilities:
-            print(capability.split('?')[0])
+        #for capability in m.server_capabilities:
+        #    print(capability.split('?')[0])
 
         # Collect the NETCONF response
-        as_number = get_nc(m, get_oc_bgp, "{http://openconfig.net/yang/bgp}", "as")
-        router_id = get_nc(m, get_oc_bgp, "{http://openconfig.net/yang/bgp}", "router-id")
-        print("\nBGP AS: {} & router id : {}".format(as_number, router_id))
+       # as_number = get_nc(m, get_oc_bgp, "{http://openconfig.net/yang/bgp}", "as")
+       # router_id = get_nc(m, get_oc_bgp, "{http://openconfig.net/yang/bgp}", "router-id")
+       # print("\nBGP AS: {} & router id : {}".format(as_number, router_id))
+
+        config_bgp_openconfig(m)
+        # Get all config
+        resp = m.get_config('running', ('subtree',get_oc_bgp))
+        pretty_config = xml.dom.minidom.parseString(resp.xml).toprettyxml()
+        print(pretty_config)
+        
+        #with open('running_nxos.cfg', 'w+') as cfg_file:
+        #    cfg_file.write(pretty_config)
+
+        #with open('running_nxos.xml', 'w+') as xml_file:
+        #    xml_file.write(resp.xml)
+
+
+        #resp_dict = xmltodict.parse(resp.xml)["rpc-reply"]["data"]
 
 #        # Update the running config
 #        netconf_response = m.edit_config(target='running', config=new_name)
