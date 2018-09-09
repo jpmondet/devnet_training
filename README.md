@@ -33,13 +33,14 @@ Some network-oriented developments using APIs/Netconf/Yang/etc. (self-trainings,
 
 Example config file : 
 ```
+---
 num_workers: 100
 inventory: nornir.plugins.inventory.simple.SimpleInventory
 SimpleInventory:
     host_file: "inventory/hosts.yaml"
     group_file: "inventory/groups.yaml"
 ```
-Example hosts inventory :
+Example hosts inventory (can use an Ansible style inventory also)
 ```yaml
 ---
 host1.earth:

@@ -1,0 +1,8 @@
+---
+defaults:
+    domain: solar.space
+solar:
+    asn: 65100
+earth:
+    groups:
+        - solar

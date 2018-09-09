@@ -1,0 +1,12 @@
+---
+host1.earth:
+    nornir_host: 64.103.37.14 
+    nornir_ssh_port: 8181
+    nornir_username: admin
+    nornir_password: Admin_1234!
+    site: earth
+    role: spine
+    groups:
+        - earth
+    nornir_nos: cisco_nxos
+    type: network_device
