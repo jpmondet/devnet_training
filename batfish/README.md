@@ -36,5 +36,9 @@ Via the client (here python script), we can check facts about the snapshoted top
 List of questions already developed : https://pybatfish.readthedocs.io/en/latest/questions.html#module-pybatfish.question.bfq
 
 
+## Ansible modules
 
+`batfish_init`
+`batfish_policy`
+`batfish_searchfilters`
 
