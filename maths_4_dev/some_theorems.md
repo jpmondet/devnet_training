@@ -48,3 +48,8 @@ The proposition “P if and only if Q” asserts that P and Q have the same trut
 
 Every propositional formula is equivalent to both a disjunctive normal form and a conjunctive normal form.
 
+## DeMorgan's Laws
+
+NOT(A AND B) <-> NOT(A) OR NOT(B)
+NOT(A OR B) <-> NOT(A) AND NOT(B)
+
