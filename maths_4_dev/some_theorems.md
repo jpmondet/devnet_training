@@ -4,6 +4,38 @@
 
 Every nonempty set of nonnegative integers has a smallest element.
 
+## The Induction Principle 
+
+### Ordinary Induction
+
+Let P be a predicate on nonnegative integers. If
+
+- P(0) is true
+- And P(n) IMPLIES P(n+1) for all nonnegative integers, n
+- Then P(m) is true for all nonnegative integers, m.
+
+### Strong Induction
+
+Let P be a predicate on nonnegative integers. If
+
+- P(0) is true
+- And for all nonnegative integers n, P(0), P(1), ..., P(n) TOGETHER imply  P(n+1) 
+- Then P(m) is true for all nonnegative integers, m.
+
+## The Principle of Structural Induction
+
+Let P be a predicate on a recursively defined data type R. If
+
+- P(b) is true for each base case element, b in R
+- And for all two-argument constructors, c, [P(r) AND P(s)] IMPLIES P(c(r,s)) for all r, s in R,
+and likewise for all constructors taking other numbers of arguments,
+- Then P(r) is true for all r in R.
+
+## The Invariant Principle
+
+If a preserved invariant of a state machine is true for the start state, then it is true for all reachable states.
+
+
 ## Modus Ponens
 
 This rule says that a proof of P together with a proof that
@@ -51,5 +83,27 @@ Every propositional formula is equivalent to both a disjunctive normal form and 
 ## DeMorgan's Laws
 
 NOT(A AND B) <-> NOT(A) OR NOT(B)
+
 NOT(A OR B) <-> NOT(A) AND NOT(B)
+
+## Derived variables
+
+1. If f is a strictly decreasing N-valued derived variable of a state
+machine, then the length of any execution starting at state q is at most f(q)
+
+2. If there exists a strictly decreasing derived variable whose range
+is a well ordered set, then every execution terminates.
+
+## Schroder-Bernstein
+
+For any sets A, B, if A surj B and B surj A, then A bij B
+
+(holds on infinite sets)
+
+## Cantor
+
+For any set, A, A strict pow(A)   
+
+(even for inifinite sets!)
+
 
