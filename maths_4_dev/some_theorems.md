@@ -31,6 +31,46 @@ Let P be a predicate on a recursively defined data type R. If
 and likewise for all constructors taking other numbers of arguments,
 - Then P(r) is true for all r in R.
 
+## Zermelo-Fraenkel Set Theory with Choice (ZFC)
+
+### Extensionality
+
+Two sets are equal if they have the same members.
+
+### Pairing
+
+For any two sets x and y, there is a set, {x, y}, with x and y as its only elements
+
+### Union
+
+The union, u, of a collection, z, of sets is also a set
+
+### Infinity
+
+There is an infinite set. Specifically, there is a nonempty set, x, such that for any set y in x, the set {y} is also a member of x.
+
+### Subset
+
+Given any set, x, and any definable property of sets, there is a set containing precisely those elements y in x that have the property
+
+## Power Set
+
+All the subsets of a set form another set.
+
+### Replacement
+
+The image of a set under any definable function will also fall inside a set. 
+
+### Foundation
+
+There cannot be an infinite sequence of sets each of which is a member of the previous one.
+
+(or every nonempty set has a “member-minimal” element.)
+
+### Choice
+
+Given a set, s, whose members are nonempty sets no two of which have any element in common, then there is a set, c, consisting of exactly one element from each set in s.
+
 ## The Invariant Principle
 
 If a preserved invariant of a state machine is true for the start state, then it is true for all reachable states.
