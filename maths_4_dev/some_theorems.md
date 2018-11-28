@@ -146,4 +146,37 @@ For any set, A, A strict pow(A)
 
 (even for inifinite sets!)
 
+## Division Theorem
 
+Let n and d be integers such that d > 0.
+Then there exists a unique pair of integers q and r, such that
+
+n = q * d + r AND 0 <= r < d
+
+(Even with n < 0, the remainder is positive!!)
+
+## Euclid's Algorithm
+
+Recursively based on gcd(a,b) = gcd(b, rem(a,b))  for b != 0
+
+## The Pulverizer
+
+The greatest common divisor of a and b is a linear combination of a and b. That is,
+
+gcd(a,b) = sa + tb  for some integers s & t
+
+An integer is a linear combination of a and b iff it is a multiple of gcd(a, b).
+
+(Basicaly, The Pulverizer Algorithm takes the same steps as Euclid's but
+keeping the combination r = x - qy of each steps to find the latest reminder's
+combination that is not 0)
+
+## Prime Number Theorem 
+
+lim (x -> inf) (Pi(n) / (n/ln n)) = 1
+
+(Pi(n) being the number of primes up to n)
+
+## Chebyshev's Theorem on Prime Density
+
+For n > 1, Pi(n) > (n / 3ln n)
