@@ -180,3 +180,14 @@ lim (x -> inf) (Pi(n) / (n/ln n)) = 1
 ## Chebyshev's Theorem on Prime Density
 
 For n > 1, Pi(n) > (n / 3ln n)
+
+## Fundamental Theorem of Arithmetic (Unique Factorization Theorem)
+
+Every positive integer is a product of a unique weakly decreasing sequence of primes.
+
+### Lemmas
+
+- If p is a prime and p divides ab, then p divides a or p divides b
+- Let p be a prime. If p divides a1a2...an, then p divides some ai
+
+
