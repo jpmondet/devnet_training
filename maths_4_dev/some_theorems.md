@@ -75,6 +75,13 @@ Given a set, s, whose members are nonempty sets no two of which have any element
 
 If a preserved invariant of a state machine is true for the start state, then it is true for all reachable states.
 
+## General Principle of Remainder Arithmetic
+
+To find the remainder on division by n of the result of a series of additions and multiplications, applied to some integers
+
+- replace each integer operand by its remainder on division by n,
+- keep each result of an addition or multiplication in the range [0..n) by immediately replacing any result outside that range by its remainder on division by n.
+
 
 ## Modus Ponens
 
@@ -189,5 +196,37 @@ Every positive integer is a product of a unique weakly decreasing sequence of pr
 
 - If p is a prime and p divides ab, then p divides a or p divides b
 - Let p be a prime. If p divides a1a2...an, then p divides some ai
+
+## Relative Primality
+
+If k in [0..n) is relatively prime to n, then k has an inverse in Zn.
+
+If i and j are both inverses of k in Zn, then i = j (unique inverse)
+
+## Cancellation
+
+A number k is cancellable in Zn iff ka = kb implies a = b (Zn) for all a,b in [0..n)
+
+If k has an inverse in Zn, then it is cancellable.
+
+## Euler's Function
+
+For n > 0, PHI(n) ::= the number of integers in [0..n) that are relatively prime to n
+
+PHI(pq) = (p-1)(q-1) for primes p != q
+
+If p is a prime, then PHI(p^k) = p^k - p^(k-1) for k >= 1
+
+If a and b are relatively prime, then PHI(ab) = PHI(a)PHI(b)
+
+## Euler's Theorem
+
+If n and k are relatively prime, then k^(PHI(n)) is congruent to 1 (mod n)
+
+For all k in Zn(star), k^(PHI(n)) = 1 (Zn)
+
+### Fermat's Little Theorem
+
+Suppose p is a prime and k is not a multiple of p, then: k^(p-1) is congruent to 1 (mod p)
 
 

@@ -109,3 +109,9 @@ countable iff there is a total surjective function g : N -> C
 
 A set, C, is **countably infinite** iff N bij C. (exples : Z+, Z, NxN, N, Q+,
 ZxZ, Q)
+
+a is **congruent** to b modulo n iff n divides (a-b) (iff rem(a,n) = rem(b, n))
+
+The **ring of integers modulo n** Zn is the set of integers in the range [0..n) together with the operations (+n) and (.n).   (+n being the addition followed by the remainder)
+
+Integers that have no prime factor in common are called **relatively prime** (gcd(a,b) = 1))
