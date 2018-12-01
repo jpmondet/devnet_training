@@ -115,3 +115,37 @@ a is **congruent** to b modulo n iff n divides (a-b) (iff rem(a,n) = rem(b, n))
 The **ring of integers modulo n** Zn is the set of integers in the range [0..n) together with the operations (+n) and (.n).   (+n being the addition followed by the remainder)
 
 Integers that have no prime factor in common are called **relatively prime** (gcd(a,b) = 1))
+
+A **directed graph** (digraph), G, consists of a nonempty set, V(G), called the vertices of G, and a set, E(G), called the (directed) **edges** (or arrows) of G. An element of V(G) is called a **vertex** (or node).
+
+A **directed edge** starts at some vertex, u, called the **tail** of the edge and ends at some vertex, v, called the **head** of the edge.
+
+The **in-degree** of a vertex in a digraph is the number of arrows coming into it, and similarly its **out-degree** is the number of arrows out of it.
+
+A **walk** in a digraph, G, is an alternating sequence of vertices and edges that begins with a vertex, ends with a vertex, and such that for every edge (u -> v) in the walk, vertex u is the element just before the edge, and vertex v is the next element after the edge
+
+A **closed walk** is a walk that begins and ends at the same vertex.
+
+A **cycle** is a positive length closed walk whose vertices are distinct except for the beginning and end vertices
+
+The walk is a **path** iff all the vertices are different.
+
+A **merge f^r**, is a walk that starts with a walk f and continue with a walk r (merge of 2 walks)
+
+The vertex e where the walks merge can be specified in the notation: **fêr**.
+
+The **distance**, dist(u, v), in a graph from vertex u to vertex v is the length of a shortest path from u to v
+
+An **adjacency matrix** is a representation of a Graph as an nxn matrix of
+zeroes and ones. (n being the vertices v0,v1, ..., v(n-1)). The ijth entry
+of the adjacency matrix is 1 if there is an edge from vertex vi to vertex vj
+and 0 otherwise
+
+The length-k **walk counting matrix** for an n-vertex graph G is the nxn matrix
+C such that Cuv ::= the number of length-k walks from u to v.
+
+The **walk relation** on V(G) is the binary relation G* where u G* v :== there is a walk in G from u to v.
+
+When there is a walk from vertex v to vertex w, we say that w is **reachable** from v, or equivalently, that v is **connected** to w.
+
+Let R: B -> C and S: A -> B be binary relations. Then the **Composition of Relations** R with S is the binary relation (R o S): A -> C 

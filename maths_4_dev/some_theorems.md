@@ -229,4 +229,20 @@ For all k in Zn(star), k^(PHI(n)) = 1 (Zn)
 
 Suppose p is a prime and k is not a multiple of p, then: k^(p-1) is congruent to 1 (mod p)
 
+## Graph theory
+
+The shortest walk from one vertex to another is a path.
+
+The shortest positive length closed walk through a vertex is a cycle through that vertex.
+
+### The Triangle Inequality
+
+dist(u,v) <= dist(u,x) + dist(x,v) for all vertices u, v, x with equality holding iff x is on a shortest path from u to v
+
+### Adjacency Matrices
+
+If C is the length-k walk counting matrix for a graph G, and D is the length-m walk counting matrix, then CD is the length k + m walk counting matrix for G.
+
+The length-k counting matrix of a digraph, G, is (Ag)^k for all k in N
+
 
