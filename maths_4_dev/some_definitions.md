@@ -149,3 +149,47 @@ The **walk relation** on V(G) is the binary relation G* where u G* v :== there i
 When there is a walk from vertex v to vertex w, we say that w is **reachable** from v, or equivalently, that v is **connected** to w.
 
 Let R: B -> C and S: A -> B be binary relations. Then the **Composition of Relations** R with S is the binary relation (R o S): A -> C 
+
+A **directed acyclic graph** (DAG) is a directed graph with no cycles.
+
+A **topological sort** of a finite DAG is a list of all the vertices such that
+each vertex v appears earlier in the list than every other vertex reachable
+from v.
+
+A vertex v of DAG, D, is **minimum** iff every other vertex is reachable from
+v.
+
+A vertex v is **minimal** iff v is not reachable from any other vertex.
+
+Two vertices in a DAG are **comparable** when one of them is reachable from the other.
+
+A **chain** in a DAG is a set of vertices such that any two of them are comparable.
+
+A largest **chain** ending at an element a is known as a **critical path**. The number of elements less than a in the chain is 
+called the **depth** of a.
+
+A vertex in a chain that is reachable from all other vertices in the chain is called a **maximum element** of the chain.
+
+A finite chain is said to **end at** its maximum element.
+
+A **schedule** for performing tasks specifies which tasks to do at successive steps.
+
+A **partition** of a set A is a set of nonempty subsets of A called the **blocks** of the partition, 
+such that every element of A is in exactly one block.
+
+A **parallel schedule** for a DAG, D is a partition of V(D) into blocks 
+Ao, A1, ..., such that when j < k, no vertex in Aj is reachable from any vertex
+in Ak. The block Ak is called the set of elements **scheduled at step k**, and
+the **time of the schedule** is the number of blocks. The maximum number of
+elements scheduled at any step is called the **number of processors** required
+by the schedule.
+
+A **minimum time schedule** for a finite DAG D consists of the sets A0, A1, ..., where Ak ::= {a in V(D) | depth(a) = k}
+
+**Parallel time** = **size** of a critical path.
+
+An **antichain** in a DAG is a set of vertices such that no two elements in the set are comparable. That is no walk exists between any two different vertices in the set.
+
+
+
+

@@ -245,4 +245,14 @@ If C is the length-k walk counting matrix for a graph G, and D is the length-m w
 
 The length-k counting matrix of a digraph, G, is (Ag)^k for all k in N
 
+### DAGs
+
+Every finite DAG has a topological sort.
+
+In a DAG, D, if the size of the largest chain is t , then V(D) can be partitioned into t antichains.
+
+**Dilworth's Lemma** : For all t > 0, every DAG with n vertices must have either a chain of size greater than t or an antichain of size at least n/t.
+
+Every DAG with n vertices has a chain of size greater than sqrt(n) or an antichain of size at least sqrt(n).
+
 
