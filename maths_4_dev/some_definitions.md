@@ -190,6 +190,42 @@ A **minimum time schedule** for a finite DAG D consists of the sets A0, A1, ...,
 
 An **antichain** in a DAG is a set of vertices such that no two elements in the set are comparable. That is no walk exists between any two different vertices in the set.
 
+A binary relation, R, on a set, A, is **isomorphic** to a relation, S, on a set
+B iff there is a relation-preserving bijection from A to B; that is, there is
+a bijection f : A -> B such that, for all a, a´ in A : a R a´ iff f(a) S f(a´)
 
+A partial order for which every two different elements are comparable is called
+a **linear order**.
 
+A relation is an **equivalence** relation if it is reflexive, symmetric and
+transitive.
+
+Given an equivalence relation R : A -> A, the **equivalence class** of an
+element a in A is the set of all elements of A related to a by R.
+
+The equivalence classes of an equivalence relation on a set A are the blocks of a partition of A.
+
+**Simple graphs** are defined as digraphs in which edges are undirected.
+
+Two vertices in a simple graph are said to be **adjacent** iff they are the endpoints of the same edge, and an edge is said to be **incident** to each of its endpoints.
+
+**Complete graph** == full mesh
+
+The **Empty graph** has no edges at all.
+
+The **Line graph** is an n-node graph containing n-1 edges in sequence.
+
+Adding the edge (vn_v1) to the Line Graph result in a **length-n Cycle Graph**
+
+An **Isomorphism** between 2 graphs is an edge-preserving bijection between
+their sets of vertices. The 2 graphs are said **Isomorphic**.
+
+A **bipartite** graph is a graph whose vertices can be partitioned into two
+sets, L(G) and R(G), such that every edge has one endpint in L(G) and the
+endpoint in R(G).
+
+A Graph is **k-colorable** if it has a coloring that uses at most k colors.
+
+The minimum value of k for which a graph, G, has a valid coloring is called its
+**chromatic number**. 
 

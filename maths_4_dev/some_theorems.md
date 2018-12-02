@@ -255,4 +255,31 @@ In a DAG, D, if the size of the largest chain is t , then V(D) can be partitione
 
 Every DAG with n vertices has a chain of size greater than sqrt(n) or an antichain of size at least sqrt(n).
 
+For any digraph, G, the walk relations G+ and G* are transitive
 
+For any digraph, G, the walk relation G* is reflexive
+
+R is a DAG iff R+ is irreflective.
+
+A relation R is a strict partial order (transitive & irreflexive) iff R is the
+positive walk relation of a DAG.
+
+A digraph D is a DAG iff D+ is asymmetric.
+
+A relation is a weak partial order iff it is the walk relation a of DAG. (same
+as strict but antisymettric, that is the condition is relaxed when a vertex is
+compared to itself)
+
+Every weak partial order is isomorphic to the subset relation on a collection
+of sets.
+
+Every strict partial order is isomorphic to the proper subset relation on a collection
+of sets.
+
+### Simple Graphs
+
+**Handshaking Lemma** : The sum of the degrees of the vertices in a simple graph equals twice the number of edges.
+
+A graph, G, with at least one edge is bipartite iff its chromatic number = 2
+
+A graph with maximum degree at most k is (k+1)-colorable.
