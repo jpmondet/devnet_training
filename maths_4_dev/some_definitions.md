@@ -229,3 +229,31 @@ A Graph is **k-colorable** if it has a coloring that uses at most k colors.
 The minimum value of k for which a graph, G, has a valid coloring is called its
 **chromatic number**. 
 
+A graph is **connected** when every pair of vertices are connected.
+
+A **connected component** of a graph is a subgraph consisting of some vertex and every node and edge that is connected to that vertex.
+
+Two vertices in a graph are **k-edge connected** when they remain connected in every subgraph obtained by deleting up to k 1 edges.
+
+A graph is **k-edge connected** when it has more than one vertex, and pair of distinct vertices in the graph are k-connected.
+
+If two vertices are connected in a graph G, but not connected when an edge e is removed, then e is called a **cut edge** of G.
+
+An acyclic graph is called a **forest**. A connected acyclic graph is called
+a **tree**.
+
+A degree 1 node in a forest is called a **leaf**.
+
+The **weight of a graph** is the sum of the weights of its edges.
+
+A **minimum weight spanning tree** (MST) of an edge-weighted graph G is
+a spanning tree of G with the smallest possible sum of edge weights.
+
+A **pre-MST** for a graph G is a spanning subgraph of G that is also a subgraph of some MST of G.
+
+If F is a pre-MST and e is a new edge, that is e in E(G)-E(F), then
+e **extends** F when F+e is also a pre-MST.
+
+Let F be a pre-MST, and color the vertices in each connected component of F either all black or all white. At least one component of each color is required. Call this a **solid coloring** of F. A **gray edge** of a solid coloring is an edge of G with different colored endpoints.
+
+

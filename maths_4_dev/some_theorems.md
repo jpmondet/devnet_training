@@ -283,3 +283,39 @@ of sets.
 A graph, G, with at least one edge is bipartite iff its chromatic number = 2
 
 A graph with maximum degree at most k is (k+1)-colorable.
+
+The following graph properties are equivalent : 
+- The graph contains an odd length cycle.
+- The graph is not 2-colorable.
+- The graph contains an odd length closed walk.
+
+If two vertices are k-connected, then there are k edge-disjoint paths connecting them.
+
+Every graph, G, has, at least, |V(G)| - |E(G)| connected components
+
+Every connected graph with n vertices has at least n-1 edges.
+
+### Trees
+
+Every tree has the following properties : 
+- Every connected subgraph is a tree.
+- There is a unique path between every pair of vertices.
+- Adding an edge between nonadjacent nodes in a tree creates a graph with a cycle.
+- Removing any edge disconnects the graph. That is, every edge is a cut edge.
+- If the tree has at least two vertices, then it has at least two leaves.
+- The number of vertices in a tree is one larger than the number of edges.
+
+Every connected graph contains a subgraph that is a tree with the same vertices as the graph. This is called a **spanning tree**.
+
+An edge extends a pre-MST F if it is a minimum weight gray edge in some solid coloring of F.
+
+If all edges in a weighted graph have distrinct weights, then the graph has
+a unique MST.
+
+#### Algorithms to find MST
+
+[Prim] Grow a tree one edge at a time by adding a minimum weight edge among the edges that have exactly one endpoint in the tree.
+
+[Kruskal] Grow a forest one edge at a time by adding a minimum weight edge among the edges with endpoints in different connected components.
+
+Grow a forest one edge at a time by picking any component and adding a minimum weight edge among the edges leaving that component.
