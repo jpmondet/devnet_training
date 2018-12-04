@@ -256,4 +256,5 @@ e **extends** F when F+e is also a pre-MST.
 
 Let F be a pre-MST, and color the vertices in each connected component of F either all black or all white. At least one component of each color is required. Call this a **solid coloring** of F. A **gray edge** of a solid coloring is an edge of G with different colored endpoints.
 
+**Geometric series** is a sum where the ratio between successive terms is fixed.
 

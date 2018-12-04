@@ -319,3 +319,12 @@ a unique MST.
 [Kruskal] Grow a forest one edge at a time by adding a minimum weight edge among the edges with endpoints in different connected components.
 
 Grow a forest one edge at a time by picking any component and adding a minimum weight edge among the edges leaving that component.
+
+## Sums & Asymptotics
+
+### Geometric series
+
+If |x| < 1, then SUM(x^i) from i=0 to inf  is equal to  1 / (1-x)
+
+If |x| < 1, then SUM(ix^i) from i=0 to inf  is equal to  x / (1-x)^2
+
