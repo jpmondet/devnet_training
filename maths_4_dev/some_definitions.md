@@ -258,3 +258,13 @@ Let F be a pre-MST, and color the vertices in each connected component of F eith
 
 **Geometric series** is a sum where the ratio between successive terms is fixed.
 
+The nth **harmonic number**, Hn, is Hn :== SUM(1/i) from i=1 to n
+
+For functions f,g:R->R, f is **asymptotically equal** to g (f(x) ~ g(x)) iff
+lim(x->inf) f(x)/g(x) = 1
+
+For f,g:R->R, with g nonnegative, f is **asymptotically smaller** than g, f(x) = o(g(x)) iff lim(x->inf) f(x) / g(x) = 0
+
+For f,g:R->R, with g nonnegative, f = O(g) iff limSup(x->inf) |f(x)| / g(x) < INF
+
+

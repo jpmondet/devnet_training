@@ -320,11 +320,29 @@ a unique MST.
 
 Grow a forest one edge at a time by picking any component and adding a minimum weight edge among the edges leaving that component.
 
-## Sums & Asymptotics
-
-### Geometric series
+## Geometric series
 
 If |x| < 1, then SUM(x^i) from i=0 to inf  is equal to  1 / (1-x)
 
 If |x| < 1, then SUM(ix^i) from i=0 to inf  is equal to  x / (1-x)^2
 
+## Approximation of Sums
+
+Let f:R+ -> R+ be a weakly inscreasing function. Define S :== SUM(f(i)) from
+i=0 to n ;  and I :: { f(x)dx  from 1 to n   ( { being the integral)
+
+Then I + f(1) <= S <= I + f(n)
+
+Similarly, if f is weakly descreasing, then I + f(n) <= S <= I + f(1)
+
+## Products
+
+Any product can be converted into sum by taking a logarithm.
+
+## Asymptotic notation
+
+x^a = o(x^b) for all nonnegative constants a < b
+
+x^b = o(a^x) for any a,b in R with a > 1
+
+If f = o(g) or f ~ g, then f = O(g)
