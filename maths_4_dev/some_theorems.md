@@ -346,3 +346,23 @@ x^a = o(x^b) for all nonnegative constants a < b
 x^b = o(a^x) for any a,b in R with a > 1
 
 If f = o(g) or f ~ g, then f = O(g)
+
+f = Theta(g) iff f = O(g) and g = O(f)
+
+## Counting sets
+
+**binomial coefficient** (n choose k) = n! / (k!(n-k)!)
+
+**multinomial coefficient** (n choose k1,k2,...km) ::= n! / (k1!k2!...km!)
+
+**Binomial Theorem** : (a+b)^n = SUM( (n choose k) * a^(n-k) * b^k) from k = 0 to n 
+
+**Multinomial Theorem** : (z1 + z2 + ... + zm)^n = SUM( (n choose k1, k2,...km) * z1^k1 * z2^k2...zm^km) for k1,...km in N such as k1 + ...+ km = n
+
+## Pigeonhole Principle
+
+If |A| > |B|, then for every total function f:A->B, there exist two different
+elements of A that are mapped by f to the same element of B.
+
+**Generalized** :  If |A| > k.|B|, then for every total function f:A->B maps at least k+1 different elements of A to the same element of B.
+

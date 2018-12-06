@@ -267,4 +267,6 @@ For f,g:R->R, with g nonnegative, f is **asymptotically smaller** than g, f(x) =
 
 For f,g:R->R, with g nonnegative, f = O(g) iff limSup(x->inf) |f(x)| / g(x) < INF
 
+(n over k) red **n choose k** ::= the number of k-element subsets of an n-element set
 
+**(n choose k)** = n! / (k!(n-k)!)
