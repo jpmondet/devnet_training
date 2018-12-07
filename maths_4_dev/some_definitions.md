@@ -270,3 +270,18 @@ For f,g:R->R, with g nonnegative, f = O(g) iff limSup(x->inf) |f(x)| / g(x) < IN
 (n over k) red **n choose k** ::= the number of k-element subsets of an n-element set
 
 **(n choose k)** = n! / (k!(n-k)!)
+
+A countable **sample space** S is a nonempty countable set. An element w in
+S is called an **outcome**. A subset of S is called an **event**.
+
+A **probability function** on a sample spaceS is a total function Pr:S->R
+such that : Pr[w] >= 0 for all w in S  and SUM(Pr[w]) = 1 for w in S
+
+A sample space together with a progrability function is called a **probability
+space**. 
+
+For any event E, the **probability** of E is defined to be the sum of the
+probabilities of the outcomes in E : Pr[E] ::= SUM(Pr[w]) for w in E
+
+A finite probability space S is said to be **uniform** if Pr[w] is the same for
+every outcome w in S.  Any even E in S : Pr[E] = |E| / |S|

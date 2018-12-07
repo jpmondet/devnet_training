@@ -366,3 +366,11 @@ elements of A that are mapped by f to the same element of B.
 
 **Generalized** :  If |A| > k.|B|, then for every total function f:A->B maps at least k+1 different elements of A to the same element of B.
 
+## Probabily rules for Sets
+
+**Sum Rule** : If E0,E1, ... En, ...  are **pairwise disjoint events** then
+Pr[UNION(En) for n in N] = SUM(Pr[En]) for n in N
+
+**Union Bound** : Pr[E1 U ... U En U ...] <= Pr[E1] + ... + Pr[En] + ...
+
+
