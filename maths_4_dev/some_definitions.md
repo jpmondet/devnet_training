@@ -285,3 +285,16 @@ probabilities of the outcomes in E : Pr[E] ::= SUM(Pr[w]) for w in E
 
 A finite probability space S is said to be **uniform** if Pr[w] is the same for
 every outcome w in S.  Any even E in S : Pr[E] = |E| / |S|
+
+The expressions Pr[X|Y] denotes the probability of event X, **given that** event
+Y happens.
+
+Event A is **independent** of event B iff Pr[A|B] = Pr[A] or said differently : Pr[A INTERSECTION B] = Pr[A].Pr[B] /!\ DISJOINT EVENTS ARE NEVER INDEPENDENT
+
+A set of events A1, A2, ... , is **k-way independent** iff every set of k of
+these events is mutually independent. The set is **pairwise independent** iff
+it is 2-way independent.
+
+A **random variable** R on a probability space is a total function whose domain
+is the sample space.
+

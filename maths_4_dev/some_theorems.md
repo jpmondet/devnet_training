@@ -373,4 +373,14 @@ Pr[UNION(En) for n in N] = SUM(Pr[En]) for n in N
 
 **Union Bound** : Pr[E1 U ... U En U ...] <= Pr[E1] + ... + Pr[En] + ...
 
+Let X and Y be events where Y has nonzero probability, then Pr[X|Y] :;= Pr[X
+INTERSECTION Y] / Pr[Y]
 
+Pr[E1 INTERSECTION E2] = Pr[E1] . Pr[E2 | E1]
+
+Pr[E1 INTERSECTION E2 INTERSECTION E3] = Pr[E1] . Pr[E2 | E1] . Pr[E3 | E1
+INTERSECTION E2]
+
+**Bayes' Rule** : P[B|A] = Pr[A|B].Pr[B] / Pr[A]
+
+**Law of Total Probabily** : Pr[A] = Pr[A|E].Pr[E] + Pr[A|notE].Pr[notE]
