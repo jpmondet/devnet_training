@@ -384,3 +384,87 @@ INTERSECTION E2]
 **Bayes' Rule** : P[B|A] = Pr[A|B].Pr[B] / Pr[A]
 
 **Law of Total Probabily** : Pr[A] = Pr[A|E].Pr[E] + Pr[A|notE].Pr[notE]
+
+Two events are independent iff their indicator variables are independent.
+
+## Random Variables
+
+Let R and S be independent random variables, and f and g be functions such that
+domain(f) = codomain(R) and domain(g) = codomain(S), then f(R) and g(S) are
+independent random variables.
+
+### Bernouilli distributions
+
+The Bernouilli distribution has a PDF of the form fp: {0,1} -> [0,1] where
+fp(0) = p, and fp(1) = 1-p for some p in [0,1]
+
+The corresponding CDF is Fp:R -> [0, 1] where Fp(x) = 0 if x<0, Fp(x) = p if
+0 <= x < 1 and Fp(1) if 1 <= x
+
+### Uniform Distributions
+
+If the codomain V has n elements, then the uniform distribution has a PDF of
+the form f:V->[0,1] where f(v) = 1/n for all v in V
+
+If the elements of V in increasing order are a1,a2,..., an, then the CDF would
+be F:R->[0,1] where F(x) = 0 if x < a1 , F(x) = k/n if ak <= x < ak+1 for 1 <=
+k < n  and F(x) = 1 if an <= x
+
+### Binomial distributions
+
+An unbiased binomial distribution is specified by the PDF fn:[0..n] -> [0,1]
+: fn(k) ::= (n choose k) 2^(-n)
+
+If biased, the general binomial density function is specified by the PDF fn,p:
+[0..n] -> [0, 1] where fn,p(k) = (n choose k)p^k * (1-p)^(n-k) for some n in N+
+and p in [0,1]
+
+### Expectation
+
+For any random variable R, Ex[R] = SUM(x.Pr[R=x]) for x in range(R)
+
+If Ia is the indicator random variable for event A, then Ex[Ia] = Pr[A]
+
+**Law of Total Expectation** : Let R be a random variable on a sample space S,
+and suppose that A1, A2, ..., is a partition of S, then Ex[R]
+= SUM(Ex[R|Ai].Pr[Ai]) for all i
+
+If a random variable C has a geometric distribution with parameter p, then
+Ex[C] = 1/p
+
+Give any collection of events A1, A2, ..., An, the expected number of events
+that will occur is SUM(Pr[Ai]) for i = 1 to n
+
+**Expectation of binomial distribution** of a random variable R : Ex[R] = pn
+
+**Infinite Sums** Let R0, R1, ..., be random variables such that SUM(Ex[|Ri|]) from i=0 to INF converges, then Ex[SUM(Ri)] = SUM(Ex[Ri]) from i=0 to INF
+
+**Expectation of Independent Product** Ex[PRODUCT(Ri)] = PRODUCT(Ex[Ri]) from i=0 to k
+
+**Markov's Theorem** : If R is a nonnegative random variable, then for all x > 0 Pr[R >= x] <= Ex[R] / x
+
+If R is a nonnegative random variable, then for all c >= 1, Pr[R>=c.Ex[R]] <= 1/c
+
+**Chebyshev**: Let R be a random variable and x be in R+, then Pr[|R-Ex[R]| >=x] <= Var[R]/x^2
+
+Let R be a random variable and let c be a positive real number, Pr[|R-Ex[R]|] >= c.SIGMAR(R) <= 1/c^2
+
+For any random variable R, Var[R] = Ex[R^2] - (Ex[R])^2
+
+If B is a Bernouilli variable where p::= Pr[B=1], then Var[B] = p(1-p)
+
+Let R be a random variable and c a constant, then Var[cR] = c^2 . Var[R] and Var[R+c] = Var[R]
+
+**Pairwise Independent Additivity of Variance** : If R1,R2,..Rn are pairwise independent random variables, then Var[R1+R2+..+Rn] = Var[R1] + Var[R2] + .. + Var[Rn]
+
+**Variance of the Binomial Distribution** : If J has the (n,p)-binomial distribution, then Var[J] = np(1-p)
+
+**Pairwise Independent Sampling** : Let G1,...,Gn be pairwise independent
+variables with the same mean MU and deviation SIGMA define Sn :== SUM(Gi) for
+i = 1 to n, then Pr[|Sn/n - MU| >= x]  <= 1/n . (SIGMA/x)^2
+
+**Weak Law of Large Numbers** : Let G1, ...,Gn be pairwise independent
+variables with the same mean, MU, and the same finite deviation, and let Sn ::=
+(SUM(Gi) for i=1 to n)/n, then for every EPSILON > 0 :  lim(n->INF) Pr[|Sn-MU| <= EPSILON] = 1
+
+

@@ -298,3 +298,40 @@ it is 2-way independent.
 A **random variable** R on a probability space is a total function whose domain
 is the sample space.
 
+An **indicator random variable** (also called **Bernouilli variables**) is a random variable that maps every outcome
+to ether 0 or 1.
+
+The **probability density function** (PDF(R(x))) of a random variable R, measures the
+probability that R takes the value x.
+
+The **cumulative distribution function**, (CDF(R(x))) measures the probability
+that R <= x.
+
+A **Bernouill distribution** is the distribution function for a Bernouilli variable.
+
+A random variable that takes on each possible value in its codomain with the
+same probability is said to be **uniform**.
+
+The **expectation** of a random variable R is its average value when each value
+is weighted according to its probability. If R is defined on a sample space S,
+then the expectation of R is :  Ex[R] ::=  SUM(R(w)Pr[w]) for w in S
+
+Given a random variable R, the expected value of R **conditioned on a event A**
+is the probability-weighted average value of R over outcomes in A : Ex[R|A] :==
+SUM(r.Pr[R=r|A]) for r in range(R)
+
+A random variable C has a **geometric distribution** with parameter p iff
+codomain(C) = Z+ and Pr[C=i] = p.(1-p)^(i-1)
+
+The **Linearity of Expectation** means that the expected value of a sum of
+random variables is the sum of the expected values of the variables Ex[a1R1+a2R2] = Ex[a1R1] + Ex[a2R2]  (can be generalized with SUM())
+
+The **variance** (also known as **mean square deviation**) Var[R] of a random variable R is : Var[R] ::= Ex[(R-Ex[R])^2]
+
+The **standard deviation** SIGMA(R) of a random variable R is the square root
+of the variance.
+
+An assignment of probabilities to vertices in a digraph is a **stationary
+distribution** if for all vertices x Pr[at x] = Pr[go to x at next step]
+
+Strongly connected graphs have **unique** stationary distributions.
