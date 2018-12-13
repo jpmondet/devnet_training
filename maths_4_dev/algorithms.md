@@ -50,4 +50,28 @@ Recursively sorting 2 subarrays : 2T(n/2)
 Merge : THETA(n)
   -> THETA(n.log n)
 
+## Breadth-First Search
 
+(with SPF at the same time)
+
+Graph represented as adjacency list
+
+```
+bfs(s.Adj):
+ level = { s: 0}
+ parent = { s: None }
+ i = 1
+ frontier = [s]
+ while frontier:
+  next = []
+  for u in frontier:
+   for v in Adj[u]:
+    if v not in level:
+     level[v] = i
+     parent[v] = u
+      next.append(v)
+  frontier = next
+  i++
+```
+
+SUM(|Adj[v]|) for v in V  = 2.|E|
