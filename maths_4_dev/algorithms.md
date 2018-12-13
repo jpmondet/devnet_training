@@ -75,3 +75,23 @@ bfs(s.Adj):
 ```
 
 SUM(|Adj[v]|) for v in V  = 2.|E|
+
+## Depth-First Search
+
+```
+parent = { s: None }
+dfs-visit(V, Adj, s):
+ for v in Adj[s]:
+  if v not in parent:
+   parent[v]= s
+   DFS-Visit(V,Adj,v)
+
+dfs(V, Adj):
+ parent = {}
+ for s in V:
+  if s not in parent:
+   parent[s] = None
+    dfs-visit(V, Adj, s)
+```
+
+THETA(V+E)
