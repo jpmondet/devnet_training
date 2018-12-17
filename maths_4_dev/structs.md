@@ -50,13 +50,44 @@ then exchange A[i] and A[largest]
 
 ## Binary Search Trees (BST)
 
+Rooted binary tree 
+
+Each node has typically:
+- a key
+- a left pointer
+- a right pointer
+- a parent pointer
+
 For any node x, for all nodes y in the left subtree of x, key(y) <= key(x).
 Right subtree -> key(y) >= key(x)
 
-Operations in O(height):  (height should be O(log n) but worst case can become
-O(n) if tree not balanced at all)
+
+Operations in O(height):  (height should be log n but worst case can become n if tree not balanced at all)
 - Insert value
 - Find value
 - Find min/max value (go always left or right)
 
 Easily augmented (nodes can store more data)
+
+## Balanced BST
+
+Balanced BST came to life because of the worst case of BST (h = n). It aims to
+keep the height to log n.
+
+### AVL (Adel'son-Vel'skii & Landis) Trees
+
+For every node, require heights of left & right children to differ by at most +/- 1 ("nil" subtree has a height of -1)
+
+Augments nodes by storing they height
+
+Use of rotating to correct violation of the AVL rule.
+
+Must be done at each insert/delete.
+
+### Many more Balanced BST, including as research topics
+
+
+
+
+
+
