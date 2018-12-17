@@ -95,3 +95,18 @@ dfs(V, Adj):
 ```
 
 THETA(V+E)
+
+## Dijkstra 
+
+```
+dijkstra(V,s)
+ S = {}
+ Q = V // V contains graph vertexes
+ initialize(Q) //(every distance to vertex of Q to INF except source)
+ while len(Q) != 0:
+  u, S[u] = extract-min(Q)  //Q is a Priority Queue. Extract withdraw u from Q
+  for v in Adj(u):
+   relax(u,v,Q)  //(updates distances of Q if needed)
+```
+
+THETA(V.log V + E) (with Priority Queue beeing a Fibonacci heap)
