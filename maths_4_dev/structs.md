@@ -48,3 +48,15 @@ then exchange A[i] and A[largest]
       - Discard node n
       - max_heapify if the swap broke max_heap
 
+## Binary Search Trees (BST)
+
+For any node x, for all nodes y in the left subtree of x, key(y) <= key(x).
+Right subtree -> key(y) >= key(x)
+
+Operations in O(height):  (height should be O(log n) but worst case can become
+O(n) if tree not balanced at all)
+- Insert value
+- Find value
+- Find min/max value (go always left or right)
+
+Easily augmented (nodes can store more data)
