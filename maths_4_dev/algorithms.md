@@ -99,14 +99,38 @@ THETA(V+E)
 ## Dijkstra 
 
 ```
-dijkstra(V,s)
+relax(u,v,w,Q):
+ if Q[v] > Q[u] + w(u,v):
+  Q[v] = Q[u] + w[u,v] 
+
+dijkstra(V,s,w)
  S = {}
  Q = V // V contains graph vertexes
  initialize(Q) //(every distance to vertex of Q to INF except source)
  while len(Q) != 0:
   u, S[u] = extract-min(Q)  //Q is a Priority Queue. Extract withdraw u from Q
   for v in Adj(u):
-   relax(u,v,Q)  //(updates distances of Q if needed)
+   relax(u,v,w,Q)  //(updates distances of Q if needed)
 ```
 
 THETA(V.log V + E) (with Priority Queue beeing a Fibonacci heap)
+
+## Bellman-Ford
+
+Particularity : Won't die if there is negative cycles.
+However, the complexity is higher than Dijkstra.
+
+```
+bf(G,s,w):
+ S = {}
+ Q = G.V
+ initialize(Q)  //every dist(v) to INF except the source 
+ for _ in range(len(Q)):
+  for edge(u,v) in G.E:
+   relax(u,v,w,Q)
+ for edge(u,v) in G.E:  // This part only check for cycles
+  if Q[v] > Q[u] + w[u,v]:
+   ABORT() // There is a negative, the algo must stop and shortest path is undefined
+```
+
+O(VE) (but E can be O(V^2))
