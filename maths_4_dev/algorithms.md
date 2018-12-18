@@ -96,6 +96,20 @@ dfs(V, Adj):
 
 THETA(V+E)
 
+## Counting Sort
+
+```
+counting_sort(A):
+ L = [[] for i in range(len(A))] 
+ for j in range n:
+  L[key(A[j])].append(A[j])
+ output = []
+ for i in range len(L):
+  output.extend(L[i])
+```
+
+THETA(n+k) (time & space)
+
 ## Dijkstra 
 
 ```
