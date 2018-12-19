@@ -98,6 +98,9 @@ THETA(V+E)
 
 ## Counting Sort
 
+Generally better than comparison based sorts when elements are in range from
+1 to k.
+
 ```
 counting_sort(A):
  L = [[] for i in range(len(A))] 
@@ -109,6 +112,24 @@ counting_sort(A):
 ```
 
 THETA(n+k) (time & space)
+
+## Radix Sort
+
+When elements are in range from 1 to n^2, Counting Sort could become worse than
+comparison based algos.
+
+To get over this problem, Radix Sort splits into subproblems (digit level) and
+applies Counting Sort (or other Stable Sort) to the subproblems.
+
+```
+radix_sort(A):
+ for i in A.length - 1:
+  stable_sort(s[i]])
+```
+
+THETA(d * (n+b)) (d=digits & b=base) 
+
+-> Can be minimized with b=n & k <= n^constant -> becomes O(nc)
 
 ## Dijkstra 
 
