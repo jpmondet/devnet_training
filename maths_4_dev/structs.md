@@ -86,6 +86,18 @@ Must be done at each insert/delete.
 
 ### Many more Balanced BST, including as research topics
 
+## Dictionaries
+
+- Pre-hashing (keys must be nonnegative integers)
+- Hashing
+  - Division Method : h(k) = k mod m  (m = nb of slots in the table)
+  - Multiplication method: h(k) = [(ak) mod 2^w] >> (w-r)     (a random, w is the nb of bits of k)
+  - Universal Hashing: h(k) = [(ak+b) mod p] mod m   (p = large prime)
+- Start with small table and grow when needed (usually mx2 and shrink by 2 when m/4)
+  - Needs rehashing when growing/shrinking the table
+- Collisions
+  - Chaining (linked list in each slots)
+  - Open addressing
 
 
 
