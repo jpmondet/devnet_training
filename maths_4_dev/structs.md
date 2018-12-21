@@ -97,7 +97,9 @@ Must be done at each insert/delete.
   - Needs rehashing when growing/shrinking the table
 - Collisions
   - Chaining (linked list in each slots)
-  - Open addressing
+  - Open addressing (multiple trials to success having all items in slots of the table)
+    - Linear Probing (but can create clusters of items)
+    - Double Hashing (degrades heavily when the slot are above 70% utilized)
 
 
 
