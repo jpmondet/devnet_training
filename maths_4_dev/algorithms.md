@@ -14,6 +14,17 @@ operation and the cost of the algorithm.
 Python Operations : https://wiki.python.org/moin/TimeComplexity  (regex not
 shown but re. is in general exponential time !!)
 
+## High precision arithmetic
+
+In python, following algorithms are implemented in [gmpy2](https://pypi.org/project/gmpy2/) package
+
+### Multiplication
+
+- Karatsuba (THETA(d^lg3))
+- Toom-Cook (THETA(d^1.465))
+- Schönhage-Strassen (THETA(d.lg d.lg ld d))
+- Furer (THETA(n.log n.2^O(log * n)))   (log "star" being iterated log)
+
 ## Insertion Sort
 
 ```
