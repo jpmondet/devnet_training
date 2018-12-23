@@ -57,6 +57,42 @@ print("#"*100)
 bgp_sess_status = bfq.bgpSessionCompatibility(nodes='as1border1', remoteNodes='as2border1')
 print(bgp_sess_status.answer().frame())
 
+# Defined Structures
+print("#"*100)
+print("Lists the structures defined in the network, along with the files and line numbers in which they are defined.")
+print("#"*100)
+print(bfq.definedStructures().answer().frame())
+
+# Detect Loops ! (looks like the loop I added intentionally was not detected :| )
+print("#"*100)
+print("Detect forwarding loops.")
+print("#"*100)
+print(bfq.detectLoops().answer().frame())
+
+# Differential Reachability
+#print("#"*100)
+#print("Finds flows that are accepted in one snapshot but dropped in another.")
+#print("#"*100)
+#print(bfq.differentialReachability().answer().frame())
+
+# List edges types
+print("#"*100)
+print("Lists neighbor relationships of the specified type (layer3, BGP, ospf, etc. in the form of edges).")
+print("#"*100)
+print(bfq.edges().answer().frame())
+
+# File parse status
+print("#"*100)
+print("For each file in a snapshot, returns the host(s) that were produced by the file and the parse status: pass, fail, partially parsed.")
+print("#"*100)
+print(bfq.fileParseStatus().answer().frame())
+
+# Unreachable lines in ACL
+print("#"*100)
+print("Identify ACLs/filters with unreachable lines.")
+print("#"*100)
+print(bfq.filterLineReachability().answer().frame())
+
 # IP Interfaces
 #ip_owners_ans = bfq.ipOwners().answer()
 #print(ip_owners_ans.frame())
