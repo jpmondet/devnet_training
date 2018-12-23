@@ -80,17 +80,16 @@ bfs(s.Adj):
     if v not in level:
      level[v] = i
      parent[v] = u
-      next.append(v)
+     next.append(v)
   frontier = next
   i++
 ```
 
-SUM(|Adj[v]|) for v in V  = 2.|E|
+O(V+E)
 
 ## Depth-First Search
 
 ```
-parent = { s: None }
 dfs_visit(V, Adj, s):
  for v in Adj[s]:
   if v not in parent:
@@ -106,6 +105,24 @@ dfs(V, Adj):
 ```
 
 THETA(V+E)
+
+## Topological Sort
+
+Reverse of DFS. In fact the algorithm of DFS can be reused and just add an
+array to get the order :  
+
+```
+dfs_visit(V, Adj, s):
+ ...
+ order.append(v)
+
+dfs(V, Adj):
+ ...
+ order.reverse()
+```
+
+(This is true because the visit of a children is ended before the visit of a parent)
+
 
 ## Counting Sort
 
