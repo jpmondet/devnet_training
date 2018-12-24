@@ -101,6 +101,28 @@ Must be done at each insert/delete.
     - Linear Probing (but can create clusters of items)
     - Double Hashing (degrades heavily when the slot are above 70% utilized)
 
+## Graph Representations
+
+### Adjacency lists
+
+For each vertex u in V, Adj[u] stores u's neighbors (only outgoing edges if directed)
+
+(Adj can be a list or a dict)
+
+### Implicit Graphs
+
+Adj(u) is a function
+
+### Object oriented
+
+### Neighbor lists
+
+Vertices are objects and u.neighbors is a list (for example)
+
+### Incidence Lists
+
+Vertices are objects and u.edges is a list of (outgoing) edges.
+
 
 
 
