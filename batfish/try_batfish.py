@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 # vim:fenc=utf-8
 # Distributed under terms of the MIT license.
+# pylint: disable=no-member
 """
 Trying batfish
 """
@@ -22,6 +23,7 @@ load_questions()
 
 bf_init_snapshot("./candidate", name='candidate')
 bf_set_snapshot('candidate')
+print(bf_list_networks())
 
 # Check AAA auth
 print("#"*100)
@@ -92,6 +94,18 @@ print("#"*100)
 print("Identify ACLs/filters with unreachable lines.")
 print("#"*100)
 print(bfq.filterLineReachability().answer().frame())
+
+# Filter table (to filter the output of another question)
+print("#"*100)
+print("Return subset of answer for a question.")
+print("#"*100)
+print(bfq.filterTable(innerQuestion=bgp_peer).answer().frame())
+
+# IF MTU
+print("#"*100)
+print("Find interfaces where the configured MTU matches the specified comparator and mtuBytes.")
+print("#"*100)
+print(bfq.interfaceMtu(mtuBytes=1450).answer().frame())
 
 # IP Interfaces
 #ip_owners_ans = bfq.ipOwners().answer()

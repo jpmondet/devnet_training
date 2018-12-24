@@ -16,7 +16,7 @@ shown but re. is in general exponential time !!)
 
 ### Pseudopolynomial
 
-The problem is polynomial in size BUT is also polynomial in the Numbers size in the input (for example, pseudopolynomial behave differently with same number of entries but when those entries are very large numbers)
+The problem is polynomial in size (cardinality) BUT is also polynomial in the Numbers size of the input (for example, pseudopolynomial behave differently where, with the same number of entries, each entry is a very large number)
 
 ## High precision arithmetic
 
@@ -222,7 +222,7 @@ O(VE) (but E can be O(V^2))
 ### Steps
 
 - Define subproblems
-- Guess (part of solution)
+- Guess (guess which other subproblems to use)
 - relate subproblems solutions
 - recurse + memoize / bottom-up   (must check that subproblems are acyclic
   / in topological order)
