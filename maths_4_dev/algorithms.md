@@ -178,6 +178,17 @@ dijkstra(V,s,w)
 
 THETA(V.log V + E) (with Priority Queue beeing a Fibonacci heap)
 
+### Optimizations 
+
+- If shortest path is needed only for 1 source and 1 target, stop after
+  extracting the target from the Priority Queue
+
+- Bi-Directional Search : Worst case may not be better but can be faster in
+  other cases.
+
+- Goal-Directied Search (A "star") : Basically modify weights to be able to
+  apply Dijkstra.
+
 ## Bellman-Ford
 
 Particularity : Won't die if there is negative cycles.
@@ -197,3 +208,20 @@ bf(G,s,w):
 ```
 
 O(VE) (but E can be O(V^2))
+
+## Dynamic Programming
+
+- Invented by Bellman 
+- ~ guessing + (recursion + memoization) or Bottom-up (same computation but without recursion so faster in practice and can save space)
+- time = number of subproblems * time per subproblem
+
+### Steps
+
+- Define subproblems
+- Guess (part of solution)
+- relate subproblems solutions
+- recurse + memoize / bottom-up   (must check that subproblems are acyclic
+  / in topological order)
+- solve original problem based on subproblems
+
+Subproblems for multiple strings/sequences -> combine suffix/prefix/substring subproblems
