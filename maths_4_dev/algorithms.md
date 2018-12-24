@@ -14,6 +14,10 @@ operation and the cost of the algorithm.
 Python Operations : https://wiki.python.org/moin/TimeComplexity  (regex not
 shown but re. is in general exponential time !!)
 
+### Pseudopolynomial
+
+The problem is polynomial in size BUT is also polynomial in the Numbers size in the input (for example, pseudopolynomial behave differently with same number of entries but when those entries are very large numbers)
+
 ## High precision arithmetic
 
 In python, following algorithms are implemented in [gmpy2](https://pypi.org/project/gmpy2/) package
