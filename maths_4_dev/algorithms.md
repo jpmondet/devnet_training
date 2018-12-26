@@ -18,6 +18,17 @@ shown but re. is in general exponential time !!)
 
 The problem is polynomial in size (cardinality) BUT is also polynomial in the Numbers size of the input (for example, pseudopolynomial behave differently where, with the same number of entries, each entry is a very large number)
 
+## Computational complexity
+
+- P = problems solvable in polynomial (n^c) time
+- NP = decision problems with solutions that can be “checked” in polynomial time (the algo being nondeterministric (lucky guessing))
+- NP-Complete = Hardest problems in NP
+- NP-hard = as hard as every problem in NP
+- EXP = problems solvable in exponential (2^n^c) time
+- (same concepts for EXP-Complete/hard)
+- R = problems solvable in finite time
+- P C EXP C R
+
 ## High precision arithmetic
 
 In python, following algorithms are implemented in [gmpy2](https://pypi.org/project/gmpy2/) package
