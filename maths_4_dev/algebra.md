@@ -49,6 +49,10 @@ If C = AB, cij = SUM(aik * bkj) for k=1 to n
  - associative
  - NOT commutative
 
+### Exponential 
+
+If A is a square matrix, then e^A = I + A + A^2/2! + ...
+
 ## Field
 
 A field is a (in)finite set that supports the operations of addition and
@@ -59,3 +63,37 @@ multiplication on elements of this set. Also satifies :
 - Identity (0 for addition & 1 for multiplication)
 - Inverses
 - Distributivity
+
+## Linear Combination
+
+k real-valued variables x1,..., xk and k real-valued variables w1, ... , wk 
+
+-> s = x1w1 + x2w2 + ... xkwk is the linear combination of the variables.
+
+(same for vectors)
+
+## Linear Independence
+
+Vectors are independent if we can't express a vector as a linear combination of the others.
+
+More formally, the matrix formed by the vectors is non-singular (has a non-zero determinant)
+
+## Basis
+
+In a set of vectors, the basis is formed by the subset of vectors that are linearly independent (thus we can derive the other vectors from them)
+
+## Vector space
+
+Set of vector formed by the basis (which can be an infinite set)
+
+## Dimension
+
+Cardinality of the vector space
+
+## Homogeneous system
+
+Given 3 linear equations equal to 0, then the matrix formed by the equations is homogeneous.
+
+The left part is called the coefficient matrix.
+
+
