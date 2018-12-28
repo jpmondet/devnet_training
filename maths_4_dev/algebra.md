@@ -96,4 +96,11 @@ Given 3 linear equations equal to 0, then the matrix formed by the equations is 
 
 The left part is called the coefficient matrix.
 
+## Rank
+
+If of m equations in a system, k can be expressed as a linear combination of the other m - k equations, then we really only have m - k equations to work with (the others can be reduced to 0=0). This value is called the rank of the system, denoted r.
+
+- If r < n, then the system is under-determined (infinite amount of solutions -> solutions are expressed as linear combinations)
+- If r = n, then there is only one solution to the system. 
+- If r > n, then the system is over-determined (thus inconsistent since solutions are contradictory)
 
