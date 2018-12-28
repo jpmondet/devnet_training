@@ -104,3 +104,20 @@ If of m equations in a system, k can be expressed as a linear combination of the
 - If r = n, then there is only one solution to the system. 
 - If r > n, then the system is over-determined (thus inconsistent since solutions are contradictory)
 
+## Determinant
+
+Determinant of order 2 (2 by 2 matrix) =  a11a22 - a12a21 (diagonals)
+
+Determinant of higher order is defined recursively : 
+- D = SUM(aijCij) for j=1 to n  (which is equal to the sum over rows instead of columns)
+- C being the co-factor Cij = (-1)^(i+j) * Mij
+- M being the minor of aij which is the Determinant of the submatrix corresponding to aij
+- The submatrix corresponding to aij is the matrix where the ith row and the jth column have been deleted
+- Determinant do not change for the transposed matrix and also do not change not matter which row or column is chosen in the SUM
+- If a matrix has a zero column or row, its determinant is zero
+- Multiplying every element in a row or a column of a matrix by the constant c results in multiplying its determinant by the same factor.
+- Interchanging two rows or columns of matrix A results in a matrix B such that detB = -detA. 
+- If a matrix has identical rows or columns, its determinant must be zero, because zero is the only number whose negation leaves it unchanged.
+- A square matrix with n rows and columns has rank n if and only it has a non-zero determinant.
+- A square matrix has an inverse (is non-singular) if and only if has a non-zero determinant.
+
