@@ -155,6 +155,49 @@ If A is not invertible, it's a singular matrix. det(Singular Matrix) = 0
 - The set of all vectors that can be expressed as a linear combination of the eigenvectors is called the eigenspace of the matrix.
 - The elements of a Diagonal matrix ARE the Eigenvalues
 - If a matrix is square and symmetric (that it, A^T = A), then its eigenvalues are real.
-- Gerschgorin’s ‘circle’ theorem : if the off-diagonal elements are ‘not too large,’ then the eigenvalues of the matrix are its diagonal elements
+- Gerschgorin’s ‘circle’ theorem : 
+  - If the off-diagonal elements are ‘not too large,’ then the eigenvalues of the matrix are its diagonal elements
+  - All the eigenvalues lie within a circle in the complex plane centered at the value (x) of element ajj with radius 1-x
 - The eigenvectors corresponding to a set of distinct eigenvalues form a linearly independent set. Hence, if a square matrix of order n has n distinct eigenvalues, we can express any initial vector as a linear combination of its eigenvectors.
+
+## Similarity
+
+Two matrices are said to be similar if they have the same set of eigenvalues.
+
+## Diagonalizable
+
+If a matrix of size n has n distinct eigenvalues, then it is diagonalizable. However, if the matrix has repeated eigenvalues, then it cannot be diagonalized. 
+
+Let X a matrix whose columns are the eigenvectors of a matrix A, the diagonal matrix D, whose elements are the eigenvalues of A, is defined such that : D = (X^-1)AX
+
+This results lets compute the nth power of A (the power of a diagonal matrix is easier to compute): A^n = X(D^n)(X^-1)
+
+## Stochastic matrices
+
+- Square matrix
+- Elements are nonnegative reals
+- Also called Markov matrix
+- "Right" stochastic matrix : rows sum to 1
+- "Left" : colums sum to 1
+- Each row corresponds to the state of a finite state machine (or Markov chains)
+- Each elements can be viewed as the probability of entering state j from state i
+- The summation criterion expresses the fact that the result of a transition from a state is to either remain in the same state or to go to some other state
+
+### Computing state transitions
+
+- Let v be a column vector having dimension n with non-negative real elements such that its elements sum to 1. Those elements represent the probability of being in a state at some point in time
+- A be the nxn stochastic matrix
+- Then, after one transition, v' = (A^T)v where v'i = SUM(vk * aki) for k=1 to n
+- After 2 transitions : v'' = (A^T)(A^T)v = ((A^T)^2)v
+- Generalizing : vm = ((A^T)^m))v
+- Thus, the probability of going from state i to state j in k steps is given by (A^T)^k
+
+### Eigenvalues of stochastic matrices
+
+- Every (possibly complex) eigenvalue of a stochastic matrix must have a magnitude no greater than 1
+- Every stochastic matrix has an eigenvalue of 1
+- Only one of the eigenvalues of a stochastic matrix is 1 (which is also the dominant eigenvalue). 
+- PI is the stationary probability distribution of the system, which is the eigenvector of A^T for the eigenvalue of 1. It can be found by multiple ways : 
+  - solving (A^T)PI = PI 
+  - Using the power method (since the eigenvalue is the dominant one)
 
