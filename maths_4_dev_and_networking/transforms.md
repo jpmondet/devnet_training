@@ -61,9 +61,12 @@ This signal is interesting because it can represents a variety of signals, for e
 - ALPHA = 0 -> helix (whose projections are sinusoids)
 - Finally, exponentially modulated helix (whose projections are exponentially modulated sinusoids)
 
-![exp-signals-1](./random_web_findings/exp-signals-1.png)
+![exp-signals](./random_web_findings/exp-signals-1.png)
+
+Helixes : 
 
 ![exp-signals-2](./random_web_findings/exp-signals-2.png)
+(®mfcn)
 
 ## Types of Systems
 
