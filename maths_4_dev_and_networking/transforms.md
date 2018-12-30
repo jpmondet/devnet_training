@@ -33,3 +33,18 @@ a + ib = c.cos(THETA) + c.i.sin(THETA) => a = c.cos(THETA) ; b = c.sin(THETA)
 Also cos(THETA) = 1/2 (e^(iTHETA) + e^(-iTHETA)) and sin(THETA) = 1/2i (e^(iTHETA) - e^(-iTHETA))
 
 ![Pythagorean](./random_web_findings/pythagorean.jpg)
+
+## Convolution (that is really convoluted...)
+
+## Discrete functions
+
+x(t) (×) y(t) = SUM(x(TO)y(t-TO)) for TO = -INF to +INF
+
+(the symbol (×) replace the real symbol * since it is now wrongly seen as a simple multiplication)
+
+## Continuous functions
+
+x(t) (×) y(t) = INTEGRAL(x(TO)y(t-TO))dTO for TO = -INF to +INF
+
+
+
