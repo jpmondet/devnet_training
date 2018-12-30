@@ -13,6 +13,8 @@ What is interesting about Sinusoid is that it can by modelized by a vector (phas
 
 w = 2.PI / T -> THETA = 2.PI.t/T = wt  (THETA being the phase angle made by the phasor and the x axis in radians (2PI radians = 360degrees))
 
+![circle](./random_web_findings/circle-calculus.jpg)
+
 ## Complex numbers
 
 - i can be seen as the 90-degree rotation operator of a vector. 
@@ -21,3 +23,13 @@ w = 2.PI / T -> THETA = 2.PI.t/T = wt  (THETA being the phase angle made by the 
 - Any vector on this plane can be represented as the vector sum a + ib (or a + jb)
 - z = a+ib is a complex number; a = Re(z); b = Im(z); zSTAR = a-ib (z * is the complex conjugate)
 
+## Euler's formula
+
+The phasor is "conveniently" represented by **ce^(iTHETA) = c(cos(THETA) + isin(THETA))** (c being the magnitude of the vector)
+
+a + ib = c.cos(THETA) + c.i.sin(THETA) => a = c.cos(THETA) ; b = c.sin(THETA)
+; c = SQRT(a^2 + b^2) ; THETA = arctan(b/a)
+
+Also cos(THETA) = 1/2 (e^(iTHETA) + e^(-iTHETA)) and sin(THETA) = 1/2i (e^(iTHETA) - e^(-iTHETA))
+
+![Pythagorean](./random_web_findings/pythagorean.jpg)
