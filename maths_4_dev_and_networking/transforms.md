@@ -1,6 +1,6 @@
 # Signals, Systems and Transforms
 
-**Signal** : Series of numbers/vectors or continuous function of time  
+**Signal** : Series of numbers/vectors or continuous function of time with different characteristics (discrete/continuous, digital/analog, periodic/aperiodic, time-limited/unlimited, time-shifted, time-scaled)
 
 **System** : Process that converts input signals to output signals
 
@@ -36,6 +36,8 @@ Also cos(THETA) = 1/2 (e^(iTHETA) + e^(-iTHETA)) and sin(THETA) = 1/2i (e^(iTHET
 
 ## Convolution (that is really convoluted...)
 
+DELTA (or Impulse) function is used to "select" part of a function (for continuous functions, delta is the special DIRAC-DELTA) by being 1 where we want to select and 0 otherwise 
+
 ## Discrete functions
 
 x(t) (×) y(t) = SUM(x(TO)y(t-TO)) for TO = -INF to +INF
@@ -46,5 +48,21 @@ x(t) (×) y(t) = SUM(x(TO)y(t-TO)) for TO = -INF to +INF
 
 x(t) (×) y(t) = INTEGRAL(x(TO)y(t-TO))dTO for TO = -INF to +INF
 
+## The complex exponential signal
+
+ke^(st) where s = ALPHA + iOMEGA 
+
+Expanding it gives : ke^(ALPHA.t) * cos(OMEGA.t) + ike^(ALPHA.t) * sin(OMEGA.t)
+
+This signal is interesting because it can represents a variety of signals, for example : 
+- s=0 -> we get the constant signal k
+- OMEGA=0 -> real monotone exponentiel signal ke^(ALPHA.t)
+- s = +/- iOMEGA -> sinusoids
+- ALPHA = 0 -> helix (whose projections are sinusoids)
+- Finally, exponentially modulated helix (whose projections are exponentially modulated sinusoids)
+
+![exp-signals-1](./random_web_findings/exp-signals-1.png)
+
+![exp-signals-2](./random_web_findings/exp-signals-2.png)
 
 
