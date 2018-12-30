@@ -2,7 +2,7 @@
 
 **Signal** : Series of numbers/vectors or continuous function of time with different characteristics (discrete/continuous, digital/analog, periodic/aperiodic, time-limited/unlimited, time-shifted, time-scaled)
 
-**System** : Process that converts input signals to output signals
+**System** : Process that converts input signals to output signals (it is a function whose domains and ranges are both set of functions)
 
 **Transform** : Changes the Basis of a signal. In Computer Networking,
 the basis of sinusoids are what we care about.
@@ -64,5 +64,20 @@ This signal is interesting because it can represents a variety of signals, for e
 ![exp-signals-1](./random_web_findings/exp-signals-1.png)
 
 ![exp-signals-2](./random_web_findings/exp-signals-2.png)
+
+## Types of Systems
+
+- Causal systems : Act only on inputs from the past (funnily, **a**causal DO exist !) 
+- Memoryless : Act only on the inputs presented at a point in time
+- Dynamic : Depend both on current and past inputs
+- Time-invariant : Parameters do not change with time
+- Additive : y1+y2 = H(x1+x2)
+- Homogeneous/scaling : ky = H(kx)
+- Superposition : Both additive and homogenous that is k1y1 + k2y2 = H(k1x1 + k2x2)
+- Linear System : Must have the properties Additive & Homogeneous (or Superposition)
+
+
+
+
 
 
