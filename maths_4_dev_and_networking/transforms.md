@@ -79,7 +79,20 @@ Helixes :
 - Superposition : Both additive and homogenous that is k1y1 + k2y2 = H(k1x1 + k2x2)
 - Linear System : Must have the properties Additive & Homogeneous (or Superposition)
 
+## Analysis of a LTI (Linear time-invariant) System 
 
+### On a complex exponential input
+
+Considering an LTI system y(t) = H(x(t)) with a complex exp input x(t) = ke^(st)
+
+The ouput end up being y(t) = f(s).e^(st) where f(s) is an arbitrary function independent of t.
+
+It means that for ANY LTI system, if the input is a complex exp, the output is
+too (without even knowing what's inside the LTI black box).
+
+But wait, there is more : For this particular input, the LTI acts as a scalar
+multiplier so x(t) = ke^(st) is an **eigenfunction**. The corresponding
+eigenvalue is the multiplier factor f(s).
 
 
 
