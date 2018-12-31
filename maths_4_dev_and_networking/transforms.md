@@ -81,6 +81,10 @@ Helixes :
 
 ## Analysis of a LTI (Linear time-invariant) System 
 
+General linear differential equation that can describe a (lot of) LTI system : 
+
+![general_form_lti](./random_web_findings/general_form_LTI.png)
+
 ### On a complex exponential input
 
 Considering an LTI system y(t) = H(x(t)) with a complex exp input x(t) = ke^(st)
@@ -94,6 +98,6 @@ But wait, there is more : For this particular input, the LTI acts as a scalar
 multiplier so x(t) = ke^(st) is an **eigenfunction**. The corresponding
 eigenvalue is the multiplier factor f(s).
 
-
-
+-> If an input can be represented as a sum of such eigenfunctions, the output
+will simply be the sum of the scaled inputs.
 
