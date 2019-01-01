@@ -79,7 +79,7 @@ Helixes :
 - Superposition : Both additive and homogenous that is k1y1 + k2y2 = H(k1x1 + k2x2)
 - Linear System : Must have the properties Additive & Homogeneous (or Superposition)
 
-## Analysis of a LTI (Linear time-invariant) System 
+## Analysis of the output of an LTI (Linear time-invariant) System 
 
 General linear differential equation that can describe a (lot of) LTI system : 
 
@@ -100,4 +100,22 @@ eigenvalue is the multiplier factor f(s).
 
 -> If an input can be represented as a sum of such eigenfunctions, the output
 will simply be the sum of the scaled inputs.
+
+## Zero Input (except the initial impulse)
+
+Starting with the general form, setting the right hand side to zero and
+replacing d^N/dt^N by D^N, we get : 
+
+(D^N + a1D^(N-1) + ... + aN-1.D + aN)y(t) = 0 -> D is the **characteristic
+polynomial** of the system
+
+The output end up being y(t) = SUM(ci.e^(LAMBDAi.t)) for i=1 to N   (LAMBDAi
+being a root of the polynomial and corresponds to a **natural frequency** of
+the LTI system). The solution of the equation is the **natural response** of
+the system. This solution assumes that the roots of the polynomial are distinct.
+
+(This is a basis of radio reception : if an input with a frequency equal to one of the natural
+frequencies, the system will **resonate**, amplifying the input)
+
+If the roots of the characteristic polynomial are distinct, the output becomes :  y(t) = c1.e^(LAMBDA.t) + c2.t.e^(LAMBDA.t) + ... + cr.t^(r-1).e^(LAMBDA.t)
 
