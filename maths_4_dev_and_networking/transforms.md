@@ -101,7 +101,7 @@ eigenvalue is the multiplier factor f(s).
 -> If an input can be represented as a sum of such eigenfunctions, the output
 will simply be the sum of the scaled inputs.
 
-## Zero Input (except the initial impulse)
+### Zero Input (except the initial impulse)
 
 Starting with the general form, setting the right hand side to zero and
 replacing d^N/dt^N by D^N, we get : 
@@ -119,3 +119,20 @@ frequencies, the system will **resonate**, amplifying the input)
 
 If the roots of the characteristic polynomial are distinct, the output becomes :  y(t) = c1.e^(LAMBDA.t) + c2.t.e^(LAMBDA.t) + ... + cr.t^(r-1).e^(LAMBDA.t)
 
+### Arbitrary input
+
+Input : x(t) = INTEGRAL(x(TO)DELTA(t-TO)dTO) from -INF and +INF 
+
+Output : x(t) (×) h(t) = INTEGRAL(x(TO)h(t-TO)dTO) from -INF to +INF
+
+h(t) being the impulse response and DELTA(t) the DIRAC-DELTA
+
+This means that for any input, knowing the impulse response gives the possibility to compute the response of the system.
+
+### Stability
+
+An LTI system is **asymptotically stable** if ALL its roots have a value of ALPHA < 0.
+
+It is **purely oscillatory** if all the values of ALPHA = 0 and there are no repeated roots.
+
+Otherwise the system is **unstable**.
