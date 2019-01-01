@@ -127,12 +127,25 @@ Output : x(t) (×) h(t) = INTEGRAL(x(TO)h(t-TO)dTO) from -INF to +INF
 
 h(t) being the impulse response and DELTA(t) the DIRAC-DELTA
 
-This means that for any input, knowing the impulse response gives the possibility to compute the response of the system.
+This means that for any input, knowing the impulse response gives the possibility to compute the total response of the system.
 
 ### Stability
 
 An LTI system is **asymptotically stable** if ALL its roots have a value of ALPHA < 0.
 
-It is **purely oscillatory** if all the values of ALPHA = 0 and there are no repeated roots.
+It is **purely oscillatory** (or **marginally stable**) if all the values of ALPHA = 0 and there are no repeated roots.
 
 Otherwise the system is **unstable**.
+
+## Transforms
+
+Main usage of transforms : 
+- Easier computation of the convolution
+- Simplify linear differential equations (convert to another "simpler" equation)
+- Gives insight into the natural response of a system
+
+Some interesting transforms : 
+
+![transforms](./random_web_findings/transforms.png)
+
+
