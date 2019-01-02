@@ -148,4 +148,23 @@ Some interesting transforms :
 
 ![transforms](./random_web_findings/transforms.png)
 
+### Fourier series
+
+ANY periodic function can be represented as the sum of sinusoids:
+
+x(t) = a0 + SUM(ak.cos(k.OMEGA0.t) + bk.sin(k.OMEGA0.t)) for k = 1 to +INF; OMEGA0 being the **fundamental angular frequency** 2.PI/T0
+
+(and here come the harmonics!)
+
+a0 = 1/T0 INTEGRAL(x(t)dt) from 0 to T0  is the DC component. 
+
+x(t) = SUM(ck.e^(jk.OMEGA0.t)) for k = -INF to +INF
+
+"c" term is defined by : c0 = a0, ck = 1/2(ak - jbk), c-k = 1/2(ak + jbk) and more generally : ck = 1/T0 INTEGRAL(x(t)e^(-jk.OMEGA0.t)dt) from 0 to T0
+
+sin(x)/x is called the **sinc** function (which value is 1 at 0 !)
+
+
+
+
 
