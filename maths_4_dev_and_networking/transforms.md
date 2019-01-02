@@ -162,8 +162,32 @@ x(t) = SUM(ck.e^(jk.OMEGA0.t)) for k = -INF to +INF
 
 "c" term is defined by : c0 = a0, ck = 1/2(ak - jbk), c-k = 1/2(ak + jbk) and more generally : ck = 1/T0 INTEGRAL(x(t)e^(-jk.OMEGA0.t)dt) from 0 to T0
 
-sin(x)/x is called the **sinc** function (which value is 1 at 0 !)
+Note: sin(x)/x is called the **sinc** function (which value is 1 at 0 ! And is a symetric function that sinusoidally tends to 0 ( yeah, this definition is totally made up ;-) ) )
 
+### Fourier Transform
+
+Series can't represent **a**periodic functions, so came the Fourier Transform.
+
+To transform of a signal x(t) to a function of the complex quantity jOMEGA : X(jOMEGA) = INTEGRA(x(t).e^(-j.OMEGA.t)dt) from -INF to +INF
+
+To validate the existence of a Fourier transform, we have to validate the (sufficient) **Dirichlet conditions** : 
+- the signal x(t) must be **absolutely integrable** (the integration is finite) 
+- x(t) has (in any finite interval) :
+  - a finite number of maxima
+  - a finite number of minima
+  - a finite number of discontinuities
+
+To recover a signal from a transform : x(t) = 1/2PI.INTEGRAL(X(jOMEGA)e^(j.OMEGA.t)dOMEGA) from -INF to +INF
+
+Some properties of Fourier transforms : 
+- Linearity (addition/scaling of a function results in the addition/scaling of the transform)
+- Time-shifting (but not as simply) : x(t) <-> X(jOMEGA) becomes x1(t-t0) <-> e^(-j.OMEGA.t0)X1(jOMEGA)
+- Time-scaling : x(t) <-> X(jOMEGA) becomes x(at) <-> 1/|a|.X(jOMEGA/a)
+- Duality (new transforms can be computed from a transform)
+- Differentiation: x(t) <-> X(jOMEGA) becomes dx^n(t)/dt^n <-> (jOMEGA)^n.X(jOMEGA)
+- Convolution: 
+  - convolution of functions corresponds to multiplication of the transforms of those functions
+  - multiplication of functions corresponds to convultion of the transforms (multiplied by 1/2PI)
 
 
 
