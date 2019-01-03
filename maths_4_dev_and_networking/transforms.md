@@ -189,6 +189,21 @@ Some properties of Fourier transforms :
   - convolution of functions corresponds to multiplication of the transforms of those functions
   - multiplication of functions corresponds to convultion of the transforms (multiplied by 1/2PI)
 
+### Laplace Transform
 
+When Dirichlet conditions are not satisfied, Laplace comes handy. The **region
+of convergence** (the values of ALPHA) must still be specified though. Also,
+the Lplace transform is generally a complex function.
 
+X(s) = INTEGRAL(x(t)e^(-st)dt) from -INF to +INF (s = ALPHA + jOMEGA)
 
+The inverse : x(t) = 1/(2.PI.j). INTEGRAL(X(s)e^(st)ds) from (ALPHA - jINF) to (ALPHA + jINF)
+
+Poles : Values for which the transform goes to INF
+
+Zeroes: Values of s for which the thansform = 0
+
+The properties of Laplace transform (see the tables) have the same properties as Fourier
+transform, plus : 
+- Integration which correponds to a division by a complex factor in the transform domain
+- Final value theorem : The limit of a function when t tends to +INF corresponds to the limit of sX(s) when s tends to 0.
