@@ -50,15 +50,15 @@ x(t) (×) y(t) = INTEGRAL(x(TO)y(t-TO))dTO for TO = -INF to +INF
 
 ## The complex exponential signal
 
-ke^(st) where s = ALPHA + iOMEGA 
+ke^(st) where s = SIGMA + iOMEGA 
 
-Expanding it gives : ke^(ALPHA.t) * cos(OMEGA.t) + ike^(ALPHA.t) * sin(OMEGA.t)
+Expanding it gives : ke^(SIGMA.t) * cos(OMEGA.t) + ike^(SIGMA.t) * sin(OMEGA.t)
 
 This signal is interesting because it can represents a variety of signals, for example : 
 - s=0 -> we get the constant signal k
-- OMEGA=0 -> real monotone exponentiel signal ke^(ALPHA.t)
+- OMEGA=0 -> real monotone exponentiel signal ke^(SIGMA.t)
 - s = +/- iOMEGA -> sinusoids
-- ALPHA = 0 -> helix (whose projections are sinusoids)
+- SIGMA = 0 -> helix (whose projections are sinusoids)
 - Finally, exponentially modulated helix (whose projections are exponentially modulated sinusoids)
 
 ![exp-signals](./random_web_findings/exp-signals-1.png)
@@ -131,9 +131,9 @@ This means that for any input, knowing the impulse response gives the possibilit
 
 ### Stability
 
-An LTI system is **asymptotically stable** if ALL its roots have a value of ALPHA < 0.
+An LTI system is **asymptotically stable** if ALL its roots have a value of SIGMA < 0.
 
-It is **purely oscillatory** (or **marginally stable**) if all the values of ALPHA = 0 and there are no repeated roots.
+It is **purely oscillatory** (or **marginally stable**) if all the values of SIGMA = 0 and there are no repeated roots.
 
 Otherwise the system is **unstable**.
 
@@ -192,12 +192,12 @@ Some properties of Fourier transforms :
 ### Laplace Transform
 
 When Dirichlet conditions are not satisfied, Laplace comes handy. The **region
-of convergence** (the values of ALPHA) must still be specified though. Also,
+of convergence** (the values of SIGMA) must still be specified though. Also,
 the Lplace transform is generally a complex function.
 
-X(s) = INTEGRAL(x(t)e^(-st)dt) from -INF to +INF (s = ALPHA + jOMEGA)
+X(s) = INTEGRAL(x(t)e^(-st)dt) from -INF to +INF (s = SIGMA + jOMEGA)
 
-The inverse : x(t) = 1/(2.PI.j). INTEGRAL(X(s)e^(st)ds) from (ALPHA - jINF) to (ALPHA + jINF)
+The inverse : x(t) = 1/(2.PI.j). INTEGRAL(X(s)e^(st)ds) from (SIGMA - jINF) to (SIGMA + jINF)
 
 Poles : Values for which the transform goes to INF
 
@@ -207,3 +207,15 @@ The properties of Laplace transform (see the tables) have the same properties as
 transform, plus : 
 - Integration which correponds to a division by a complex factor in the transform domain
 - Final value theorem : The limit of a function when t tends to +INF corresponds to the limit of sX(s) when s tends to 0.
+
+### Discrete-time Fourier Transform
+
+x[nT] <-> SUM(x[nT].e^(-jOMEGA.nT)) for n = -INF to +INF
+
+and its inverse : x[nT] = 1/OMEGAs.INTEGRAL(X(jOMEGA)e^(jOMEGA.nT)dOMEGA) from 0 to OMEGAs  (OMEGAs = 2PI/T)
+
+### Aliasing
+
+Two non-identical signals whose sampled versions are identical are said to be aliases of each other.
+
+Nyquist criterion : to prevent aliasing, the sampling function should have a frequency that is at least twice that of the highest frequency component of a signal
