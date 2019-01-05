@@ -230,5 +230,5 @@ x[k] <-> X(z) = SUM(x[k]z^-k) for k=0 to INF (as in Laplace, the region of conve
 
 Inverse Z transform :  x[k] = 1/2PIj. INTEGRAL(X(z)z^(k-1)dz) for C range (C being the circle where are the poles of z reside)
 
-
+(see tables for properties & common transforms)
 
