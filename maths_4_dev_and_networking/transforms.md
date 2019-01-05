@@ -219,3 +219,16 @@ and its inverse : x[nT] = 1/OMEGAs.INTEGRAL(X(jOMEGA)e^(jOMEGA.nT)dOMEGA) from 0
 Two non-identical signals whose sampled versions are identical are said to be aliases of each other.
 
 Nyquist criterion : to prevent aliasing, the sampling function should have a frequency that is at least twice that of the highest frequency component of a signal
+
+### The Z Transform
+
+Generalizes the Discrete-Time-and-Frequency-Fourier-Transform (DFT) (where the latter can be computed by the Fast-Fourier-Transform (FFT)) in the same way the Laplace Transform generalizes the Fourier Transform.
+
+"The integral in the Fourier transform can be viewed as the limiting sum of a series of unmodulated complex exponentials as their inter-frequency separation tends to zero, The Laplace transform generalizes this by taking the limiting sum over a series of modulated complex exponentials. In the same way, the DFT is a finite sum of unmodulated complex exponentials. The Z transform generalizes this to an infinite sum of modulated complex exponentials"
+
+x[k] <-> X(z) = SUM(x[k]z^-k) for k=0 to INF (as in Laplace, the region of convergence is important)
+
+Inverse Z transform :  x[k] = 1/2PIj. INTEGRAL(X(z)z^(k-1)dz) for C range (C being the circle where are the poles of z reside)
+
+
+
