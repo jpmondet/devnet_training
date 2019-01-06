@@ -210,15 +210,23 @@ transform, plus :
 
 ### Discrete-time Fourier Transform
 
+Used to sample a discrete signal
+
 x[nT] <-> SUM(x[nT].e^(-jOMEGA.nT)) for n = -INF to +INF
 
 and its inverse : x[nT] = 1/OMEGAs.INTEGRAL(X(jOMEGA)e^(jOMEGA.nT)dOMEGA) from 0 to OMEGAs  (OMEGAs = 2PI/T)
+
+However, in practice, Discrete-Time-and-Frequency Fourier Transform is what is really used:
+
+X[jk.OMEGA0] = 1/NT.SUM(x[nT].e^(-jk.OMEGA0.nT)) for n=0 to N-1
+
+Its inverse being x[nt] = T.SUM(X[jk.OMEGA0].e^(jk.OMEGA0.nT)) for k=0 to N-1
 
 ### Aliasing
 
 Two non-identical signals whose sampled versions are identical are said to be aliases of each other.
 
-Nyquist criterion : to prevent aliasing, the sampling function should have a frequency that is at least twice that of the highest frequency component of a signal
+Nyquist criterion : to prevent aliasing, the sampling function should have a frequency that is at least twice that of the highest frequency component of a signal (which is the basis of all media sampling : audio, video, etc.)
 
 ### The Z Transform
 
