@@ -222,6 +222,10 @@ X[jk.OMEGA0] = 1/NT.SUM(x[nT].e^(-jk.OMEGA0.nT)) for n=0 to N-1
 
 Its inverse being x[nt] = T.SUM(X[jk.OMEGA0].e^(jk.OMEGA0.nT)) for k=0 to N-1
 
+with the sampling frequency being ws=2PI/T and the signal frequency w0=2PI/T0 
+
+This last transform can be computed by the Fast-Fourier-Transform (FFT)
+
 ### Aliasing
 
 Two non-identical signals whose sampled versions are identical are said to be aliases of each other.
@@ -230,7 +234,7 @@ Nyquist criterion : to prevent aliasing, the sampling function should have a fre
 
 ### The Z Transform
 
-Generalizes the Discrete-Time-and-Frequency-Fourier-Transform (DFT) (where the latter can be computed by the Fast-Fourier-Transform (FFT)) in the same way the Laplace Transform generalizes the Fourier Transform.
+Generalizes the Discrete-Time-and-Frequency-Fourier-Transform (DFT)  in the same way the Laplace Transform generalizes the Fourier Transform.
 
 "The integral in the Fourier transform can be viewed as the limiting sum of a series of unmodulated complex exponentials as their inter-frequency separation tends to zero, The Laplace transform generalizes this by taking the limiting sum over a series of modulated complex exponentials. In the same way, the DFT is a finite sum of unmodulated complex exponentials. The Z transform generalizes this to an infinite sum of modulated complex exponentials"
 
@@ -239,4 +243,3 @@ x[k] <-> X(z) = SUM(x[k]z^-k) for k=0 to INF (as in Laplace, the region of conve
 Inverse Z transform :  x[k] = 1/2PIj. INTEGRAL(X(z)z^(k-1)dz) for C range (C being the circle where are the poles of z reside)
 
 (see tables for properties & common transforms)
-
