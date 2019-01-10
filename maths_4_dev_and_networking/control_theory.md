@@ -43,4 +43,12 @@ The concepts of poles and zeros of Laplace are also applicable here allowing to 
 
 However, the big drawback of this method is that it doesn't work for MIMO and non-linear systems.
 
+## First Order system
+
+System characterized by the plan G(s) = K / (1+TOs) ; K being the **gain** and TO the **system time constant**
+
+In general, the response to a (brutal) change in input is composed of 2 terms : the **steady state response** (the asymptotic stability) and the **transient** response (before arriving to the steady state).
+
+
+
 
