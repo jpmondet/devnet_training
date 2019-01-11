@@ -45,9 +45,22 @@ However, the big drawback of this method is that it doesn't work for MIMO and no
 
 ## First Order system
 
-System characterized by the plan G(s) = K / (1+TOs) ; K being the **gain** and TO the **system time constant**
+System characterized by the transfer function G(s) = K / (1+TOs) ; K being the **gain** and TO the **system time constant**
 
 In general, the response to a (brutal) change in input is composed of 2 terms : the **steady state response** (the asymptotic stability) and the **transient** response (before arriving to the steady state).
+
+## Second Order System
+
+This kind of system generally respond to an input by accumulating and then releasing energy (think of a bow)
+
+The transfer function is given by G(s) = K / ((s^2/OMEGAn^2)+(2.ZETA.s/OMEGAn)+ 1)
+
+As before, K is the **gain**, OMEGAn is the **natural frequency** and ZETA the **damping ratio**
+
+The gain controls the **steady state**, the natural frequency the oscillations
+(stability) and the damping ratio the responsiveness.
+
+A visual example/summary with a step response of the damping in [here](./random_web_findings/damping.png)
 
 
 
