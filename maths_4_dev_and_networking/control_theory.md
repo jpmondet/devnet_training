@@ -63,5 +63,32 @@ The gain controls the **steady state**, the natural frequency the oscillations
 A visual example/summary with a step response of the damping in [here](./random_web_findings/damping.png)
 
 
+## Feedback control system
 
+As the name suggest, those systems have a feedback loop giving hints to the controller about the state of the system.
 
+The controller can then take actions to correct its output to reach a state where the reference input = the output of the system despite the disturbances.
+
+**Fundamental equation** : Y = (GD/(1+GDH))R + (G/(1+GDH))W
+
+Where: 
+- R(s) is the Laplace transform of the Reference Input
+- H(s) is the Laplace transform of the Measurement Process
+- D(s) is the Laplace transform of the Controller
+- W(s) is the Laplace transform of the Disturbance
+- G(s) is the Laplace transform of the Plant 
+- Y(s) is the Laplace transform of the Output
+
+Actually, the controller must ensure 2 things : 
+- the output rapidly reach the reference input (during the **settling time**)
+- the eliminatation of the **steady state error** (y-r)
+
+### Constraints
+
+To ensure the previous things, the controller should take into account the :
+- stability
+- disturbance rejection
+- transient response
+- linearity
+- measurement error
+- robustness
