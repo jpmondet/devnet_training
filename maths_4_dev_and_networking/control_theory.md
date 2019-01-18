@@ -86,9 +86,48 @@ Actually, the controller must ensure 2 things :
 ### Constraints
 
 To ensure the previous things, the controller should take into account the :
-- stability
-- disturbance rejection
-- transient response
-- linearity
+- stability (return to the desired state)
+Multiple kind of stability : 
+  - Bounded-Input-Bounded-Output 
+  - Zero-input (= the system goes back to zero equilibrium state when 0 input)
+- disturbance rejection (avoid being subject to disturbances)
+- transient response (response due to disturbance and time to come back to equilibrium)
+- linearity (if the system becomes non-linear, the controller put it back into the linear range)
 - measurement error
-- robustness
+- robustness (robust against events outside of all the assumptions made during the design of the controller)
+
+## PID Control
+
+### Proportional
+
+Reacts proportionally to errors 
+
+u = Kp.e  <-L-> U = Kp.E ; Kp = loop gain
+
+Issue : Need a steady-state error term if we want a non-zero control input
+
+### Integral
+
+Reacts to accumulated errors instead of current error only. It eliminates the need for steady-state error
+
+u = Ki.INTEGRAL(e) <-L-> U = Ki.E/s
+
+Issue: Makes the control less stable (generates oscillations)
+
+### Derivative
+
+Reacts on the error "trend" (increasing/decreasing) 
+
+Must be combined with Proportional or Integral to avoid constand steady-state error (zero derivative)
+
+u = Kd(de/dt) <-L-> U = Kd.E
+
+Issue : Spikes/Noise could make the controller strongly react when it's not needed
+
+### Combining modes
+
+PID controllers gives the ability to play with all 3 gains factors mutually removing issues of one another
+
+U = (Kp + Ki/s + Kd.s).E
+
+
