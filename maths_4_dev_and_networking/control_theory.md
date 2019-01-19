@@ -130,4 +130,28 @@ PID controllers gives the ability to play with all 3 gains factors mutually remo
 
 U = (Kp + Ki/s + Kd.s).E
 
+## Cascade Control
+
+Multiple controllers act at different granularity/time-scales
+
+## Control delay
+
+Add complexity to the analysis but still modelizable by introducing a delay TO <-L-> e^(-st) to the error : 
+
+E = R - Y.e^(-st)
+
+This delay is generally responsible of the tradeoff between stability & responsiveness since the controller can't have the measurement informations right away.
+
+## Stability
+
+### BIBO stability of LTI system
+
+
+
+
+
+
+
+
+
 
