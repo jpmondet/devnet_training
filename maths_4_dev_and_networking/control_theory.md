@@ -146,6 +146,27 @@ This delay is generally responsible of the tradeoff between stability & responsi
 
 ### BIBO stability of LTI system
 
+It can be shown that the system is bounded by the transfer function G(s) = (b0.s^m + b1.s^(m-1)+...+bm) / (s^n + a1.s^(n-1)+...+an)
+
+Finding the roots of the denominator polynomial gives us insight on the BIBO stability.
+
+[Good roots finder (with explanations)](https://www.mathportal.org/calculators/polynomials-solvers/polynomial-roots-calculator.php)
+
+The system is stable iff all the roots are in the left half of the complex s plane (there are special cases when complex conjugate roots lie on the j axis)
+
+## Zero-input stability of LTI system
+
+The zero-input stability is, here again, determined by the roots of the characteristic equation |sI - A| = 0.
+
+The roots being the same as the ones of the transfer function, if an LTI system is BIBO stable, it is also zero-input stable (and vice-versa)
+
+## Lyapunov stability
+
+Helps study systems that are not LTI
+
+
+
+
 
 
 
