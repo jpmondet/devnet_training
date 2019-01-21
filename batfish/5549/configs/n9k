@@ -1,0 +1,58 @@
+cfs ipv4 distribute
+cfs eth distribute
+feature bgp
+feature interface-vlan
+feature hsrp
+feature lacp
+feature dhcp
+feature vpc
+feature bfd
+
+bfd interval 500 min_rx 500 multiplier 3
+
+vrf context VRF_NAME
+  ip route 0.0.0.0/0 1.1.1.1
+
+interface Ethernet1/1
+  vrf member VRF_NAME
+  ip forward
+  ipv6 address beef:cafe::1/127
+
+interface loopback0
+  vrf member VRF_NAME
+  ip address 2.2.2.2/2
+
+router bgp 222222222
+  template peer TEMPLATE
+    inherit peer-session TEMPLATE
+    address-family ipv4 unicast
+      inherit peer-policy TEMPLATE 100
+    address-family ipv6 unicast
+      inherit peer-policy TEMPLATE 100
+  template peer-policy TEMPLATE
+    send-community both
+    route-map ROUTE_MAP_NAME_IN in
+    route-map ROUTE_MAP_NAME_OUT out
+    maximum-prefix 300000 warning-only
+    soft-reconfiguration inbound
+    capability additional-paths send
+    capability additional-paths receive
+  template peer-session TEMPLATE
+    bfd
+    log-neighbor-changes
+    timers 1 3
+  vrf VRF_NAME
+    router-id 2.2.2.2
+    graceful-restart-helper
+    bestpath as-path multipath-relax
+    reconnect-interval 1
+    neighbor-down fib-accelerate
+    log-neighbor-changes
+    address-family ipv4 unicast
+      network 2.2.2.2/2
+      maximum-paths 32
+    neighbor beef:cafe::
+      inherit peer TEMPLATE
+      remote-as 111111111
+      address-family ipv4 unicast
+      address-family ipv6 unicast

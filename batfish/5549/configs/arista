@@ -1,0 +1,52 @@
+hostname arista
+!
+vrf definition VRF_NAME
+   rd 1:1
+!
+bfd interval 500 min_rx 500 multiplier 3 default
+!
+interface Ethernet1/1
+   no switchport
+   vrf forwarding VRF_NAME
+   ipv6 address beef:cafe::/127
+!
+interface Loopback0
+   vrf forwarding VRF_NAME
+   ip address 1.1.1.1/1
+!
+ip route vrf VRF_NAME 0.0.0.0/0 2.2.2.2
+!
+ip routing
+ip routing vrf VRF_NAME
+ip routing ipv6 interfaces vrf VRF_NAME
+!
+ipv6 unicast-routing vrf VRF_NAME
+!
+router bgp 111111111
+   router-id 1.1.1.1
+   neighbor TEMPLATE peer-group
+   neighbor TEMPLATE fall-over bfd
+   neighbor TEMPLATE timers 1 3
+   neighbor TEMPLATE route-map ROUTE_MAP_NAME_IN in
+   neighbor TEMPLATE route-map ROUTE_MAP_NAME_OUT out
+   neighbor TEMPLATE send-community
+   neighbor TEMPLATE maximum-routes 300000 warning-only
+   !
+   address-family ipv4
+      neighbor TEMPLATE activate
+   !
+   address-family ipv6
+      neighbor TEMPLATE activate
+   !
+   vrf VRF_NAME
+      router-id 1.1.1.1
+      maximum-paths 128 ecmp 128
+      bgp additional-paths install
+      bgp bestpath as-path multipath-relax
+      neighbor beef:cafe::1 peer-group TEMPLATE
+      neighbor beef:cafe::1 remote-as 222222222
+      network 1.1.1.1/1
+      !
+      address-family ipv4
+         neighbor beef:cafe::1 next-hop address-family ipv6 originate
+!
