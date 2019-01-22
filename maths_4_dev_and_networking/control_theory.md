@@ -14,6 +14,7 @@ Responsiveness VS Stability
 - Energy : Total power over a time duration
 - Active component (of a system) : Generate power
 - Passive component : Store & dissipate energy
+- trajectory : path taken over time by a system from its current state to the ideal state
 
 ## Mathematical representation of a (LTI) system
 
@@ -162,7 +163,23 @@ The roots being the same as the ones of the transfer function, if an LTI system 
 
 ## Lyapunov stability
 
-Helps study systems that are not LTI
+Helps study systems that are not LTI.
+
+Stable in the sense of Lyapunov : if we can choose initial conditions, the system trajectories stay not too far from equilibrium.
+
+Proving that a system is Lyapunov stable involves defining a Lyapunov function V(x) which can be viewed as the amount of Energy in the system and showing that control actions decrease it.
+
+## State-space modelling & control
+
+"Modern" approach that aims to resolve the limits of the previous techniques : multiple inputs/outputs, internal stability of the system and measurement of internal states.
+
+Sufficient, but not mandatory, criterias to design a "ideal" Control Input : 
+- Observability
+- Controllabity
+
+
+
+
 
 
 
