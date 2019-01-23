@@ -173,9 +173,16 @@ Proving that a system is Lyapunov stable involves defining a Lyapunov function V
 
 "Modern" approach that aims to resolve the limits of the previous techniques : multiple inputs/outputs, internal stability of the system and measurement of internal states.
 
-Sufficient, but not mandatory, criterias to design a "ideal" Control Input : 
-- Observability
+Sufficient, but not mandatory, criterias to design an "ideal" Control Input : 
 - Controllabity
+  - An initial system state is **controllable** if a piecewise continuous input exists such that the system moves toward the desired state from time 0 to time t.
+  - If all initial states are controllable, the system is **completely controllable**
+- Observability
+  - If we can determine the initial state knowing the system state equations, the output and the input of the controller are known over a finite time, that initial state is **observable**
+  - If all initial states are observable, the system is **completely observable**
+
+  
+
 
 
 
