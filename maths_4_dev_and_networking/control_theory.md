@@ -181,6 +181,11 @@ Sufficient, but not mandatory, criterias to design an "ideal" Control Input :
   - If we can determine the initial state knowing the system state equations, the output and the input of the controller are known over a finite time, that initial state is **observable**
   - If all initial states are observable, the system is **completely observable**
 
+However, real controllers are often unobservable. The control must then estimate the current state (which can be a control problem in itself by minimizing error between predicted output & actual output) and control the system assuming the estimation is accurate.
+
+Separating estimation and control is doable assuming that time constants are different (measuring/estimating way faster than controlling)
+
+
   
 
 
