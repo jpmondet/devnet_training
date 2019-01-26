@@ -1,11 +1,6 @@
 cfs ipv4 distribute
 cfs eth distribute
 feature bgp
-feature interface-vlan
-feature hsrp
-feature lacp
-feature dhcp
-feature vpc
 feature bfd
 
 bfd interval 500 min_rx 500 multiplier 3
