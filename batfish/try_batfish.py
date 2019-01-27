@@ -18,7 +18,7 @@ logger = logging.getLogger(__name__)
 #bf_session = Session(logger)
 #bf_session.coordinatorHost = "172.17.0.2"
 #bf_session.coordinatorPort = "8888"
-#bf_session.apiKey = "6887facfc39dd574a914327eb31fd04427f25f4cbea6fb97"
+#bf_session.apiKey = ""
 load_questions()
 
 bf_init_snapshot("./candidate", name='candidate')

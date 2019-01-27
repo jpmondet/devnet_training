@@ -18,7 +18,7 @@ logger = logging.getLogger(__name__)
 #bf_session = Session(logger)
 #bf_session.coordinatorHost = "172.17.0.2"
 #bf_session.coordinatorPort = "8888"
-#bf_session.apiKey = "6887facfc39dd574a914327eb31fd04427f25f4cbea6fb97"
+#bf_session.apiKey = ""
 load_questions()
 
 bf_init_snapshot("./5549", name='5549')
@@ -104,4 +104,4 @@ print("Traceroute ! The killer feature :-p")
 print("#"*100)
 print((bfq.traceroute(startLocation='arista', headers={"dstIps": "ofLocation(n9k)"}).answer()).frame())
 print((bfq.traceroute(startLocation='n9k', headers={"dstIps": "ofLocation(arista)"}).answer()).frame())
-print((bfq.traceroute(startLocation='arista', headers={"dstIps": "ofLocation(arista)"}).answer()).frame())
+#print((bfq.traceroute(startLocation='arista', headers={"dstIps": "ofLocation(arista)"}).answer()).frame())
