@@ -8,7 +8,9 @@ a message over the channel, its knowledge increases by the **information content
 
 The model implies being able measure the receiver's knowledge. 
 
-In a situation where the source have to send 1 of N equiprobable messages, if the receiver knows it will receive 1 of N message but doesn't know which one, we call the **entropy** (H) the initial degree of uncertainty of the receiver : H = log N (log base 2)
+In a situation where the source have to send 1 of N equiprobable messages, if
+the receiver knows it will receive 1 of N message but doesn't know which one,
+we call the **entropy** (H) the initial degree of uncertainty of the receiver : H = log N (the log base 2 comes from the fact that it can be modelized as a binary tree)
 
 However, if the messages are not equiprobable, the entropy becomes dependent of the probabilities of each message.
 
@@ -21,6 +23,3 @@ Note that entropies of independent random variables are additive : H(XY) = H(X) 
  - representing the infinite set of messages as **symbols**
  - computing entropy at the symbol level (**symbol entropy**)
  - identifying the underlying alphabet of symbols and computing the relative frequencies of occurrence of longer and longer symbol sequences in a representative message corpus we can approximately determine its entropy.
-
-
-
