@@ -23,3 +23,14 @@ Note that entropies of independent random variables are additive : H(XY) = H(X) 
  - representing the infinite set of messages as **symbols**
  - computing entropy at the symbol level (**symbol entropy**)
  - identifying the underlying alphabet of symbols and computing the relative frequencies of occurrence of longer and longer symbol sequences in a representative message corpus we can approximately determine its entropy.
+
+
+To shorten the messages as much as possible, the symbols are encoded. But from this, arise the problem of finding the **optimal encoding**. 
+
+A code should be **unambiguous** to avoid confusing the receiver. Also it should (but nowadays, it is less mandatory) be an **instantaneous code** (code that can be decoded immediately -> no codeword should be the prefix of another one).
+
+But to be optimal, instantaneous is not enough, the code must also : 
+- construct message symbols from longer sequences of elementary symbols (which makes it more efficient)
+- take probabilities into account by assigning shorter codes to frequent symbols
+
+
