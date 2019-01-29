@@ -27,10 +27,16 @@ Note that entropies of independent random variables are additive : H(XY) = H(X) 
 
 To shorten the messages as much as possible, the symbols are encoded. But from this, arise the problem of finding the **optimal encoding**. 
 
-A code should be **unambiguous** to avoid confusing the receiver. Also it should (but nowadays, it is less mandatory) be an **instantaneous code** (code that can be decoded immediately -> no codeword should be the prefix of another one).
+A code should be **unambiguous** to avoid confusing the receiver. Also it should (but nowadays, it is not really mandatory/true) be an **instantaneous code** (code that can be decoded immediately -> no codeword should be the prefix of another one).
 
 But to be optimal, instantaneous is not enough, the code must also : 
 - construct message symbols from longer sequences of elementary symbols (which makes it more efficient)
 - take probabilities into account by assigning shorter codes to frequent symbols
 
+**Kraft inequality** : SUMi(2^(-li)) <= 1  (for instantenous code and with li being the level in the binary tree of the code).  It constrains the choice of codeword lengths
+
+It permits to show that the expected length of a codeword is lower-bounded by entropy : E >= H(X)
+
+The **Huffman code** approaches H. It even guarantees to have an average
+codeword no longer than H+1. It is found by assigning symbols to leaf nodes of a tree sorted by probabilities of those symbols (least-likely to most-likely).
 
