@@ -2,6 +2,8 @@
 
 ## Mathematical model for Communication
 
+## Entropy
+
 Assuming a system with only 1 source, 1 receiver and 1 channel, a model can
 define the state of knowledge of a receiver. When the receiver receive
 a message over the channel, its knowledge increases by the **information content** of the message.
@@ -24,6 +26,7 @@ Note that entropies of independent random variables are additive : H(XY) = H(X) 
  - computing entropy at the symbol level (**symbol entropy**)
  - identifying the underlying alphabet of symbols and computing the relative frequencies of occurrence of longer and longer symbol sequences in a representative message corpus we can approximately determine its entropy.
 
+## Encoding
 
 To shorten the messages as much as possible, the symbols are encoded. But from this, arise the problem of finding the **optimal encoding**. 
 
@@ -39,4 +42,21 @@ It permits to show that the expected length of a codeword is lower-bounded by en
 
 The **Huffman code** approaches H. It even guarantees to have an average
 codeword no longer than H+1. It is found by assigning symbols to leaf nodes of a tree sorted by probabilities of those symbols (least-likely to most-likely).
+
+## Channel
+
+[communication channel](./random_web_findings/com-chan.png)
+
+Previous sections spoke about message source & source coder.
+
+Here comes the channel part.
+
+It is inefficient to transfer message symbols on a channel, this is why there is a channel coder that translate message symbols to **channel symbols**. This channel coder/decoder prevents being affected by noise (or at least minimize the issues). 
+
+If channel symbols are only 0s and 1s, a **binary channel** is used. To increase **information capacity**, complex symbols can be used to transport more bit in parallel (like QAM modulation on fibers today)
+
+
+
+
+
 
