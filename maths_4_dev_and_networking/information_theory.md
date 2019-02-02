@@ -103,6 +103,24 @@ More intuitively, it can be seen as the actual information content carried on a 
 
 Hence, the coding scheme must aim to maximize I(X;Y). Moreover, Shannon showed that this max is also the greatest rate at which information can be carried over a noisy channel without introducing uncorrectable errors (**turbo codes** or **Low Density Parity codes** approach this max rate).
 
+Shannon's theorem also show : 
+- that sequences of i.i.d typical symbols maps to a set of 2^(nH(Y|X)) non-overlapping sequences of symbols that are also typical
+- that the sender can send a maximum of 2^(n(H(Y)) - H(Y|X)) distinct decodable messages.
+- The contribution of each symbol to the total set of messages is bounded by 2^(I(X;Y)).
+
+### The Gaussian Channel
+
+This approach aims to facilitate the determination of the capacity of a channel and to modelized the fact that real life channels are continuous.
+
+The huge takeaway is that channel capacity can be pretty easily found by computing : **Channel Capacity = bandwidth * log (1+P/N)**. The bandwidth is the width of the continuous channel over which is it carried (in hertz). The second part (log) is usually denoted as the SNR(dB) = 10log10(P/N).
+
+However, in some specific use cases (like WiFi) interferences made by multiple senders diminish greatly the Channel Capacity.
+
+
+
+
+
+
 
 
 
