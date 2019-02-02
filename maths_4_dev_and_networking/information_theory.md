@@ -96,6 +96,15 @@ This also generate a whole lot of new entropies :
 - H(X|Y) : uncertainty at the channel decoder again but considering that the symbol Y is received. (variants : H(X|Y=0 or 1))
 - H(Y|X) : uncertainty at the channel coder again but considering that the symbol X is transmitted.
 
+Related to those entropies is the **mutual information** between a sender and a receiver that is defined to be the reduction in the uncertainty :
+- of the receiver about the sembol sent when receiving a symbol -> I(X;Y) = H(X) - H(X|Y)
+- of the sender about the symbol received at the receiver due to the transmission of the symbol -> I(X;Y) = H(Y) - H(Y|X)
+More intuitively, it can be seen as the actual information content carried on a noisy channel by symbols (capacity of a noisy channel). For example, a very noisy channel could carry only 0.01bits/symbol of worthy information. The rest is wasted.
+
+Hence, the coding scheme must aim to maximize I(X;Y). Moreover, Shannon showed that this max is also the greatest rate at which information can be carried over a noisy channel without introducing uncorrectable errors (**turbo codes** or **Low Density Parity codes** approach this max rate).
+
+
+
 
 
 
