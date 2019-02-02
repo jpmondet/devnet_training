@@ -108,9 +108,23 @@ Shannon's theorem also show :
 - that the sender can send a maximum of 2^(n(H(Y)) - H(Y|X)) distinct decodable messages.
 - The contribution of each symbol to the total set of messages is bounded by 2^(I(X;Y)).
 
+### Modelling continuous message source
+
+To be sent on a digital channel, a continuous source must be sampled. For this the famous **Nyquist** must be followed.
+
+Each samples must be represented as a binary number. 
+
+Each value represents a **voltage** so the sum of squared voltage represent the **signal energy**.
+
 ### The Gaussian Channel
 
-This approach aims to facilitate the determination of the capacity of a channel and to modelized the fact that real life channels are continuous.
+This approach aims to facilitate the determination of the capacity of a channel and to modelized the fact that real life channels are continuous and noisy.
+
+The name comes from the fact that the channel is subject to **(white) Gaussian Noise**. This individual values of this noise are :
+- uncorrelated
+- independent
+- with amplitude of a Gaussion distribution
+- additive (added to the transmitted signal value)
 
 The huge takeaway is that channel capacity can be pretty easily found by computing : **Channel Capacity = bandwidth * log (1+P/N)**. The bandwidth is the width of the continuous channel over which is it carried (in hertz). The second part (log) is usually denoted as the SNR(dB) = 10log10(P/N).
 
