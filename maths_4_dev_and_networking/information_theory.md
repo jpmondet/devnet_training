@@ -60,7 +60,7 @@ i.i.d = idependently and with identical distribution
 
 ## Modelization of a Channel
 
-[communication channel](./random_web_findings/com-chan.png)
+![communication channel](./random_web_findings/com-chan.png)
 
 Previous sections spoke about message source & source coder.
 
