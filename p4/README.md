@@ -8,16 +8,7 @@ Some notes on the course materials released by [Eth Zurich](https://adv-net.ethz
 - The drawbacks of Openflow
 - PISA (Protocol Independent Switch Architecture) composition
   - Parser
-    - Parse packet headers and metadata using a state machine
-    - 3 predefined states (start, accept, reject) (p.109)
   - Ingress match-action pipeline
-    - control flow
-      - apply changes to packets
-    - actions
-      - code reuse (functions)
-    - tables
-      - match key in a table (like fib)
-      - return possible/default actions doable on the table with this key
   - Switching logic (crossbar/buffers,..)
   - Egress match-action pipeline
   - Deparser
@@ -39,13 +30,61 @@ Some notes on the course materials released by [Eth Zurich](https://adv-net.ethz
   - base types + structs ("header" which contains a hidden "validity" field)
   - headers can be stacked
   - headers (exclusive) union
-  - some basic C-like operations (but not division, nor modulo..)
+  - some basic C-like operations (also bitwise like `<<` but not division, nor modulo..)
   - also C-like variables/constants
     - variables have local scope ! No state maintained between packets ! (tables or externs can be used for this)
   - basic statements (return, exit, if/else, switch)
   - https://p4.org/p4-spec/docs/P4-16-v1.0.0-spec.html
 
+### Parser
+- Parse packet headers and metadata using a state machine
+- 3 predefined states (`start`, `accept`, `reject`) (p.109)
+- optional `transition` statement to transfer to another state
+  - can `select` states depending on header fields
+```
+state parse_ethernet {
+  packet.extract(hdr.ethernet);
+  transition select(hdr.ethernet.etherType) {
+    0x800: parse_ipv4;
+    default: accept;
+  }
+}
+```
+- support fixed & variable-length (`varbit`) header extraction
+- parser can loop on header stack (this is the only looping ability in p4) by letting a state `select` itself
+- advanced concepts to check :
+  - `verify` : error handling in the parser
+  - `lookahead` : access bits that are not parsed yet
+  - `sub-parsers` ~~ subroutines
 
-  
+### Control 
+
+#### Tables
+- Kind of definition of a table
+ - How and what keys are matched
+ - Which actions are doable
+ - Size
+ - Default action
+- Can match 1 or multiple keys
+- key are `field: match type`. Match types are defined in P4 core library and architectures (p.68)
+
+#### Actions
+- Blocks of statements that possibly modify packets
+- Code reuse (functions)
+- "Directional" parameters (`in`, `out`, `inout`)
+- If parameter comes from a table lookup (control-plane), can't be directional
+
+#### Control flow
+- Interact with tables (applies, checks)
+ - Apply changes to packets by using actions
+ - Can do checks such as :
+  - `if` there was a hit
+  - `switch` between actions to know which one was executed
+  - checksums
+- clone packets
+- send packets to control-plane
+- recirculate packets
+
+## Day 3
 
 
