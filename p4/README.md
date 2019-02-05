@@ -87,4 +87,73 @@ state parse_ethernet {
 
 ## Day 3
 
+### State(ful|less) programming in p4 with basic structures
+
+- Statesless objects
+ - Variables
+ - Headers
+- Stateful objects
+ - Tables (cp)
+ - Registers 
+ - Counters
+ - Meters
+ - ...
+
+#### Registers
+
+Allows storing arbitrary value.
+
+Assigned in arrays
+
+`register<bit<48>>(16384) name_of_register;`
+
+Interact using `.read()`, `.write()`
+
+### Counters
+
+Different types of counters
+ - packets
+ - bytes
+ - packets_and_bytes
+
+Assigned in arrays
+
+`counter(512,CounterType.packets) pkt_counter;`
+
+Can just `.count()`. Reading is done by control-plane only (ex p.35).
+
+There are also **direct counters** that can be attached to a table (in the definition) (ex p.37)
+
+#### Meters
+
+Some kind of policer/rate-limiter.
+
+Assigned in arrays.
+
+`meter(32w16384, MeterType.packets) pkt_meter;`
+
+The meter can :
+- executed `.execute_meter<bit<32>>(meter_index, meta.meter_tag);`
+- red `.read(meta.meter_tag);`
+
+A table's key can also handle packets depending on the meter tag.
+
+The concept of **direct** meter also applies here.
+
+### Advanced structures
+
+#### Implementing a Set
+
+1. As separate chaining
+2. As a simple hashmap
+3. Bloom filters (multi-hash)
+
+#### Implementing a Bloom Filter (set)
+
+Sizing can be found with `K = ln 2 * (M/N)` where
+- K = number of hash functions
+- M = cells
+- N = elements
+with a False Positive rate of ~ `(1-e^(-KN/M))^K`
+
 
