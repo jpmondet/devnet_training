@@ -148,12 +148,33 @@ The concept of **direct** meter also applies here.
 2. As a simple hashmap
 3. Bloom filters (multi-hash)
 
-#### Implementing a Bloom Filter (set)
+#### Implementing a set with Bloom Filter (as a set)
 
 Sizing can be found with `K = ln 2 * (M/N)` where
 - K = number of hash functions
 - M = cells
 - N = elements
 with a False Positive rate of ~ `(1-e^(-KN/M))^K`
+
+The `v1model` contains the needed HashAlgorithms & a hash function (ex p.94)
+
+There are drawbacks tho : 
+- Hardware limitations (could require to split the bloom filter)
+- Reset the bloom filters instead of deletion (either choose an alternative to bloom filter or 2 bloom filters to avoid the resetting time)
+ - Example of alternative (p.109): **Counting Bloom Filters** (p.109) or **ILBT** (p.) 
+ - [more about Bloom Filters](https://en.wikipedia.org/wiki/Bloom_filter)
+
+## Day 4
+
+In depth into data structures and more specifically **Sketches** to be able to get how frequently a flow appears.
+
+## Day 5
+
+### NetChain
+
+Interesting In-network key-value store leveraging programmable hardware with p4.
+
+
+
 
 
