@@ -170,10 +170,22 @@ In depth into data structures and more specifically **Sketches** to be able to g
 
 ## Day 5
 
-### NetChain
+Example of applications : 
 
-Interesting In-network key-value store leveraging programmable hardware with p4.
+- NetChain : Interesting In-network key-value store leveraging programmable hardware with p4.
+- NetCache : Load-balancing for a key-value store using small & very fast cache of the switch asics.
 
+In both cases, custom UDP-based protocols are used.
+
+## Last day
+
+Some more examples of applications seen in researches : 
+
+- CONGA : Improving ECMP-like load-balancing in DC tracking congestion to minimize bottlenecks (+ diminushing issues during link failures)
+  - See also : HULA (INT + routing), DRILL, LetFlow..
+- INT : In-band Network Telemetry  
+- p4v : P4 programs verification (proof/correctness)
+- Swing State : Management of programmable networks
 
 
 
