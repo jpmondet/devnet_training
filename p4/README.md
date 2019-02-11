@@ -187,6 +187,8 @@ Some more examples of applications seen in researches :
 - p4v : P4 programs verification (proof/correctness)
 - Swing State : Management of programmable networks
 
+## Debugging options (learned from exercises)
 
+Adding `--log-console` to `cli_input` in the `p4app.json` enable logging to a file each packet processing which can be extremely insightful.
 
-
+The switch_cli (`simple_switch_CLI --thrift-port 9090`) provides infos on tables and other usefull stuff with, for example, `table_dump MyIngress.macAddrTable`.
