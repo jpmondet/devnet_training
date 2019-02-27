@@ -41,7 +41,28 @@ class RoutingController(object):
             return None, None, None
 
     def add_ecmp_group(self, p4switch, ss_api, neigh, paths, ecmp_group):
-         
+        host_ip, host_mac, output_iface = self.get_conn_host_infos(neigh)
+        if host_ip:
+            next_hops = [path[1] for path in paths]
+            dst_macs_ports = [(self.topo.node_to_node_mac(next_hop, p4switch),
+                              self.topo.node_to_node_port_num(p4switch, next_hop))
+                              for next_hop in next_hops]
+            if ecmp_group.get(p4switch):
+                if ecmp_group[p4switch].get(tuple(dst_macs_ports)):
+                    ecmp_group[p4switch][tuple(dst_macs_ports)] = ecmp_group[p4switch][tuple(dst_macs_ports)] + 1
+                else:
+                    ecmp_group[p4switch][tuple(dst_macs_ports)] = 1
+            else:
+                ecmp_group[p4switch] = {}
+                ecmp_group[p4switch][tuple(dst_macs_ports)] = 1
+
+            print('Adding multipath entries')
+            ss_api.table_add('ipv4_lpm', 'ecmp_group', [host_ip] ,[str(1), str(len(next_hops))])
+            index = 0
+            for dst_mac_port in dst_macs_ports:
+                ss_api.table_add('ecmp_group_to_nhop', 'set_nhop', [str(1),str(index)] ,[dst_mac_port[0], str(dst_mac_port[1])])
+                index = index + 1
+            
         return None
 
     def add_route_via_best(self, p4switch, ss_api, neigh, path):
@@ -49,7 +70,7 @@ class RoutingController(object):
         if host_ip:
             neigh_mac = self.topo.node_to_node_mac(neigh, p4switch)
             output_iface = self.topo.node_to_node_port_num(p4switch, neigh)
-            print('Add route via best',host_ip, host_mac, output_iface)
+            print('Add route via best',host_ip, neigh_mac, output_iface)
             ss_api.table_add('ipv4_lpm', 'set_nhop', [host_ip] ,[neigh_mac, str(output_iface)])
 
     def add_directly_conn_host(self, p4switch, ss_api):
