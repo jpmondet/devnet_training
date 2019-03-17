@@ -1,0 +1,2 @@
+[cisco_nxos]
+sbx-nxos-mgmt.cisco.com ansible_host=64.103.37.14 port=8181 platform=nx-os

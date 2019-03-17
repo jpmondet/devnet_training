@@ -1,0 +1,4 @@
+---
+inventory: nornir.plugins.inventory.ansible.AnsibleInventory
+AnsibleInventory:
+  hostsfile: "hosts"
