@@ -29,6 +29,9 @@ Some network-oriented developments using APIs/Netconf/Yang/etc. (self-trainings,
 
 ## Nornir automation
 
+### This was for nornir 1.x, nornir 2.x broke most of the things below (https://nornir.readthedocs.io/en/stable/upgrading/1_to_2.html)
+
+
 ``nornir.core.InitNornir`` -> function to init with conf/code
 
 Example config file : 
