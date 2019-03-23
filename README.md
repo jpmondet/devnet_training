@@ -31,7 +31,6 @@ Some network-oriented developments using APIs/Netconf/Yang/etc. (self-trainings,
 
 ### This was for nornir 1.x, nornir 2.x broke most of the things below (https://nornir.readthedocs.io/en/stable/upgrading/1_to_2.html)
 
-
 ``nornir.core.InitNornir`` -> function to init with conf/code
 
 Example config file : 
@@ -76,6 +75,69 @@ from nornir.plugins.tasks import networking
 earth_spine = nr.filter(site="earth", role="spine")
 result = earth_spine.run(task=networking.napalm_get,
                         getters=["facts"])
+print_result(result)
+```
+Tasks provided : https://nornir.readthedocs.io/en/latest/plugins/tasks/index.html
+Simple custom task : 
+```python
+def list_hosts(task, random_arg):
+    print(f"{task.host.name}, {random_arg}")
+
+nr.run(task=list_hosts, num_workers=1, random_arg=1)
+```
+
+### Nornir 2.x
+
+
+``nornir.InitNornir`` -> function to init with conf/code
+
+Example config file : 
+```
+---
+num_workers: 100
+inventory: nornir.plugins.inventory.simple.SimpleInventory
+SimpleInventory:
+    host_file: "inventory/hosts.yaml"
+    group_file: "inventory/groups.yaml"
+```
+Example hosts inventory (can use an Ansible style inventory also)
+```yaml
+---
+host1.earth:
+    hostname: 1.2.3.4
+    port: 22
+    username: user
+    password: pass
+    platform: whateveros
+    groups:
+      - earth
+    data:
+      site: earth
+      role: spine
+      type: network_device
+```
+Example groups file : 
+```yaml
+---
+global:
+  data:
+    domain: solar.space
+solar:
+  data:
+    asn: 65100
+earth:
+    groups:
+        - solar
+```
+Simple snippet : 
+```python
+from nornir import InitNornir
+from nornir.plugins.tasks import networking
+
+nr = InitNornir(config_file="config.yaml") (or the config can be inline)
+earth_spine = nr.filter(site="earth", role="spine")
+result = earth_spine.run(task=networking.napalm_get,
+                        getters=["facts", "interfaces"])
 print_result(result)
 ```
 Tasks provided : https://nornir.readthedocs.io/en/latest/plugins/tasks/index.html
