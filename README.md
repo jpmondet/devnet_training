@@ -148,3 +148,14 @@ def list_hosts(task, random_arg):
 
 nr.run(task=list_hosts, num_workers=1, random_arg=1)
 ```
+
+### Leverage Ansible inventory
+
+Not a lot to change :
+1. Modify the config file to : 
+```
+inventory: nornir.plugins.inventory.ansible.AnsibleInventory
+AnsibleInventory:
+  hostsfile: "hosts"
+```
+2. Add the mandatory variables if you don't have them already (`platform`, `hostname`, `username`, `password`, `port`)
