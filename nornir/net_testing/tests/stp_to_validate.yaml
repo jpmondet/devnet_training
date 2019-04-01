@@ -1,0 +1,8 @@
+group: cisco_nxos
+data:
+  stp_root:
+    vlans:
+      1:
+        - sbx-nxos-mgmt.cisco.com
+      101:
+        - sbx-nxos-mgmt.cisco.com
