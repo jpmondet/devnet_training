@@ -17,7 +17,7 @@ URIS_TO_TEST = [
     'restconf/data/?fields=ietf-yang-library:modules-state/module',
     'restconf/data/?fields=ietf-yang-library:modules-state/module(name;revision;schema;namespace)',
     'restconf/data/netconf-state/capabilities',
-    'restconf/data/retconf-state/capabilities',
+    'restconf/data/restconf-state/capabilities',
     'restconf/data/ietf-restconf-monitoring:restconf-state/capabilities',
     'restconf/data/ietf-interfaces:interfaces',
     'restconf/data/ietf-interfaces:interfaces/interface=GigabitEthernet2',
@@ -83,10 +83,11 @@ def get_api_url(uri):
     urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
     http_auth = requests.auth.HTTPBasicAuth(n9kv_restconf['username'], n9kv_restconf['password'])
     headers = {'Content-Type': 'application/yang-data+json',
-               'Accept': 'application/yang-data+json'}
+               'Accept': 'application/yang.data+json'}
     url = "https://{host}:{port}/{uri}".format(host=n9kv_restconf['address'],
                                                port=n9kv_restconf['port'], uri=uri)
     # Actual Get request is thrown
+    print('Sending request on url : {}'.format(url))
     resp = requests.get(url,
                         auth=http_auth,
                         verify=False,
@@ -146,7 +147,9 @@ if __name__ == '__main__':
 
     #response = get_api_url(URIS_TO_TEST[1])
     #response = get_api_url('restconf/data/Cisco-NX-OS-device:System/bgp-items/inst-items/dom-items/Dom-list?content=config')
-    response = get_api_url('restconf/data/openconfig-interfaces:interfaces/')
+    #response = get_api_url('restconf/data/openconfig-interfaces:interfaces/interface=vlan101')
+    #response = get_api_url('restconf/data/openconfig-interfaces:interfaces/interface=vlan101/routed-vlan')
+    response = get_api_url('restconf/data/openconfig-interfaces:interfaces/interface=eth1%2F5/ethernet/state/counters/in-crc-errors')
     
     print(response)
     print(response.text)
