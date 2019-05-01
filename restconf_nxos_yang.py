@@ -73,6 +73,37 @@ DATA = '''
   }
 }'''
 
+BGP_TEST = '''
+{
+  "System": {
+    "bgp-items": {
+      "inst-items": {
+        "asn": "1",
+        "dom-items": {
+          "Dom-list": [
+            {
+              "name": "test",
+              "peer-items": {
+                "Peer-list": [
+                  {
+                    "addr": "1.1.1.2",
+                    "asn": "2",
+                    "inheritContPeerCtrl": ""
+                  }
+                ]
+              }
+            },
+            {
+              "name": "default",
+              "rtrId": "1.1.1.1"
+            }
+          ]
+        }
+      }
+    }
+  }
+}'''
+
 
 def get_api_url(uri):
     """
