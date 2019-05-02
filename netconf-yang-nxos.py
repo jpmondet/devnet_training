@@ -4,7 +4,7 @@
 """
 
 import sys
-from lxml import etree
+from lxml import etree, builder
 import xml.dom.minidom
 #import xmltodict
 from ncclient import manager
@@ -99,6 +99,14 @@ def config_bgp_openconfig(nc_manager):
     </bgp>
 </config>
     """
+
+    # Could use lxml builder to prepare the config in a lil' more programatic way
+    # Example : 
+    elem_maker = builder.ElementMaker()
+    elem_maker_ns = builder.ElementMaker(namespace='http://openconfig.net/yang/bgp')
+    bgp_elem = elem_maker_ns.bgp
+    config_elem = elem_maker.config(bgp_elem)
+    etree.tostring(config_elem)
 
     success = nc_manager.edit_config(config_bgp, target='running')
     print(success)
