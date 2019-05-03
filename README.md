@@ -5,6 +5,8 @@ Some network-oriented developments using APIs/Netconf/Yang/etc. (self-trainings,
 
 ## Yang
 
+(Must be in the directory of the module or `--path` must be specified to indicate where to search dependencies of the module)
+
 ``pyang --tree-help``
 
 ``pyang -f tree <yang_module>``
@@ -12,6 +14,10 @@ Some network-oriented developments using APIs/Netconf/Yang/etc. (self-trainings,
 ``pyang -f tree --tree-path path/to/target <yang_module>``
 
 ``pyang -f tree --tree-depth 2 <yang_module>``
+
+``pyang -f tree --tree-depth 10 bgp/openconfig-bgp.yang -p bgp -p rib -p policy -p types --tree-path bgp/neighbors/neighbor/afi-safis/afi-safi/ipv6-unicast``
+
+`` --tree-print-groupings`` Also print from which file each dependencies of the module were taken.
 
 **Getting Netconf ready formats :** (the output might need some corrections though)
 ``pyang -f sample-xml-skeleton --sample-xml-skeleton-path path/to/target <yang_module>``
