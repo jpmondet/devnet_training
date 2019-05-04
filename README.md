@@ -19,6 +19,8 @@ Some network-oriented developments using APIs/Netconf/Yang/etc. (self-trainings,
 
 `` --tree-print-groupings`` Also print from which file each dependencies of the module were taken.
 
+(Interesting enough there is also an output as `-f jstree` to browse the output in a browser. Similarly YangExplorer allows browsing & generating RPC requests)
+
 **Getting Netconf ready formats :** (the output might need some corrections though)
 ``pyang -f sample-xml-skeleton --sample-xml-skeleton-path path/to/target <yang_module>``
 
@@ -28,9 +30,16 @@ Some network-oriented developments using APIs/Netconf/Yang/etc. (self-trainings,
 **Validating modules :**
 ``pyang --lint <yang_module>``
 
+We can also validate modules via the website `yangvalidator.com`. This one is interesting since it can validate against a specific RFC and/or Draft.
+
 **Generating python :**
 ``export PYBINDPLUGIN=`/usr/bin/env python -c 'import pyangbind; import os; print("%s/plugin" % os.path.dirname(pyangbind.__file__))'``
 ``pyang -p /path/to/target --plugindir $PYBINDPLUGIN -f pybind openconfig-bgp.yang > openconfig-bgp.py``
+
+OR 
+
+Use of ydk-gen to generate python (or other) libs from yang modules + a profile file (mostly metadatas) : 
+``python generate.py --python --bundle profile_file.json``
 
 
 ## Nornir automation
