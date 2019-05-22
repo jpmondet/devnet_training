@@ -104,3 +104,9 @@ ENV/
 
 # mypy
 .mypy_cache/
+
+openconfig
+yang
+*.png
+*.pdf
+archive*
