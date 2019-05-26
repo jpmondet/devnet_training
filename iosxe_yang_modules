@@ -1,0 +1,2452 @@
+Sending get request on url : https://ios-xe-mgmt.cisco.com:9443//restconf/data?fields=ietf-yang-library:modules-state/module(name;revision;schema;namespace)
+<Response [200]> {
+  "ietf-restconf:data": {
+    "ietf-yang-library:modules-state": {
+      "module": [
+        {
+          "name": "ATM-FORUM-TC-MIB",
+          "revision": "",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/ATM-FORUM-TC-MIB",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:ATM-FORUM-TC-MIB"
+        },
+        {
+          "name": "ATM-MIB",
+          "revision": "1998-10-19",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/ATM-MIB/1998-10-19",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:ATM-MIB"
+        },
+        {
+          "name": "ATM-TC-MIB",
+          "revision": "1998-10-19",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/ATM-TC-MIB/1998-10-19",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:ATM-TC-MIB"
+        },
+        {
+          "name": "BGP4-MIB",
+          "revision": "1994-05-05",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/BGP4-MIB/1994-05-05",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:BGP4-MIB"
+        },
+        {
+          "name": "BRIDGE-MIB",
+          "revision": "2005-09-19",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/BRIDGE-MIB/2005-09-19",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:BRIDGE-MIB"
+        },
+        {
+          "name": "CISCO-AAA-SERVER-MIB",
+          "revision": "2003-11-17",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/CISCO-AAA-SERVER-MIB/2003-11-17",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:CISCO-AAA-SERVER-MIB"
+        },
+        {
+          "name": "CISCO-AAA-SESSION-MIB",
+          "revision": "2006-03-21",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/CISCO-AAA-SESSION-MIB/2006-03-21",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:CISCO-AAA-SESSION-MIB"
+        },
+        {
+          "name": "CISCO-AAL5-MIB",
+          "revision": "2003-09-22",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/CISCO-AAL5-MIB/2003-09-22",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:CISCO-AAL5-MIB"
+        },
+        {
+          "name": "CISCO-ATM-EXT-MIB",
+          "revision": "2003-01-06",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/CISCO-ATM-EXT-MIB/2003-01-06",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:CISCO-ATM-EXT-MIB"
+        },
+        {
+          "name": "CISCO-ATM-PVCTRAP-EXTN-MIB",
+          "revision": "2003-01-20",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/CISCO-ATM-PVCTRAP-EXTN-MIB/2003-01-20",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:CISCO-ATM-PVCTRAP-EXTN-MIB"
+        },
+        {
+          "name": "CISCO-ATM-QOS-MIB",
+          "revision": "2002-06-10",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/CISCO-ATM-QOS-MIB/2002-06-10",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:CISCO-ATM-QOS-MIB"
+        },
+        {
+          "name": "CISCO-BGP-POLICY-ACCOUNTING-MIB",
+          "revision": "2002-07-26",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/CISCO-BGP-POLICY-ACCOUNTING-MIB/2002-07-26",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:CISCO-BGP-POLICY-ACCOUNTING-MIB"
+        },
+        {
+          "name": "CISCO-BGP4-MIB",
+          "revision": "2010-09-30",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/CISCO-BGP4-MIB/2010-09-30",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:CISCO-BGP4-MIB"
+        },
+        {
+          "name": "CISCO-BULK-FILE-MIB",
+          "revision": "2002-06-10",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/CISCO-BULK-FILE-MIB/2002-06-10",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:CISCO-BULK-FILE-MIB"
+        },
+        {
+          "name": "CISCO-CBP-TARGET-MIB",
+          "revision": "2006-05-24",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/CISCO-CBP-TARGET-MIB/2006-05-24",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:CISCO-CBP-TARGET-MIB"
+        },
+        {
+          "name": "CISCO-CBP-TARGET-TC-MIB",
+          "revision": "2006-03-24",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/CISCO-CBP-TARGET-TC-MIB/2006-03-24",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:CISCO-CBP-TARGET-TC-MIB"
+        },
+        {
+          "name": "CISCO-CBP-TC-MIB",
+          "revision": "2008-06-24",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/CISCO-CBP-TC-MIB/2008-06-24",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:CISCO-CBP-TC-MIB"
+        },
+        {
+          "name": "CISCO-CDP-MIB",
+          "revision": "2005-03-21",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/CISCO-CDP-MIB/2005-03-21",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:CISCO-CDP-MIB"
+        },
+        {
+          "name": "CISCO-CEF-MIB",
+          "revision": "2006-01-30",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/CISCO-CEF-MIB/2006-01-30",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:CISCO-CEF-MIB"
+        },
+        {
+          "name": "CISCO-CEF-TC",
+          "revision": "2005-09-30",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/CISCO-CEF-TC/2005-09-30",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:CISCO-CEF-TC"
+        },
+        {
+          "name": "CISCO-CONFIG-COPY-MIB",
+          "revision": "2005-04-06",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/CISCO-CONFIG-COPY-MIB/2005-04-06",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:CISCO-CONFIG-COPY-MIB"
+        },
+        {
+          "name": "CISCO-CONFIG-MAN-MIB",
+          "revision": "2007-04-27",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/CISCO-CONFIG-MAN-MIB/2007-04-27",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:CISCO-CONFIG-MAN-MIB"
+        },
+        {
+          "name": "CISCO-CONTEXT-MAPPING-MIB",
+          "revision": "2008-11-22",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/CISCO-CONTEXT-MAPPING-MIB/2008-11-22",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:CISCO-CONTEXT-MAPPING-MIB"
+        },
+        {
+          "name": "CISCO-DATA-COLLECTION-MIB",
+          "revision": "2002-10-30",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/CISCO-DATA-COLLECTION-MIB/2002-10-30",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:CISCO-DATA-COLLECTION-MIB"
+        },
+        {
+          "name": "CISCO-DIAL-CONTROL-MIB",
+          "revision": "2005-05-26",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/CISCO-DIAL-CONTROL-MIB/2005-05-26",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:CISCO-DIAL-CONTROL-MIB"
+        },
+        {
+          "name": "CISCO-DOT3-OAM-MIB",
+          "revision": "2006-05-31",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/CISCO-DOT3-OAM-MIB/2006-05-31",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:CISCO-DOT3-OAM-MIB"
+        },
+        {
+          "name": "CISCO-DYNAMIC-TEMPLATE-MIB",
+          "revision": "2007-09-06",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/CISCO-DYNAMIC-TEMPLATE-MIB/2007-09-06",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:CISCO-DYNAMIC-TEMPLATE-MIB"
+        },
+        {
+          "name": "CISCO-DYNAMIC-TEMPLATE-TC-MIB",
+          "revision": "2012-01-27",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/CISCO-DYNAMIC-TEMPLATE-TC-MIB/2012-01-27",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:CISCO-DYNAMIC-TEMPLATE-TC-MIB"
+        },
+        {
+          "name": "CISCO-EIGRP-MIB",
+          "revision": "2004-11-16",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/CISCO-EIGRP-MIB/2004-11-16",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:CISCO-EIGRP-MIB"
+        },
+        {
+          "name": "CISCO-EMBEDDED-EVENT-MGR-MIB",
+          "revision": "2006-11-07",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/CISCO-EMBEDDED-EVENT-MGR-MIB/2006-11-07",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:CISCO-EMBEDDED-EVENT-MGR-MIB"
+        },
+        {
+          "name": "CISCO-ENHANCED-MEMPOOL-MIB",
+          "revision": "2008-12-05",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/CISCO-ENHANCED-MEMPOOL-MIB/2008-12-05",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:CISCO-ENHANCED-MEMPOOL-MIB"
+        },
+        {
+          "name": "CISCO-ENTITY-ALARM-MIB",
+          "revision": "1999-07-06",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/CISCO-ENTITY-ALARM-MIB/1999-07-06",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:CISCO-ENTITY-ALARM-MIB"
+        },
+        {
+          "name": "CISCO-ENTITY-EXT-MIB",
+          "revision": "2008-11-24",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/CISCO-ENTITY-EXT-MIB/2008-11-24",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:CISCO-ENTITY-EXT-MIB"
+        },
+        {
+          "name": "CISCO-ENTITY-FRU-CONTROL-MIB",
+          "revision": "2013-08-19",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/CISCO-ENTITY-FRU-CONTROL-MIB/2013-08-19",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:CISCO-ENTITY-FRU-CONTROL-MIB"
+        },
+        {
+          "name": "CISCO-ENTITY-QFP-MIB",
+          "revision": "2014-06-18",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/CISCO-ENTITY-QFP-MIB/2014-06-18",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:CISCO-ENTITY-QFP-MIB"
+        },
+        {
+          "name": "CISCO-ENTITY-SENSOR-MIB",
+          "revision": "2015-01-15",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/CISCO-ENTITY-SENSOR-MIB/2015-01-15",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:CISCO-ENTITY-SENSOR-MIB"
+        },
+        {
+          "name": "CISCO-ENTITY-VENDORTYPE-OID-MIB",
+          "revision": "2014-12-09",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/CISCO-ENTITY-VENDORTYPE-OID-MIB/2014-12-09",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:CISCO-ENTITY-VENDORTYPE-OID-MIB"
+        },
+        {
+          "name": "CISCO-ETHER-CFM-MIB",
+          "revision": "2004-12-28",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/CISCO-ETHER-CFM-MIB/2004-12-28",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:CISCO-ETHER-CFM-MIB"
+        },
+        {
+          "name": "CISCO-ETHERLIKE-EXT-MIB",
+          "revision": "2010-06-04",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/CISCO-ETHERLIKE-EXT-MIB/2010-06-04",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:CISCO-ETHERLIKE-EXT-MIB"
+        },
+        {
+          "name": "CISCO-FIREWALL-TC",
+          "revision": "2006-03-03",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/CISCO-FIREWALL-TC/2006-03-03",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:CISCO-FIREWALL-TC"
+        },
+        {
+          "name": "CISCO-FLASH-MIB",
+          "revision": "2013-08-06",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/CISCO-FLASH-MIB/2013-08-06",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:CISCO-FLASH-MIB"
+        },
+        {
+          "name": "CISCO-FTP-CLIENT-MIB",
+          "revision": "2006-03-31",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/CISCO-FTP-CLIENT-MIB/2006-03-31",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:CISCO-FTP-CLIENT-MIB"
+        },
+        {
+          "name": "CISCO-HSRP-EXT-MIB",
+          "revision": "2010-09-02",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/CISCO-HSRP-EXT-MIB/2010-09-02",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:CISCO-HSRP-EXT-MIB"
+        },
+        {
+          "name": "CISCO-HSRP-MIB",
+          "revision": "2010-09-06",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/CISCO-HSRP-MIB/2010-09-06",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:CISCO-HSRP-MIB"
+        },
+        {
+          "name": "CISCO-IETF-ATM2-PVCTRAP-MIB",
+          "revision": "1998-02-03",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/CISCO-IETF-ATM2-PVCTRAP-MIB/1998-02-03",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:CISCO-IETF-ATM2-PVCTRAP-MIB"
+        },
+        {
+          "name": "CISCO-IETF-BFD-MIB",
+          "revision": "2011-04-16",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/CISCO-IETF-BFD-MIB/2011-04-16",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:CISCO-IETF-BFD-MIB"
+        },
+        {
+          "name": "CISCO-IETF-FRR-MIB",
+          "revision": "2008-04-29",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/CISCO-IETF-FRR-MIB/2008-04-29",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:CISCO-IETF-FRR-MIB"
+        },
+        {
+          "name": "CISCO-IETF-ISIS-MIB",
+          "revision": "2005-08-16",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/CISCO-IETF-ISIS-MIB/2005-08-16",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:CISCO-IETF-ISIS-MIB"
+        },
+        {
+          "name": "CISCO-IETF-MPLS-ID-STD-03-MIB",
+          "revision": "2012-06-07",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/CISCO-IETF-MPLS-ID-STD-03-MIB/2012-06-07",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:CISCO-IETF-MPLS-ID-STD-03-MIB"
+        },
+        {
+          "name": "CISCO-IETF-PW-ATM-MIB",
+          "revision": "2005-04-19",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/CISCO-IETF-PW-ATM-MIB/2005-04-19",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:CISCO-IETF-PW-ATM-MIB"
+        },
+        {
+          "name": "CISCO-IETF-PW-ENET-MIB",
+          "revision": "2002-09-22",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/CISCO-IETF-PW-ENET-MIB/2002-09-22",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:CISCO-IETF-PW-ENET-MIB"
+        },
+        {
+          "name": "CISCO-IETF-PW-MIB",
+          "revision": "2004-03-17",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/CISCO-IETF-PW-MIB/2004-03-17",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:CISCO-IETF-PW-MIB"
+        },
+        {
+          "name": "CISCO-IETF-PW-MPLS-MIB",
+          "revision": "2003-02-26",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/CISCO-IETF-PW-MPLS-MIB/2003-02-26",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:CISCO-IETF-PW-MPLS-MIB"
+        },
+        {
+          "name": "CISCO-IETF-PW-TC-MIB",
+          "revision": "2006-07-21",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/CISCO-IETF-PW-TC-MIB/2006-07-21",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:CISCO-IETF-PW-TC-MIB"
+        },
+        {
+          "name": "CISCO-IETF-PW-TDM-MIB",
+          "revision": "2006-07-21",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/CISCO-IETF-PW-TDM-MIB/2006-07-21",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:CISCO-IETF-PW-TDM-MIB"
+        },
+        {
+          "name": "CISCO-IF-EXTENSION-MIB",
+          "revision": "2013-03-13",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/CISCO-IF-EXTENSION-MIB/2013-03-13",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:CISCO-IF-EXTENSION-MIB"
+        },
+        {
+          "name": "CISCO-IGMP-FILTER-MIB",
+          "revision": "2005-11-29",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/CISCO-IGMP-FILTER-MIB/2005-11-29",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:CISCO-IGMP-FILTER-MIB"
+        },
+        {
+          "name": "CISCO-IMAGE-LICENSE-MGMT-MIB",
+          "revision": "2007-10-16",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/CISCO-IMAGE-LICENSE-MGMT-MIB/2007-10-16",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:CISCO-IMAGE-LICENSE-MGMT-MIB"
+        },
+        {
+          "name": "CISCO-IMAGE-MIB",
+          "revision": "1995-08-15",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/CISCO-IMAGE-MIB/1995-08-15",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:CISCO-IMAGE-MIB"
+        },
+        {
+          "name": "CISCO-IP-LOCAL-POOL-MIB",
+          "revision": "2007-11-12",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/CISCO-IP-LOCAL-POOL-MIB/2007-11-12",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:CISCO-IP-LOCAL-POOL-MIB"
+        },
+        {
+          "name": "CISCO-IP-TAP-MIB",
+          "revision": "2004-03-11",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/CISCO-IP-TAP-MIB/2004-03-11",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:CISCO-IP-TAP-MIB"
+        },
+        {
+          "name": "CISCO-IP-URPF-MIB",
+          "revision": "2011-12-29",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/CISCO-IP-URPF-MIB/2011-12-29",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:CISCO-IP-URPF-MIB"
+        },
+        {
+          "name": "CISCO-IPMROUTE-MIB",
+          "revision": "2005-03-07",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/CISCO-IPMROUTE-MIB/2005-03-07",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:CISCO-IPMROUTE-MIB"
+        },
+        {
+          "name": "CISCO-IPSEC-FLOW-MONITOR-MIB",
+          "revision": "2007-10-24",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/CISCO-IPSEC-FLOW-MONITOR-MIB/2007-10-24",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:CISCO-IPSEC-FLOW-MONITOR-MIB"
+        },
+        {
+          "name": "CISCO-IPSEC-MIB",
+          "revision": "2000-08-07",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/CISCO-IPSEC-MIB/2000-08-07",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:CISCO-IPSEC-MIB"
+        },
+        {
+          "name": "CISCO-IPSEC-POLICY-MAP-MIB",
+          "revision": "2000-08-17",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/CISCO-IPSEC-POLICY-MAP-MIB/2000-08-17",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:CISCO-IPSEC-POLICY-MAP-MIB"
+        },
+        {
+          "name": "CISCO-IPSLA-AUTOMEASURE-MIB",
+          "revision": "2007-06-13",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/CISCO-IPSLA-AUTOMEASURE-MIB/2007-06-13",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:CISCO-IPSLA-AUTOMEASURE-MIB"
+        },
+        {
+          "name": "CISCO-IPSLA-ECHO-MIB",
+          "revision": "2007-08-16",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/CISCO-IPSLA-ECHO-MIB/2007-08-16",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:CISCO-IPSLA-ECHO-MIB"
+        },
+        {
+          "name": "CISCO-IPSLA-JITTER-MIB",
+          "revision": "2007-07-24",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/CISCO-IPSLA-JITTER-MIB/2007-07-24",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:CISCO-IPSLA-JITTER-MIB"
+        },
+        {
+          "name": "CISCO-IPSLA-TC-MIB",
+          "revision": "2007-03-23",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/CISCO-IPSLA-TC-MIB/2007-03-23",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:CISCO-IPSLA-TC-MIB"
+        },
+        {
+          "name": "CISCO-LICENSE-MGMT-MIB",
+          "revision": "2012-04-19",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/CISCO-LICENSE-MGMT-MIB/2012-04-19",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:CISCO-LICENSE-MGMT-MIB"
+        },
+        {
+          "name": "CISCO-MEDIA-GATEWAY-MIB",
+          "revision": "2009-02-25",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/CISCO-MEDIA-GATEWAY-MIB/2009-02-25",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:CISCO-MEDIA-GATEWAY-MIB"
+        },
+        {
+          "name": "CISCO-MPLS-LSR-EXT-STD-MIB",
+          "revision": "2012-04-30",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/CISCO-MPLS-LSR-EXT-STD-MIB/2012-04-30",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:CISCO-MPLS-LSR-EXT-STD-MIB"
+        },
+        {
+          "name": "CISCO-MPLS-TC-EXT-STD-MIB",
+          "revision": "2012-02-22",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/CISCO-MPLS-TC-EXT-STD-MIB/2012-02-22",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:CISCO-MPLS-TC-EXT-STD-MIB"
+        },
+        {
+          "name": "CISCO-NETSYNC-MIB",
+          "revision": "2010-10-15",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/CISCO-NETSYNC-MIB/2010-10-15",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:CISCO-NETSYNC-MIB"
+        },
+        {
+          "name": "CISCO-NTP-MIB",
+          "revision": "2006-07-31",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/CISCO-NTP-MIB/2006-07-31",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:CISCO-NTP-MIB"
+        },
+        {
+          "name": "CISCO-OSPF-MIB",
+          "revision": "2003-07-18",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/CISCO-OSPF-MIB/2003-07-18",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:CISCO-OSPF-MIB"
+        },
+        {
+          "name": "CISCO-OSPF-TRAP-MIB",
+          "revision": "2003-07-18",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/CISCO-OSPF-TRAP-MIB/2003-07-18",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:CISCO-OSPF-TRAP-MIB"
+        },
+        {
+          "name": "CISCO-PIM-MIB",
+          "revision": "2000-11-02",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/CISCO-PIM-MIB/2000-11-02",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:CISCO-PIM-MIB"
+        },
+        {
+          "name": "CISCO-PING-MIB",
+          "revision": "2001-08-28",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/CISCO-PING-MIB/2001-08-28",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:CISCO-PING-MIB"
+        },
+        {
+          "name": "CISCO-PROCESS-MIB",
+          "revision": "2011-06-23",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/CISCO-PROCESS-MIB/2011-06-23",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:CISCO-PROCESS-MIB"
+        },
+        {
+          "name": "CISCO-PRODUCTS-MIB",
+          "revision": "2014-11-06",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/CISCO-PRODUCTS-MIB/2014-11-06",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:CISCO-PRODUCTS-MIB"
+        },
+        {
+          "name": "CISCO-PTP-MIB",
+          "revision": "2011-01-28",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/CISCO-PTP-MIB/2011-01-28",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:CISCO-PTP-MIB"
+        },
+        {
+          "name": "CISCO-QOS-PIB-MIB",
+          "revision": "2007-08-29",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/CISCO-QOS-PIB-MIB/2007-08-29",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:CISCO-QOS-PIB-MIB"
+        },
+        {
+          "name": "CISCO-RADIUS-EXT-MIB",
+          "revision": "2010-05-25",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/CISCO-RADIUS-EXT-MIB/2010-05-25",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:CISCO-RADIUS-EXT-MIB"
+        },
+        {
+          "name": "CISCO-RF-MIB",
+          "revision": "2005-09-01",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/CISCO-RF-MIB/2005-09-01",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:CISCO-RF-MIB"
+        },
+        {
+          "name": "CISCO-RTTMON-MIB",
+          "revision": "2012-08-16",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/CISCO-RTTMON-MIB/2012-08-16",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:CISCO-RTTMON-MIB"
+        },
+        {
+          "name": "CISCO-RTTMON-TC-MIB",
+          "revision": "2012-05-25",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/CISCO-RTTMON-TC-MIB/2012-05-25",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:CISCO-RTTMON-TC-MIB"
+        },
+        {
+          "name": "CISCO-SIP-UA-MIB",
+          "revision": "2004-02-19",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/CISCO-SIP-UA-MIB/2004-02-19",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:CISCO-SIP-UA-MIB"
+        },
+        {
+          "name": "CISCO-SMI",
+          "revision": "2012-08-29",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/CISCO-SMI/2012-08-29",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:CISCO-SMI"
+        },
+        {
+          "name": "CISCO-SONET-MIB",
+          "revision": "2003-03-07",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/CISCO-SONET-MIB/2003-03-07",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:CISCO-SONET-MIB"
+        },
+        {
+          "name": "CISCO-ST-TC",
+          "revision": "2012-08-08",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/CISCO-ST-TC/2012-08-08",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:CISCO-ST-TC"
+        },
+        {
+          "name": "CISCO-STP-EXTENSIONS-MIB",
+          "revision": "2013-03-07",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/CISCO-STP-EXTENSIONS-MIB/2013-03-07",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:CISCO-STP-EXTENSIONS-MIB"
+        },
+        {
+          "name": "CISCO-SUBSCRIBER-SESSION-MIB",
+          "revision": "2012-08-08",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/CISCO-SUBSCRIBER-SESSION-MIB/2012-08-08",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:CISCO-SUBSCRIBER-SESSION-MIB"
+        },
+        {
+          "name": "CISCO-SUBSCRIBER-SESSION-TC-MIB",
+          "revision": "2012-01-27",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/CISCO-SUBSCRIBER-SESSION-TC-MIB/2012-01-27",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:CISCO-SUBSCRIBER-SESSION-TC-MIB"
+        },
+        {
+          "name": "CISCO-SYSLOG-MIB",
+          "revision": "2005-12-03",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/CISCO-SYSLOG-MIB/2005-12-03",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:CISCO-SYSLOG-MIB"
+        },
+        {
+          "name": "CISCO-TAP2-MIB",
+          "revision": "2009-11-06",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/CISCO-TAP2-MIB/2009-11-06",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:CISCO-TAP2-MIB"
+        },
+        {
+          "name": "CISCO-TC",
+          "revision": "2011-11-11",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/CISCO-TC/2011-11-11",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:CISCO-TC"
+        },
+        {
+          "name": "CISCO-UBE-MIB",
+          "revision": "2010-11-29",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/CISCO-UBE-MIB/2010-11-29",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:CISCO-UBE-MIB"
+        },
+        {
+          "name": "CISCO-UNIFIED-FIREWALL-MIB",
+          "revision": "2005-09-22",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/CISCO-UNIFIED-FIREWALL-MIB/2005-09-22",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:CISCO-UNIFIED-FIREWALL-MIB"
+        },
+        {
+          "name": "CISCO-VLAN-MEMBERSHIP-MIB",
+          "revision": "2007-12-14",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/CISCO-VLAN-MEMBERSHIP-MIB/2007-12-14",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:CISCO-VLAN-MEMBERSHIP-MIB"
+        },
+        {
+          "name": "CISCO-VOICE-DIAL-CONTROL-MIB",
+          "revision": "2012-05-15",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/CISCO-VOICE-DIAL-CONTROL-MIB/2012-05-15",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:CISCO-VOICE-DIAL-CONTROL-MIB"
+        },
+        {
+          "name": "CISCO-VOICE-DNIS-MIB",
+          "revision": "2002-05-01",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/CISCO-VOICE-DNIS-MIB/2002-05-01",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:CISCO-VOICE-DNIS-MIB"
+        },
+        {
+          "name": "CISCO-VPDN-MGMT-MIB",
+          "revision": "2009-06-16",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/CISCO-VPDN-MGMT-MIB/2009-06-16",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:CISCO-VPDN-MGMT-MIB"
+        },
+        {
+          "name": "CISCO-VTP-MIB",
+          "revision": "2013-10-14",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/CISCO-VTP-MIB/2013-10-14",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:CISCO-VTP-MIB"
+        },
+        {
+          "name": "Cisco-IOS-XE-aaa",
+          "revision": "2018-01-11",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/Cisco-IOS-XE-aaa/2018-01-11",
+          "namespace": "http://cisco.com/ns/yang/Cisco-IOS-XE-aaa"
+        },
+        {
+          "name": "Cisco-IOS-XE-aaa-oper",
+          "revision": "2017-11-01",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/Cisco-IOS-XE-aaa-oper/2017-11-01",
+          "namespace": "http://cisco.com/ns/yang/Cisco-IOS-XE-aaa-oper"
+        },
+        {
+          "name": "Cisco-IOS-XE-acl",
+          "revision": "2017-08-01",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/Cisco-IOS-XE-acl/2017-08-01",
+          "namespace": "http://cisco.com/ns/yang/Cisco-IOS-XE-acl"
+        },
+        {
+          "name": "Cisco-IOS-XE-acl-oper",
+          "revision": "2017-02-07",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/Cisco-IOS-XE-acl-oper/2017-02-07",
+          "namespace": "http://cisco.com/ns/yang/Cisco-IOS-XE-acl-oper"
+        },
+        {
+          "name": "Cisco-IOS-XE-arp",
+          "revision": "2017-11-07",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/Cisco-IOS-XE-arp/2017-11-07",
+          "namespace": "http://cisco.com/ns/yang/Cisco-IOS-XE-arp"
+        },
+        {
+          "name": "Cisco-IOS-XE-atm",
+          "revision": "2017-02-07",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/Cisco-IOS-XE-atm/2017-02-07",
+          "namespace": "http://cisco.com/ns/yang/Cisco-IOS-XE-atm"
+        },
+        {
+          "name": "Cisco-IOS-XE-bba-group",
+          "revision": "2017-02-07",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/Cisco-IOS-XE-bba-group/2017-02-07",
+          "namespace": "http://cisco.com/ns/yang/Cisco-IOS-XE-bba-group"
+        },
+        {
+          "name": "Cisco-IOS-XE-bfd",
+          "revision": "2017-11-27",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/Cisco-IOS-XE-bfd/2017-11-27",
+          "namespace": "http://cisco.com/ns/yang/Cisco-IOS-XE-bfd"
+        },
+        {
+          "name": "Cisco-IOS-XE-bfd-oper",
+          "revision": "2017-09-10",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/Cisco-IOS-XE-bfd-oper/2017-09-10",
+          "namespace": "http://cisco.com/ns/yang/Cisco-IOS-XE-bfd-oper"
+        },
+        {
+          "name": "Cisco-IOS-XE-bgp",
+          "revision": "2018-01-10",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/Cisco-IOS-XE-bgp/2018-01-10",
+          "namespace": "http://cisco.com/ns/yang/Cisco-IOS-XE-bgp"
+        },
+        {
+          "name": "Cisco-IOS-XE-bgp-common-oper",
+          "revision": "2017-02-07",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/Cisco-IOS-XE-bgp-common-oper/2017-02-07",
+          "namespace": "http://cisco.com/ns/yang/Cisco-IOS-XE-bgp-common-oper"
+        },
+        {
+          "name": "Cisco-IOS-XE-bgp-oper",
+          "revision": "2017-09-25",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/Cisco-IOS-XE-bgp-oper/2017-09-25",
+          "namespace": "http://cisco.com/ns/yang/Cisco-IOS-XE-bgp-oper"
+        },
+        {
+          "name": "Cisco-IOS-XE-bgp-route-oper",
+          "revision": "2017-09-25",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/Cisco-IOS-XE-bgp-route-oper/2017-09-25",
+          "namespace": "http://cisco.com/ns/yang/Cisco-IOS-XE-bgp-route-oper"
+        },
+        {
+          "name": "Cisco-IOS-XE-bridge-domain",
+          "revision": "2017-02-07",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/Cisco-IOS-XE-bridge-domain/2017-02-07",
+          "namespace": "http://cisco.com/ns/yang/Cisco-IOS-XE-bridge-domain"
+        },
+        {
+          "name": "Cisco-IOS-XE-call-home",
+          "revision": "2017-02-07",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/Cisco-IOS-XE-call-home/2017-02-07",
+          "namespace": "http://cisco.com/ns/yang/Cisco-IOS-XE-call-home"
+        },
+        {
+          "name": "Cisco-IOS-XE-card",
+          "revision": "2017-02-07",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/Cisco-IOS-XE-card/2017-02-07",
+          "namespace": "http://cisco.com/ns/yang/Cisco-IOS-XE-card"
+        },
+        {
+          "name": "Cisco-IOS-XE-cdp",
+          "revision": "2017-11-27",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/Cisco-IOS-XE-cdp/2017-11-27",
+          "namespace": "http://cisco.com/ns/yang/Cisco-IOS-XE-cdp"
+        },
+        {
+          "name": "Cisco-IOS-XE-cdp-oper",
+          "revision": "2017-09-21",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/Cisco-IOS-XE-cdp-oper/2017-09-21",
+          "namespace": "http://cisco.com/ns/yang/Cisco-IOS-XE-cdp-oper"
+        },
+        {
+          "name": "Cisco-IOS-XE-cef",
+          "revision": "2017-05-19",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/Cisco-IOS-XE-cef/2017-05-19",
+          "namespace": "http://cisco.com/ns/yang/Cisco-IOS-XE-cef"
+        },
+        {
+          "name": "Cisco-IOS-XE-cellular",
+          "revision": "2017-12-20",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/Cisco-IOS-XE-cellular/2017-12-20",
+          "namespace": "http://cisco.com/ns/yang/Cisco-IOS-XE-cellular"
+        },
+        {
+          "name": "Cisco-IOS-XE-cellwan-oper",
+          "revision": "2018-05-01",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/Cisco-IOS-XE-cellwan-oper/2018-05-01",
+          "namespace": "http://cisco.com/ns/yang/Cisco-IOS-XE-cellwan-oper"
+        },
+        {
+          "name": "Cisco-IOS-XE-cfm-oper",
+          "revision": "2017-06-06",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/Cisco-IOS-XE-cfm-oper/2017-06-06",
+          "namespace": "http://cisco.com/ns/yang/Cisco-IOS-XE-cfm-oper"
+        },
+        {
+          "name": "Cisco-IOS-XE-common-types",
+          "revision": "2017-12-01",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/Cisco-IOS-XE-common-types/2017-12-01",
+          "namespace": "http://cisco.com/ns/yang/Cisco-IOS-XE-common-types"
+        },
+        {
+          "name": "Cisco-IOS-XE-crypto",
+          "revision": "2018-02-06",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/Cisco-IOS-XE-crypto/2018-02-06",
+          "namespace": "http://cisco.com/ns/yang/Cisco-IOS-XE-crypto"
+        },
+        {
+          "name": "Cisco-IOS-XE-cts",
+          "revision": "2017-11-27",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/Cisco-IOS-XE-cts/2017-11-27",
+          "namespace": "http://cisco.com/ns/yang/Cisco-IOS-XE-cts"
+        },
+        {
+          "name": "Cisco-IOS-XE-device-tracking",
+          "revision": "2017-06-07",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/Cisco-IOS-XE-device-tracking/2017-06-07",
+          "namespace": "http://cisco.com/ns/yang/Cisco-IOS-XE-device-tracking"
+        },
+        {
+          "name": "Cisco-IOS-XE-dhcp",
+          "revision": "2018-01-10",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/Cisco-IOS-XE-dhcp/2018-01-10",
+          "namespace": "http://cisco.com/ns/yang/Cisco-IOS-XE-dhcp"
+        },
+        {
+          "name": "Cisco-IOS-XE-dhcp-oper",
+          "revision": "2018-02-13",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/Cisco-IOS-XE-dhcp-oper/2018-02-13",
+          "namespace": "http://cisco.com/ns/yang/Cisco-IOS-XE-dhcp-oper"
+        },
+        {
+          "name": "Cisco-IOS-XE-diagnostics",
+          "revision": "2017-02-07",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/Cisco-IOS-XE-diagnostics/2017-02-07",
+          "namespace": "http://cisco.com/ns/yang/Cisco-IOS-XE-diagnostics"
+        },
+        {
+          "name": "Cisco-IOS-XE-dot1x",
+          "revision": "2017-11-27",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/Cisco-IOS-XE-dot1x/2017-11-27",
+          "namespace": "http://cisco.com/ns/yang/Cisco-IOS-XE-dot1x"
+        },
+        {
+          "name": "Cisco-IOS-XE-eem",
+          "revision": "2017-11-20",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/Cisco-IOS-XE-eem/2017-11-20",
+          "namespace": "http://cisco.com/ns/yang/Cisco-IOS-XE-eem"
+        },
+        {
+          "name": "Cisco-IOS-XE-efp-oper",
+          "revision": "2017-02-07",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/Cisco-IOS-XE-efp-oper/2017-02-07",
+          "namespace": "http://cisco.com/ns/yang/Cisco-IOS-XE-efp-oper"
+        },
+        {
+          "name": "Cisco-IOS-XE-eigrp",
+          "revision": "2017-09-21",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/Cisco-IOS-XE-eigrp/2017-09-21",
+          "namespace": "http://cisco.com/ns/yang/Cisco-IOS-XE-eigrp"
+        },
+        {
+          "name": "Cisco-IOS-XE-environment-oper",
+          "revision": "2017-11-27",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/Cisco-IOS-XE-environment-oper/2017-11-27",
+          "namespace": "http://cisco.com/ns/yang/Cisco-IOS-XE-environment-oper"
+        },
+        {
+          "name": "Cisco-IOS-XE-eta",
+          "revision": "2017-11-27",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/Cisco-IOS-XE-eta/2017-11-27",
+          "namespace": "http://cisco.com/ns/yang/Cisco-IOS-XE-eta"
+        },
+        {
+          "name": "Cisco-IOS-XE-ethernet",
+          "revision": "2018-02-02",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/Cisco-IOS-XE-ethernet/2018-02-02",
+          "namespace": "http://cisco.com/ns/yang/Cisco-IOS-XE-ethernet"
+        },
+        {
+          "name": "Cisco-IOS-XE-ezpm",
+          "revision": "2017-11-27",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/Cisco-IOS-XE-ezpm/2017-11-27",
+          "namespace": "http://cisco.com/ns/yang/Cisco-IOS-XE-ezpm"
+        },
+        {
+          "name": "Cisco-IOS-XE-features",
+          "revision": "2017-02-07",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/Cisco-IOS-XE-features/2017-02-07",
+          "namespace": "http://cisco.com/ns/yang/Cisco-IOS-XE-features"
+        },
+        {
+          "name": "Cisco-IOS-XE-fib-oper",
+          "revision": "2017-07-04",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/Cisco-IOS-XE-fib-oper/2017-07-04",
+          "namespace": "http://cisco.com/ns/yang/Cisco-IOS-XE-fib-oper"
+        },
+        {
+          "name": "Cisco-IOS-XE-flow",
+          "revision": "2018-01-04",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/Cisco-IOS-XE-flow/2018-01-04",
+          "namespace": "http://cisco.com/ns/yang/Cisco-IOS-XE-flow"
+        },
+        {
+          "name": "Cisco-IOS-XE-flow-monitor-oper",
+          "revision": "2017-11-30",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/Cisco-IOS-XE-flow-monitor-oper/2017-11-30",
+          "namespace": "http://cisco.com/ns/yang/Cisco-IOS-XE-flow-monitor-oper"
+        },
+        {
+          "name": "Cisco-IOS-XE-http",
+          "revision": "2018-01-24",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/Cisco-IOS-XE-http/2018-01-24",
+          "namespace": "http://cisco.com/ns/yang/Cisco-IOS-XE-http"
+        },
+        {
+          "name": "Cisco-IOS-XE-icmp",
+          "revision": "2017-11-27",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/Cisco-IOS-XE-icmp/2017-11-27",
+          "namespace": "http://cisco.com/ns/yang/Cisco-IOS-XE-icmp"
+        },
+        {
+          "name": "Cisco-IOS-XE-igmp",
+          "revision": "2017-11-27",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/Cisco-IOS-XE-igmp/2017-11-27",
+          "namespace": "http://cisco.com/ns/yang/Cisco-IOS-XE-igmp"
+        },
+        {
+          "name": "Cisco-IOS-XE-interface-common",
+          "revision": "2017-11-27",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/Cisco-IOS-XE-interface-common/2017-11-27",
+          "namespace": "http://cisco.com/ns/yang/Cisco-IOS-XE-interface-common"
+        },
+        {
+          "name": "Cisco-IOS-XE-interfaces-oper",
+          "revision": "2017-10-10",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/Cisco-IOS-XE-interfaces-oper/2017-10-10",
+          "namespace": "http://cisco.com/ns/yang/Cisco-IOS-XE-interfaces-oper"
+        },
+        {
+          "name": "Cisco-IOS-XE-ip-sla-oper",
+          "revision": "2017-09-25",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/Cisco-IOS-XE-ip-sla-oper/2017-09-25",
+          "namespace": "http://cisco.com/ns/yang/Cisco-IOS-XE-ip-sla-oper"
+        },
+        {
+          "name": "Cisco-IOS-XE-ipv6-oper",
+          "revision": "2017-11-01",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/Cisco-IOS-XE-ipv6-oper/2017-11-01",
+          "namespace": "http://cisco.com/ns/yang/Cisco-IOS-XE-ipv6-oper"
+        },
+        {
+          "name": "Cisco-IOS-XE-isis",
+          "revision": "2017-11-27",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/Cisco-IOS-XE-isis/2017-11-27",
+          "namespace": "http://cisco.com/ns/yang/Cisco-IOS-XE-isis"
+        },
+        {
+          "name": "Cisco-IOS-XE-iwanfabric",
+          "revision": "2017-11-27",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/Cisco-IOS-XE-iwanfabric/2017-11-27",
+          "namespace": "http://cisco.com/ns/yang/Cisco-IOS-XE-iwanfabric"
+        },
+        {
+          "name": "Cisco-IOS-XE-l2vpn",
+          "revision": "2017-11-27",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/Cisco-IOS-XE-l2vpn/2017-11-27",
+          "namespace": "http://cisco.com/ns/yang/Cisco-IOS-XE-l2vpn"
+        },
+        {
+          "name": "Cisco-IOS-XE-l3vpn",
+          "revision": "2017-02-07",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/Cisco-IOS-XE-l3vpn/2017-02-07",
+          "namespace": "http://cisco.com/ns/yang/Cisco-IOS-XE-l3vpn"
+        },
+        {
+          "name": "Cisco-IOS-XE-lisp",
+          "revision": "2017-11-27",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/Cisco-IOS-XE-lisp/2017-11-27",
+          "namespace": "http://cisco.com/ns/yang/Cisco-IOS-XE-lisp"
+        },
+        {
+          "name": "Cisco-IOS-XE-lisp-oper",
+          "revision": "2017-10-25",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/Cisco-IOS-XE-lisp-oper/2017-10-25",
+          "namespace": "http://cisco.com/ns/yang/Cisco-IOS-XE-lisp-oper"
+        },
+        {
+          "name": "Cisco-IOS-XE-lldp",
+          "revision": "2017-11-27",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/Cisco-IOS-XE-lldp/2017-11-27",
+          "namespace": "http://cisco.com/ns/yang/Cisco-IOS-XE-lldp"
+        },
+        {
+          "name": "Cisco-IOS-XE-lldp-oper",
+          "revision": "2017-02-07",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/Cisco-IOS-XE-lldp-oper/2017-02-07",
+          "namespace": "http://cisco.com/ns/yang/Cisco-IOS-XE-lldp-oper"
+        },
+        {
+          "name": "Cisco-IOS-XE-mdt-cfg",
+          "revision": "2018-02-07",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/Cisco-IOS-XE-mdt-cfg/2018-02-07",
+          "namespace": "http://cisco.com/ns/yang/Cisco-IOS-XE-mdt-cfg"
+        },
+        {
+          "name": "Cisco-IOS-XE-mdt-common-defs",
+          "revision": "2017-07-01",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/Cisco-IOS-XE-mdt-common-defs/2017-07-01",
+          "namespace": "http://cisco.com/ns/yang/Cisco-IOS-XE-mdt-common-defs"
+        },
+        {
+          "name": "Cisco-IOS-XE-mdt-oper",
+          "revision": "2017-09-20",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/Cisco-IOS-XE-mdt-oper/2017-09-20",
+          "namespace": "http://cisco.com/ns/yang/Cisco-IOS-XE-mdt-oper"
+        },
+        {
+          "name": "Cisco-IOS-XE-memory-oper",
+          "revision": "2017-04-01",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/Cisco-IOS-XE-memory-oper/2017-04-01",
+          "namespace": "http://cisco.com/ns/yang/Cisco-IOS-XE-memory-oper"
+        },
+        {
+          "name": "Cisco-IOS-XE-mld",
+          "revision": "2017-02-07",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/Cisco-IOS-XE-mld/2017-02-07",
+          "namespace": "http://cisco.com/ns/yang/Cisco-IOS-XE-mld"
+        },
+        {
+          "name": "Cisco-IOS-XE-mpls",
+          "revision": "2017-11-27",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/Cisco-IOS-XE-mpls/2017-11-27",
+          "namespace": "http://cisco.com/ns/yang/Cisco-IOS-XE-mpls"
+        },
+        {
+          "name": "Cisco-IOS-XE-multicast",
+          "revision": "2017-11-27",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/Cisco-IOS-XE-multicast/2017-11-27",
+          "namespace": "http://cisco.com/ns/yang/Cisco-IOS-XE-multicast"
+        },
+        {
+          "name": "Cisco-IOS-XE-nat",
+          "revision": "2018-01-25",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/Cisco-IOS-XE-nat/2018-01-25",
+          "namespace": "http://cisco.com/ns/yang/Cisco-IOS-XE-nat"
+        },
+        {
+          "name": "Cisco-IOS-XE-nat-oper",
+          "revision": "2017-11-01",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/Cisco-IOS-XE-nat-oper/2017-11-01",
+          "namespace": "http://cisco.com/ns/yang/Cisco-IOS-XE-nat-oper"
+        },
+        {
+          "name": "Cisco-IOS-XE-native",
+          "revision": "2018-02-01",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/Cisco-IOS-XE-native/2018-02-01",
+          "namespace": "http://cisco.com/ns/yang/Cisco-IOS-XE-native"
+        },
+        {
+          "name": "Cisco-IOS-XE-nbar",
+          "revision": "2017-11-27",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/Cisco-IOS-XE-nbar/2017-11-27",
+          "namespace": "http://cisco.com/ns/yang/Cisco-IOS-XE-nbar"
+        },
+        {
+          "name": "Cisco-IOS-XE-nd",
+          "revision": "2017-11-27",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/Cisco-IOS-XE-nd/2017-11-27",
+          "namespace": "http://cisco.com/ns/yang/Cisco-IOS-XE-nd"
+        },
+        {
+          "name": "Cisco-IOS-XE-nhrp",
+          "revision": "2017-02-07",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/Cisco-IOS-XE-nhrp/2017-02-07",
+          "namespace": "http://cisco.com/ns/yang/Cisco-IOS-XE-nhrp"
+        },
+        {
+          "name": "Cisco-IOS-XE-ntp",
+          "revision": "2017-12-15",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/Cisco-IOS-XE-ntp/2017-12-15",
+          "namespace": "http://cisco.com/ns/yang/Cisco-IOS-XE-ntp"
+        },
+        {
+          "name": "Cisco-IOS-XE-ntp-oper",
+          "revision": "2017-11-01",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/Cisco-IOS-XE-ntp-oper/2017-11-01",
+          "namespace": "http://cisco.com/ns/yang/Cisco-IOS-XE-ntp-oper"
+        },
+        {
+          "name": "Cisco-IOS-XE-object-group",
+          "revision": "2017-07-31",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/Cisco-IOS-XE-object-group/2017-07-31",
+          "namespace": "http://cisco.com/ns/yang/Cisco-IOS-XE-object-group"
+        },
+        {
+          "name": "Cisco-IOS-XE-ospf",
+          "revision": "2017-11-27",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/Cisco-IOS-XE-ospf/2017-11-27",
+          "namespace": "http://cisco.com/ns/yang/Cisco-IOS-XE-ospf"
+        },
+        {
+          "name": "Cisco-IOS-XE-ospf-oper",
+          "revision": "2017-10-10",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/Cisco-IOS-XE-ospf-oper/2017-10-10",
+          "namespace": "http://cisco.com/ns/yang/Cisco-IOS-XE-ospf-oper"
+        },
+        {
+          "name": "Cisco-IOS-XE-ospfv3",
+          "revision": "2017-11-27",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/Cisco-IOS-XE-ospfv3/2017-11-27",
+          "namespace": "http://cisco.com/ns/yang/Cisco-IOS-XE-ospfv3"
+        },
+        {
+          "name": "Cisco-IOS-XE-otv",
+          "revision": "2017-02-07",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/Cisco-IOS-XE-otv/2017-02-07",
+          "namespace": "http://cisco.com/ns/yang/Cisco-IOS-XE-otv"
+        },
+        {
+          "name": "Cisco-IOS-XE-pathmgr",
+          "revision": "2017-02-07",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/Cisco-IOS-XE-pathmgr/2017-02-07",
+          "namespace": "http://cisco.com/ns/yang/Cisco-IOS-XE-pathmgr"
+        },
+        {
+          "name": "Cisco-IOS-XE-pfr",
+          "revision": "2017-02-07",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/Cisco-IOS-XE-pfr/2017-02-07",
+          "namespace": "http://cisco.com/ns/yang/Cisco-IOS-XE-pfr"
+        },
+        {
+          "name": "Cisco-IOS-XE-platform",
+          "revision": "2017-06-02",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/Cisco-IOS-XE-platform/2017-06-02",
+          "namespace": "http://cisco.com/ns/yang/Cisco-IOS-XE-platform"
+        },
+        {
+          "name": "Cisco-IOS-XE-platform-oper",
+          "revision": "2017-10-11",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/Cisco-IOS-XE-platform-oper/2017-10-11",
+          "namespace": "http://cisco.com/ns/yang/Cisco-IOS-XE-platform-oper"
+        },
+        {
+          "name": "Cisco-IOS-XE-policy",
+          "revision": "2017-12-05",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/Cisco-IOS-XE-policy/2017-12-05",
+          "namespace": "http://cisco.com/ns/yang/Cisco-IOS-XE-policy"
+        },
+        {
+          "name": "Cisco-IOS-XE-ppp",
+          "revision": "2018-02-03",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/Cisco-IOS-XE-ppp/2018-02-03",
+          "namespace": "http://cisco.com/ns/yang/Cisco-IOS-XE-ppp"
+        },
+        {
+          "name": "Cisco-IOS-XE-ppp-oper",
+          "revision": "2017-11-01",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/Cisco-IOS-XE-ppp-oper/2017-11-01",
+          "namespace": "http://cisco.com/ns/yang/Cisco-IOS-XE-ppp-oper"
+        },
+        {
+          "name": "Cisco-IOS-XE-process-cpu-oper",
+          "revision": "2017-02-07",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/Cisco-IOS-XE-process-cpu-oper/2017-02-07",
+          "namespace": "http://cisco.com/ns/yang/Cisco-IOS-XE-process-cpu-oper"
+        },
+        {
+          "name": "Cisco-IOS-XE-qos",
+          "revision": "2017-02-07",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/Cisco-IOS-XE-qos/2017-02-07",
+          "namespace": "http://cisco.com/ns/yang/Cisco-IOS-XE-qos"
+        },
+        {
+          "name": "Cisco-IOS-XE-rip",
+          "revision": "2017-11-27",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/Cisco-IOS-XE-rip/2017-11-27",
+          "namespace": "http://cisco.com/ns/yang/Cisco-IOS-XE-rip"
+        },
+        {
+          "name": "Cisco-IOS-XE-route-map",
+          "revision": "2017-07-27",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/Cisco-IOS-XE-route-map/2017-07-27",
+          "namespace": "http://cisco.com/ns/yang/Cisco-IOS-XE-route-map"
+        },
+        {
+          "name": "Cisco-IOS-XE-rpc",
+          "revision": "2017-12-06",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/Cisco-IOS-XE-rpc/2017-12-06",
+          "namespace": "http://cisco.com/ns/yang/Cisco-IOS-XE-rpc"
+        },
+        {
+          "name": "Cisco-IOS-XE-rsvp",
+          "revision": "2017-11-27",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/Cisco-IOS-XE-rsvp/2017-11-27",
+          "namespace": "http://cisco.com/ns/yang/Cisco-IOS-XE-rsvp"
+        },
+        {
+          "name": "Cisco-IOS-XE-sanet",
+          "revision": "2017-11-27",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/Cisco-IOS-XE-sanet/2017-11-27",
+          "namespace": "http://cisco.com/ns/yang/Cisco-IOS-XE-sanet"
+        },
+        {
+          "name": "Cisco-IOS-XE-segment-routing",
+          "revision": "2017-02-07",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/Cisco-IOS-XE-segment-routing/2017-02-07",
+          "namespace": "http://cisco.com/ns/yang/Cisco-IOS-XE-segment-routing"
+        },
+        {
+          "name": "Cisco-IOS-XE-service-chain",
+          "revision": "2017-02-07",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/Cisco-IOS-XE-service-chain/2017-02-07",
+          "namespace": "http://cisco.com/ns/yang/Cisco-IOS-XE-service-chain"
+        },
+        {
+          "name": "Cisco-IOS-XE-service-discovery",
+          "revision": "2017-02-07",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/Cisco-IOS-XE-service-discovery/2017-02-07",
+          "namespace": "http://cisco.com/ns/yang/Cisco-IOS-XE-service-discovery"
+        },
+        {
+          "name": "Cisco-IOS-XE-service-insertion",
+          "revision": "2017-02-07",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/Cisco-IOS-XE-service-insertion/2017-02-07",
+          "namespace": "http://cisco.com/ns/yang/Cisco-IOS-XE-service-insertion"
+        },
+        {
+          "name": "Cisco-IOS-XE-service-routing",
+          "revision": "2017-07-24",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/Cisco-IOS-XE-service-routing/2017-07-24",
+          "namespace": "http://cisco.com/ns/yang/Cisco-IOS-XE-service-routing"
+        },
+        {
+          "name": "Cisco-IOS-XE-sla",
+          "revision": "2017-08-31",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/Cisco-IOS-XE-sla/2017-08-31",
+          "namespace": "http://cisco.com/ns/yang/Cisco-IOS-XE-sla"
+        },
+        {
+          "name": "Cisco-IOS-XE-snmp",
+          "revision": "2017-11-27",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/Cisco-IOS-XE-snmp/2017-11-27",
+          "namespace": "http://cisco.com/ns/yang/Cisco-IOS-XE-snmp"
+        },
+        {
+          "name": "Cisco-IOS-XE-spanning-tree",
+          "revision": "2017-11-27",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/Cisco-IOS-XE-spanning-tree/2017-11-27",
+          "namespace": "http://cisco.com/ns/yang/Cisco-IOS-XE-spanning-tree"
+        },
+        {
+          "name": "Cisco-IOS-XE-template",
+          "revision": "2017-11-06",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/Cisco-IOS-XE-template/2017-11-06",
+          "namespace": "http://cisco.com/ns/yang/ios-xe/template"
+        },
+        {
+          "name": "Cisco-IOS-XE-track",
+          "revision": "2017-04-28",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/Cisco-IOS-XE-track/2017-04-28",
+          "namespace": "http://cisco.com/ns/yang/Cisco-IOS-XE-track"
+        },
+        {
+          "name": "Cisco-IOS-XE-trustsec-oper",
+          "revision": "2017-02-07",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/Cisco-IOS-XE-trustsec-oper/2017-02-07",
+          "namespace": "http://cisco.com/ns/yang/Cisco-IOS-XE-trustsec-oper"
+        },
+        {
+          "name": "Cisco-IOS-XE-tunnel",
+          "revision": "2017-08-28",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/Cisco-IOS-XE-tunnel/2017-08-28",
+          "namespace": "http://cisco.com/ns/yang/Cisco-IOS-XE-tunnel"
+        },
+        {
+          "name": "Cisco-IOS-XE-types",
+          "revision": "2017-11-27",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/Cisco-IOS-XE-types/2017-11-27",
+          "namespace": "http://cisco.com/ns/yang/Cisco-IOS-XE-types"
+        },
+        {
+          "name": "Cisco-IOS-XE-umbrella",
+          "revision": "2017-11-27",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/Cisco-IOS-XE-umbrella/2017-11-27",
+          "namespace": "http://cisco.com/ns/yang/Cisco-IOS-XE-umbrella"
+        },
+        {
+          "name": "Cisco-IOS-XE-utd",
+          "revision": "2017-11-27",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/Cisco-IOS-XE-utd/2017-11-27",
+          "namespace": "http://cisco.com/ns/yang/Cisco-IOS-XE-utd"
+        },
+        {
+          "name": "Cisco-IOS-XE-vlan",
+          "revision": "2017-10-02",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/Cisco-IOS-XE-vlan/2017-10-02",
+          "namespace": "http://cisco.com/ns/yang/Cisco-IOS-XE-vlan"
+        },
+        {
+          "name": "Cisco-IOS-XE-voice",
+          "revision": "2017-02-07",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/Cisco-IOS-XE-voice/2017-02-07",
+          "namespace": "http://cisco.com/ns/yang/Cisco-IOS-XE-voice"
+        },
+        {
+          "name": "Cisco-IOS-XE-vpdn",
+          "revision": "2017-02-07",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/Cisco-IOS-XE-vpdn/2017-02-07",
+          "namespace": "http://cisco.com/ns/yang/Cisco-IOS-XE-vpdn"
+        },
+        {
+          "name": "Cisco-IOS-XE-vrrp-oper",
+          "revision": "2017-12-01",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/Cisco-IOS-XE-vrrp-oper/2017-12-01",
+          "namespace": "http://cisco.com/ns/yang/Cisco-IOS-XE-vrrp-oper"
+        },
+        {
+          "name": "Cisco-IOS-XE-vservice",
+          "revision": "2017-11-27",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/Cisco-IOS-XE-vservice/2017-11-27",
+          "namespace": "http://cisco.com/ns/yang/Cisco-IOS-XE-vservice"
+        },
+        {
+          "name": "Cisco-IOS-XE-vtp",
+          "revision": "2017-02-07",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/Cisco-IOS-XE-vtp/2017-02-07",
+          "namespace": "http://cisco.com/ns/yang/Cisco-IOS-XE-vtp"
+        },
+        {
+          "name": "Cisco-IOS-XE-wccp",
+          "revision": "2017-11-27",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/Cisco-IOS-XE-wccp/2017-11-27",
+          "namespace": "http://cisco.com/ns/yang/Cisco-IOS-XE-wccp"
+        },
+        {
+          "name": "Cisco-IOS-XE-wsma",
+          "revision": "2017-02-07",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/Cisco-IOS-XE-wsma/2017-02-07",
+          "namespace": "http://cisco.com/ns/yang/Cisco-IOS-XE-wsma"
+        },
+        {
+          "name": "Cisco-IOS-XE-zone",
+          "revision": "2017-11-27",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/Cisco-IOS-XE-zone/2017-11-27",
+          "namespace": "http://cisco.com/ns/yang/Cisco-IOS-XE-zone"
+        },
+        {
+          "name": "DIAL-CONTROL-MIB",
+          "revision": "1996-09-23",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/DIAL-CONTROL-MIB/1996-09-23",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:DIAL-CONTROL-MIB"
+        },
+        {
+          "name": "DIFFSERV-DSCP-TC",
+          "revision": "2002-05-09",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/DIFFSERV-DSCP-TC/2002-05-09",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:DIFFSERV-DSCP-TC"
+        },
+        {
+          "name": "DIFFSERV-MIB",
+          "revision": "2002-02-07",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/DIFFSERV-MIB/2002-02-07",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:DIFFSERV-MIB"
+        },
+        {
+          "name": "DISMAN-EVENT-MIB",
+          "revision": "2000-10-16",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/DISMAN-EVENT-MIB/2000-10-16",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:DISMAN-EVENT-MIB"
+        },
+        {
+          "name": "DISMAN-EXPRESSION-MIB",
+          "revision": "2000-10-16",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/DISMAN-EXPRESSION-MIB/2000-10-16",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:DISMAN-EXPRESSION-MIB"
+        },
+        {
+          "name": "DRAFT-MSDP-MIB",
+          "revision": "1999-12-16",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/DRAFT-MSDP-MIB/1999-12-16",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:DRAFT-MSDP-MIB"
+        },
+        {
+          "name": "DS1-MIB",
+          "revision": "1998-08-01",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/DS1-MIB/1998-08-01",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:DS1-MIB"
+        },
+        {
+          "name": "DS3-MIB",
+          "revision": "1998-08-01",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/DS3-MIB/1998-08-01",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:DS3-MIB"
+        },
+        {
+          "name": "ENTITY-MIB",
+          "revision": "2005-08-10",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/ENTITY-MIB/2005-08-10",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:ENTITY-MIB"
+        },
+        {
+          "name": "ENTITY-SENSOR-MIB",
+          "revision": "2002-12-16",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/ENTITY-SENSOR-MIB/2002-12-16",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:ENTITY-SENSOR-MIB"
+        },
+        {
+          "name": "ENTITY-STATE-MIB",
+          "revision": "2005-11-22",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/ENTITY-STATE-MIB/2005-11-22",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:ENTITY-STATE-MIB"
+        },
+        {
+          "name": "ENTITY-STATE-TC-MIB",
+          "revision": "2005-11-22",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/ENTITY-STATE-TC-MIB/2005-11-22",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:ENTITY-STATE-TC-MIB"
+        },
+        {
+          "name": "ETHER-WIS",
+          "revision": "2003-09-19",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/ETHER-WIS/2003-09-19",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:ETHER-WIS"
+        },
+        {
+          "name": "EXPRESSION-MIB",
+          "revision": "2005-11-24",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/EXPRESSION-MIB/2005-11-24",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:EXPRESSION-MIB"
+        },
+        {
+          "name": "EtherLike-MIB",
+          "revision": "2003-09-19",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/EtherLike-MIB/2003-09-19",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:EtherLike-MIB"
+        },
+        {
+          "name": "FRAME-RELAY-DTE-MIB",
+          "revision": "1997-05-01",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/FRAME-RELAY-DTE-MIB/1997-05-01",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:FRAME-RELAY-DTE-MIB"
+        },
+        {
+          "name": "HCNUM-TC",
+          "revision": "2000-06-08",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/HCNUM-TC/2000-06-08",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:HCNUM-TC"
+        },
+        {
+          "name": "IANA-ADDRESS-FAMILY-NUMBERS-MIB",
+          "revision": "2000-09-08",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/IANA-ADDRESS-FAMILY-NUMBERS-MIB/2000-09-08",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:IANA-ADDRESS-FAMILY-NUMBERS-MIB"
+        },
+        {
+          "name": "IANA-RTPROTO-MIB",
+          "revision": "2000-09-26",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/IANA-RTPROTO-MIB/2000-09-26",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:IANA-RTPROTO-MIB"
+        },
+        {
+          "name": "IANAifType-MIB",
+          "revision": "2006-03-31",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/IANAifType-MIB/2006-03-31",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:IANAifType-MIB"
+        },
+        {
+          "name": "IEEE8021-TC-MIB",
+          "revision": "2008-10-15",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/IEEE8021-TC-MIB/2008-10-15",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:IEEE8021-TC-MIB"
+        },
+        {
+          "name": "IF-MIB",
+          "revision": "2000-06-14",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/IF-MIB/2000-06-14",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:IF-MIB"
+        },
+        {
+          "name": "IGMP-STD-MIB",
+          "revision": "2000-09-28",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/IGMP-STD-MIB/2000-09-28",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:IGMP-STD-MIB"
+        },
+        {
+          "name": "INET-ADDRESS-MIB",
+          "revision": "2005-02-04",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/INET-ADDRESS-MIB/2005-02-04",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:INET-ADDRESS-MIB"
+        },
+        {
+          "name": "INT-SERV-MIB",
+          "revision": "1997-10-03",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/INT-SERV-MIB/1997-10-03",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:INT-SERV-MIB"
+        },
+        {
+          "name": "INTEGRATED-SERVICES-MIB",
+          "revision": "1995-11-03",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/INTEGRATED-SERVICES-MIB/1995-11-03",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:INTEGRATED-SERVICES-MIB"
+        },
+        {
+          "name": "IP-FORWARD-MIB",
+          "revision": "1996-09-19",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/IP-FORWARD-MIB/1996-09-19",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:IP-FORWARD-MIB"
+        },
+        {
+          "name": "IP-MIB",
+          "revision": "2006-02-02",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/IP-MIB/2006-02-02",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:IP-MIB"
+        },
+        {
+          "name": "IPMROUTE-STD-MIB",
+          "revision": "2000-09-22",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/IPMROUTE-STD-MIB/2000-09-22",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:IPMROUTE-STD-MIB"
+        },
+        {
+          "name": "IPV6-FLOW-LABEL-MIB",
+          "revision": "2003-08-28",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/IPV6-FLOW-LABEL-MIB/2003-08-28",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:IPV6-FLOW-LABEL-MIB"
+        },
+        {
+          "name": "LLDP-MIB",
+          "revision": "2005-05-06",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/LLDP-MIB/2005-05-06",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:LLDP-MIB"
+        },
+        {
+          "name": "MPLS-L3VPN-STD-MIB",
+          "revision": "2006-01-23",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/MPLS-L3VPN-STD-MIB/2006-01-23",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:MPLS-L3VPN-STD-MIB"
+        },
+        {
+          "name": "MPLS-LDP-GENERIC-STD-MIB",
+          "revision": "2004-06-03",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/MPLS-LDP-GENERIC-STD-MIB/2004-06-03",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:MPLS-LDP-GENERIC-STD-MIB"
+        },
+        {
+          "name": "MPLS-LDP-STD-MIB",
+          "revision": "2004-06-03",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/MPLS-LDP-STD-MIB/2004-06-03",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:MPLS-LDP-STD-MIB"
+        },
+        {
+          "name": "MPLS-LSR-STD-MIB",
+          "revision": "2004-06-03",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/MPLS-LSR-STD-MIB/2004-06-03",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:MPLS-LSR-STD-MIB"
+        },
+        {
+          "name": "MPLS-TC-MIB",
+          "revision": "2001-01-04",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/MPLS-TC-MIB/2001-01-04",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:MPLS-TC-MIB"
+        },
+        {
+          "name": "MPLS-TC-STD-MIB",
+          "revision": "2004-06-03",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/MPLS-TC-STD-MIB/2004-06-03",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:MPLS-TC-STD-MIB"
+        },
+        {
+          "name": "MPLS-TE-STD-MIB",
+          "revision": "2004-06-03",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/MPLS-TE-STD-MIB/2004-06-03",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:MPLS-TE-STD-MIB"
+        },
+        {
+          "name": "MPLS-VPN-MIB",
+          "revision": "2001-10-15",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/MPLS-VPN-MIB/2001-10-15",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:MPLS-VPN-MIB"
+        },
+        {
+          "name": "NHRP-MIB",
+          "revision": "1999-08-26",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/NHRP-MIB/1999-08-26",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:NHRP-MIB"
+        },
+        {
+          "name": "NOTIFICATION-LOG-MIB",
+          "revision": "2000-11-27",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/NOTIFICATION-LOG-MIB/2000-11-27",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:NOTIFICATION-LOG-MIB"
+        },
+        {
+          "name": "OSPF-MIB",
+          "revision": "2006-11-10",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/OSPF-MIB/2006-11-10",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:OSPF-MIB"
+        },
+        {
+          "name": "OSPF-TRAP-MIB",
+          "revision": "2006-11-10",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/OSPF-TRAP-MIB/2006-11-10",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:OSPF-TRAP-MIB"
+        },
+        {
+          "name": "P-BRIDGE-MIB",
+          "revision": "2006-01-09",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/P-BRIDGE-MIB/2006-01-09",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:P-BRIDGE-MIB"
+        },
+        {
+          "name": "PIM-MIB",
+          "revision": "2000-09-28",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/PIM-MIB/2000-09-28",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:PIM-MIB"
+        },
+        {
+          "name": "PerfHist-TC-MIB",
+          "revision": "1998-11-07",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/PerfHist-TC-MIB/1998-11-07",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:PerfHist-TC-MIB"
+        },
+        {
+          "name": "Q-BRIDGE-MIB",
+          "revision": "2006-01-09",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/Q-BRIDGE-MIB/2006-01-09",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:Q-BRIDGE-MIB"
+        },
+        {
+          "name": "RFC-1212",
+          "revision": "",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/RFC-1212",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:RFC-1212"
+        },
+        {
+          "name": "RFC-1215",
+          "revision": "",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/RFC-1215",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:RFC-1215"
+        },
+        {
+          "name": "RFC1155-SMI",
+          "revision": "",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/RFC1155-SMI",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:RFC1155-SMI"
+        },
+        {
+          "name": "RFC1213-MIB",
+          "revision": "",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/RFC1213-MIB",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:RFC1213-MIB"
+        },
+        {
+          "name": "RFC1315-MIB",
+          "revision": "",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/RFC1315-MIB",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:RFC1315-MIB"
+        },
+        {
+          "name": "RMON-MIB",
+          "revision": "2000-05-11",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/RMON-MIB/2000-05-11",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:RMON-MIB"
+        },
+        {
+          "name": "RMON2-MIB",
+          "revision": "1996-05-27",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/RMON2-MIB/1996-05-27",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:RMON2-MIB"
+        },
+        {
+          "name": "RSVP-MIB",
+          "revision": "1998-08-25",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/RSVP-MIB/1998-08-25",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:RSVP-MIB"
+        },
+        {
+          "name": "SNMP-FRAMEWORK-MIB",
+          "revision": "2002-10-14",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/SNMP-FRAMEWORK-MIB/2002-10-14",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:SNMP-FRAMEWORK-MIB"
+        },
+        {
+          "name": "SNMP-PROXY-MIB",
+          "revision": "2002-10-14",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/SNMP-PROXY-MIB/2002-10-14",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:SNMP-PROXY-MIB"
+        },
+        {
+          "name": "SNMP-TARGET-MIB",
+          "revision": "1998-08-04",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/SNMP-TARGET-MIB/1998-08-04",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:SNMP-TARGET-MIB"
+        },
+        {
+          "name": "SNMPv2-MIB",
+          "revision": "2002-10-16",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/SNMPv2-MIB/2002-10-16",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:SNMPv2-MIB"
+        },
+        {
+          "name": "SNMPv2-TC",
+          "revision": "",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/SNMPv2-TC",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:SNMPv2-TC"
+        },
+        {
+          "name": "SONET-MIB",
+          "revision": "2003-08-11",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/SONET-MIB/2003-08-11",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:SONET-MIB"
+        },
+        {
+          "name": "TCP-MIB",
+          "revision": "2005-02-18",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/TCP-MIB/2005-02-18",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:TCP-MIB"
+        },
+        {
+          "name": "TOKEN-RING-RMON-MIB",
+          "revision": "",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/TOKEN-RING-RMON-MIB",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:TOKEN-RING-RMON-MIB"
+        },
+        {
+          "name": "TOKENRING-MIB",
+          "revision": "1994-10-23",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/TOKENRING-MIB/1994-10-23",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:TOKENRING-MIB"
+        },
+        {
+          "name": "TUNNEL-MIB",
+          "revision": "2005-05-16",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/TUNNEL-MIB/2005-05-16",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:TUNNEL-MIB"
+        },
+        {
+          "name": "UDP-MIB",
+          "revision": "2005-05-20",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/UDP-MIB/2005-05-20",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:UDP-MIB"
+        },
+        {
+          "name": "VPN-TC-STD-MIB",
+          "revision": "2005-11-15",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/VPN-TC-STD-MIB/2005-11-15",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:VPN-TC-STD-MIB"
+        },
+        {
+          "name": "cisco-bridge-common",
+          "revision": "2016-12-14",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/cisco-bridge-common/2016-12-14",
+          "namespace": "urn:cisco:params:xml:ns:yang:cisco-bridge-common"
+        },
+        {
+          "name": "cisco-bridge-domain",
+          "revision": "2016-12-14",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/cisco-bridge-domain/2016-12-14",
+          "namespace": "urn:cisco:params:xml:ns:yang:cisco-bridge-domain"
+        },
+        {
+          "name": "cisco-ethernet",
+          "revision": "2016-05-10",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/cisco-ethernet/2016-05-10",
+          "namespace": "urn:cisco:params:xml:ns:yang:cisco-ethernet"
+        },
+        {
+          "name": "cisco-ia",
+          "revision": "2018-01-22",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/cisco-ia/2018-01-22",
+          "namespace": "http://cisco.com/yang/cisco-ia"
+        },
+        {
+          "name": "cisco-ospf",
+          "revision": "2016-03-30",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/cisco-ospf/2016-03-30",
+          "namespace": "urn:ietf:params:xml:ns:yang:cisco-ospf"
+        },
+        {
+          "name": "cisco-policy",
+          "revision": "2016-03-30",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/cisco-policy/2016-03-30",
+          "namespace": "urn:ietf:params:xml:ns:yang:cisco-policy"
+        },
+        {
+          "name": "cisco-policy-filters",
+          "revision": "2016-03-30",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/cisco-policy-filters/2016-03-30",
+          "namespace": "urn:ietf:params:xml:ns:yang:cisco-policy-filters"
+        },
+        {
+          "name": "cisco-policy-target",
+          "revision": "2016-03-30",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/cisco-policy-target/2016-03-30",
+          "namespace": "urn:ietf:params:xml:ns:yang:cisco-policy-target"
+        },
+        {
+          "name": "cisco-pw",
+          "revision": "2016-12-07",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/cisco-pw/2016-12-07",
+          "namespace": "urn:cisco:params:xml:ns:yang:pw"
+        },
+        {
+          "name": "cisco-routing-ext",
+          "revision": "2016-07-09",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/cisco-routing-ext/2016-07-09",
+          "namespace": "urn:cisco:params:xml:ns:yang:cisco-routing-ext"
+        },
+        {
+          "name": "cisco-self-mgmt",
+          "revision": "2016-05-14",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/cisco-self-mgmt/2016-05-14",
+          "namespace": "http://cisco.com/yang/cisco-self-mgmt"
+        },
+        {
+          "name": "cisco-smart-license",
+          "revision": "2017-10-11",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/cisco-smart-license/2017-10-11",
+          "namespace": "http://cisco.com/ns/yang/cisco-smart-license"
+        },
+        {
+          "name": "cisco-storm-control",
+          "revision": "2016-12-14",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/cisco-storm-control/2016-12-14",
+          "namespace": "urn:cisco:params:xml:ns:yang:cisco-storm-control"
+        },
+        {
+          "name": "cisco-xe-ietf-ip-deviation",
+          "revision": "2016-08-10",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/cisco-xe-ietf-ip-deviation/2016-08-10",
+          "namespace": "http://cisco.com/ns/cisco-xe-ietf-ip-deviation"
+        },
+        {
+          "name": "cisco-xe-ietf-ospf-deviation",
+          "revision": "2018-02-09",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/cisco-xe-ietf-ospf-deviation/2018-02-09",
+          "namespace": "http://cisco.com/ns/cisco-xe-ietf-ospf-deviation"
+        },
+        {
+          "name": "cisco-xe-ietf-routing-deviation",
+          "revision": "2016-07-09",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/cisco-xe-ietf-routing-deviation/2016-07-09",
+          "namespace": "http://cisco.com/ns/cisco-xe-ietf-routing-deviation"
+        },
+        {
+          "name": "cisco-xe-ietf-yang-push-ext",
+          "revision": "2017-08-14",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/cisco-xe-ietf-yang-push-ext/2017-08-14",
+          "namespace": "urn:cisco:params:xml:ns:yang:cisco-xe-ietf-yang-push-ext"
+        },
+        {
+          "name": "cisco-xe-openconfig-acl-ext",
+          "revision": "2017-03-30",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/cisco-xe-openconfig-acl-ext/2017-03-30",
+          "namespace": "http://cisco.com/ns/yang/cisco-xe-openconfig-acl-ext"
+        },
+        {
+          "name": "cisco-xe-openconfig-rib-bgp-ext",
+          "revision": "2016-11-30",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/cisco-xe-openconfig-rib-bgp-ext/2016-11-30",
+          "namespace": "http://cisco.com/ns/yang/cisco-xe-openconfig-rib-bgp-ext"
+        },
+        {
+          "name": "cisco-xe-openconfig-system-ext",
+          "revision": "2017-12-16",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/cisco-xe-openconfig-system-ext/2017-12-16",
+          "namespace": "http://cisco.com/ns/yang/cisco-xe-openconfig-system-ext"
+        },
+        {
+          "name": "common-mpls-static",
+          "revision": "2015-07-22",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/common-mpls-static/2015-07-22",
+          "namespace": "urn:ietf:params:xml:ns:yang:common-mpls-static"
+        },
+        {
+          "name": "common-mpls-static-devs",
+          "revision": "2015-09-11",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/common-mpls-static-devs/2015-09-11",
+          "namespace": "http://cisco.com/ns/mpls-static/devs"
+        },
+        {
+          "name": "common-mpls-types",
+          "revision": "2015-05-28",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/common-mpls-types/2015-05-28",
+          "namespace": "urn:ietf:params:xml:ns:yang:common-mpls-types"
+        },
+        {
+          "name": "iana-crypt-hash",
+          "revision": "2014-08-06",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/iana-crypt-hash/2014-08-06",
+          "namespace": "urn:ietf:params:xml:ns:yang:iana-crypt-hash"
+        },
+        {
+          "name": "iana-if-type",
+          "revision": "2014-05-08",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/iana-if-type/2014-05-08",
+          "namespace": "urn:ietf:params:xml:ns:yang:iana-if-type"
+        },
+        {
+          "name": "ietf-diffserv-action",
+          "revision": "2015-04-07",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/ietf-diffserv-action/2015-04-07",
+          "namespace": "urn:ietf:params:xml:ns:yang:ietf-diffserv-action"
+        },
+        {
+          "name": "ietf-diffserv-classifier",
+          "revision": "2015-04-07",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/ietf-diffserv-classifier/2015-04-07",
+          "namespace": "urn:ietf:params:xml:ns:yang:ietf-diffserv-classifier"
+        },
+        {
+          "name": "ietf-diffserv-policy",
+          "revision": "2015-04-07",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/ietf-diffserv-policy/2015-04-07",
+          "namespace": "urn:ietf:params:xml:ns:yang:ietf-diffserv-policy"
+        },
+        {
+          "name": "ietf-diffserv-target",
+          "revision": "2015-04-07",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/ietf-diffserv-target/2015-04-07",
+          "namespace": "urn:ietf:params:xml:ns:yang:ietf-diffserv-target"
+        },
+        {
+          "name": "ietf-event-notifications",
+          "revision": "2016-10-27",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/ietf-event-notifications/2016-10-27",
+          "namespace": "urn:ietf:params:xml:ns:yang:ietf-event-notifications"
+        },
+        {
+          "name": "ietf-inet-types",
+          "revision": "2013-07-15",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/ietf-inet-types/2013-07-15",
+          "namespace": "urn:ietf:params:xml:ns:yang:ietf-inet-types"
+        },
+        {
+          "name": "ietf-interfaces",
+          "revision": "2014-05-08",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/ietf-interfaces/2014-05-08",
+          "namespace": "urn:ietf:params:xml:ns:yang:ietf-interfaces"
+        },
+        {
+          "name": "ietf-interfaces-ext",
+          "revision": "",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/ietf-interfaces-ext",
+          "namespace": "urn:ietf:params:xml:ns:yang:ietf-interfaces-ext"
+        },
+        {
+          "name": "ietf-ip",
+          "revision": "2014-06-16",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/ietf-ip/2014-06-16",
+          "namespace": "urn:ietf:params:xml:ns:yang:ietf-ip"
+        },
+        {
+          "name": "ietf-ipv4-unicast-routing",
+          "revision": "2015-05-25",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/ietf-ipv4-unicast-routing/2015-05-25",
+          "namespace": "urn:ietf:params:xml:ns:yang:ietf-ipv4-unicast-routing"
+        },
+        {
+          "name": "ietf-ipv6-unicast-routing",
+          "revision": "2015-05-25",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/ietf-ipv6-unicast-routing/2015-05-25",
+          "namespace": "urn:ietf:params:xml:ns:yang:ietf-ipv6-unicast-routing"
+        },
+        {
+          "name": "ietf-key-chain",
+          "revision": "2015-02-24",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/ietf-key-chain/2015-02-24",
+          "namespace": "urn:ietf:params:xml:ns:yang:ietf-key-chain"
+        },
+        {
+          "name": "ietf-netconf-acm",
+          "revision": "2012-02-22",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/ietf-netconf-acm/2012-02-22",
+          "namespace": "urn:ietf:params:xml:ns:yang:ietf-netconf-acm"
+        },
+        {
+          "name": "ietf-netconf-monitoring",
+          "revision": "2010-10-04",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/ietf-netconf-monitoring/2010-10-04",
+          "namespace": "urn:ietf:params:xml:ns:yang:ietf-netconf-monitoring"
+        },
+        {
+          "name": "ietf-netconf-notifications",
+          "revision": "2012-02-06",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/ietf-netconf-notifications/2012-02-06",
+          "namespace": "urn:ietf:params:xml:ns:yang:ietf-netconf-notifications"
+        },
+        {
+          "name": "ietf-ospf",
+          "revision": "2015-03-09",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/ietf-ospf/2015-03-09",
+          "namespace": "urn:ietf:params:xml:ns:yang:ietf-ospf"
+        },
+        {
+          "name": "ietf-restconf",
+          "revision": "2017-01-26",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/ietf-restconf/2017-01-26",
+          "namespace": "urn:ietf:params:xml:ns:yang:ietf-restconf"
+        },
+        {
+          "name": "ietf-restconf-monitoring",
+          "revision": "2016-08-15",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/ietf-restconf-monitoring/2016-08-15",
+          "namespace": "urn:ietf:params:xml:ns:yang:ietf-restconf-monitoring"
+        },
+        {
+          "name": "ietf-routing",
+          "revision": "2015-05-25",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/ietf-routing/2015-05-25",
+          "namespace": "urn:ietf:params:xml:ns:yang:ietf-routing"
+        },
+        {
+          "name": "ietf-yang-library",
+          "revision": "2016-06-21",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/ietf-yang-library/2016-06-21",
+          "namespace": "urn:ietf:params:xml:ns:yang:ietf-yang-library"
+        },
+        {
+          "name": "ietf-yang-push",
+          "revision": "2016-10-28",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/ietf-yang-push/2016-10-28",
+          "namespace": "urn:ietf:params:xml:ns:yang:ietf-yang-push"
+        },
+        {
+          "name": "ietf-yang-smiv2",
+          "revision": "2012-06-22",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/ietf-yang-smiv2/2012-06-22",
+          "namespace": "urn:ietf:params:xml:ns:yang:ietf-yang-smiv2"
+        },
+        {
+          "name": "ietf-yang-types",
+          "revision": "2013-07-15",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/ietf-yang-types/2013-07-15",
+          "namespace": "urn:ietf:params:xml:ns:yang:ietf-yang-types"
+        },
+        {
+          "name": "nvo",
+          "revision": "2015-06-02",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/nvo/2015-06-02",
+          "namespace": "urn:ietf:params:xml:ns:yang:nvo"
+        },
+        {
+          "name": "nvo-devs",
+          "revision": "2015-09-11",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/nvo-devs/2015-09-11",
+          "namespace": "http://cisco.com/ns/nvo/devs"
+        },
+        {
+          "name": "openconfig-aaa",
+          "revision": "2017-09-18",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/openconfig-aaa/2017-09-18",
+          "namespace": "http://openconfig.net/yang/aaa"
+        },
+        {
+          "name": "openconfig-aaa-types",
+          "revision": "2017-09-18",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/openconfig-aaa-types/2017-09-18",
+          "namespace": "http://openconfig.net/yang/aaa/types"
+        },
+        {
+          "name": "openconfig-acl",
+          "revision": "2017-05-26",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/openconfig-acl/2017-05-26",
+          "namespace": "http://openconfig.net/yang/acl"
+        },
+        {
+          "name": "openconfig-bgp",
+          "revision": "2016-06-21",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/openconfig-bgp/2016-06-21",
+          "namespace": "http://openconfig.net/yang/bgp"
+        },
+        {
+          "name": "openconfig-bgp-policy",
+          "revision": "2016-06-21",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/openconfig-bgp-policy/2016-06-21",
+          "namespace": "http://openconfig.net/yang/bgp-policy"
+        },
+        {
+          "name": "openconfig-bgp-types",
+          "revision": "2016-06-21",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/openconfig-bgp-types/2016-06-21",
+          "namespace": "http://openconfig.net/yang/bgp-types"
+        },
+        {
+          "name": "openconfig-extensions",
+          "revision": "2017-04-11",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/openconfig-extensions/2017-04-11",
+          "namespace": "http://openconfig.net/yang/openconfig-ext"
+        },
+        {
+          "name": "openconfig-if-aggregate",
+          "revision": "2016-12-22",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/openconfig-if-aggregate/2016-12-22",
+          "namespace": "http://openconfig.net/yang/interfaces/aggregate"
+        },
+        {
+          "name": "openconfig-if-ethernet",
+          "revision": "2016-12-22",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/openconfig-if-ethernet/2016-12-22",
+          "namespace": "http://openconfig.net/yang/interfaces/ethernet"
+        },
+        {
+          "name": "openconfig-if-ip",
+          "revision": "2016-12-22",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/openconfig-if-ip/2016-12-22",
+          "namespace": "http://openconfig.net/yang/interfaces/ip"
+        },
+        {
+          "name": "openconfig-if-ip-ext",
+          "revision": "2016-12-22",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/openconfig-if-ip-ext/2016-12-22",
+          "namespace": "http://openconfig.net/yang/interfaces/ip-ext"
+        },
+        {
+          "name": "openconfig-inet-types",
+          "revision": "2017-08-24",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/openconfig-inet-types/2017-08-24",
+          "namespace": "http://openconfig.net/yang/types/inet"
+        },
+        {
+          "name": "openconfig-interfaces",
+          "revision": "2016-12-22",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/openconfig-interfaces/2016-12-22",
+          "namespace": "http://openconfig.net/yang/interfaces"
+        },
+        {
+          "name": "openconfig-lacp",
+          "revision": "2016-05-26",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/openconfig-lacp/2016-05-26",
+          "namespace": "http://openconfig.net/yang/lacp"
+        },
+        {
+          "name": "openconfig-lldp",
+          "revision": "2016-05-16",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/openconfig-lldp/2016-05-16",
+          "namespace": "http://openconfig.net/yang/lldp"
+        },
+        {
+          "name": "openconfig-lldp-types",
+          "revision": "2016-05-16",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/openconfig-lldp-types/2016-05-16",
+          "namespace": "http://openconfig.net/yang/lldp/types"
+        },
+        {
+          "name": "openconfig-local-routing",
+          "revision": "2016-05-11",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/openconfig-local-routing/2016-05-11",
+          "namespace": "http://openconfig.net/yang/local-routing"
+        },
+        {
+          "name": "openconfig-network-instance",
+          "revision": "2017-01-13",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/openconfig-network-instance/2017-01-13",
+          "namespace": "http://openconfig.net/yang/network-instance"
+        },
+        {
+          "name": "openconfig-network-instance-l3",
+          "revision": "2017-01-13",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/openconfig-network-instance-l3/2017-01-13",
+          "namespace": "http://openconfig.net/yang/network-instance-l3"
+        },
+        {
+          "name": "openconfig-packet-match",
+          "revision": "2017-05-26",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/openconfig-packet-match/2017-05-26",
+          "namespace": "http://openconfig.net/yang/header-fields"
+        },
+        {
+          "name": "openconfig-packet-match-types",
+          "revision": "2017-05-26",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/openconfig-packet-match-types/2017-05-26",
+          "namespace": "http://openconfig.net/yang/packet-match-types"
+        },
+        {
+          "name": "openconfig-policy-types",
+          "revision": "2016-05-12",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/openconfig-policy-types/2016-05-12",
+          "namespace": "http://openconfig.net/yang/policy-types"
+        },
+        {
+          "name": "openconfig-procmon",
+          "revision": "2017-09-18",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/openconfig-procmon/2017-09-18",
+          "namespace": "http://openconfig.net/yang/system/procmon"
+        },
+        {
+          "name": "openconfig-rib-bgp",
+          "revision": "2017-03-07",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/openconfig-rib-bgp/2017-03-07",
+          "namespace": "http://openconfig.net/yang/rib/bgp"
+        },
+        {
+          "name": "openconfig-rib-bgp-ext",
+          "revision": "2016-04-11",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/openconfig-rib-bgp-ext/2016-04-11",
+          "namespace": "http://openconfig.net/yang/rib/bgp-ext"
+        },
+        {
+          "name": "openconfig-rib-bgp-types",
+          "revision": "2016-04-11",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/openconfig-rib-bgp-types/2016-04-11",
+          "namespace": "http://openconfig.net/yang/rib/bgp-types"
+        },
+        {
+          "name": "openconfig-routing-policy",
+          "revision": "2016-05-12",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/openconfig-routing-policy/2016-05-12",
+          "namespace": "http://openconfig.net/yang/routing-policy"
+        },
+        {
+          "name": "openconfig-system",
+          "revision": "2017-09-18",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/openconfig-system/2017-09-18",
+          "namespace": "http://openconfig.net/yang/system"
+        },
+        {
+          "name": "openconfig-system-logging",
+          "revision": "2017-09-18",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/openconfig-system-logging/2017-09-18",
+          "namespace": "http://openconfig.net/yang/system/logging"
+        },
+        {
+          "name": "openconfig-system-terminal",
+          "revision": "2017-09-18",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/openconfig-system-terminal/2017-09-18",
+          "namespace": "http://openconfig.net/yang/system/terminal"
+        },
+        {
+          "name": "openconfig-types",
+          "revision": "2017-08-16",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/openconfig-types/2017-08-16",
+          "namespace": "http://openconfig.net/yang/openconfig-types"
+        },
+        {
+          "name": "openconfig-vlan",
+          "revision": "2016-05-26",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/openconfig-vlan/2016-05-26",
+          "namespace": "http://openconfig.net/yang/vlan"
+        },
+        {
+          "name": "openconfig-vlan-types",
+          "revision": "2016-05-26",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/openconfig-vlan-types/2016-05-26",
+          "namespace": "http://openconfig.net/yang/vlan-types"
+        },
+        {
+          "name": "openconfig-yang-types",
+          "revision": "2017-07-30",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/openconfig-yang-types/2017-07-30",
+          "namespace": "http://openconfig.net/yang/types/yang"
+        },
+        {
+          "name": "pim",
+          "revision": "2014-06-27",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/pim/2014-06-27",
+          "namespace": "urn:cisco:params:xml:ns:yang:pim"
+        },
+        {
+          "name": "policy-attr",
+          "revision": "2015-04-27",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/policy-attr/2015-04-27",
+          "namespace": "urn:ietf:params:xml:ns:yang:policy-attr"
+        },
+        {
+          "name": "policy-types",
+          "revision": "2013-10-07",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/policy-types/2013-10-07",
+          "namespace": "urn:ietf:params:xml:ns:yang:c3pl-types"
+        },
+        {
+          "name": "tailf-common",
+          "revision": "2017-08-23",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/tailf-common/2017-08-23",
+          "namespace": "http://tail-f.com/yang/common"
+        },
+        {
+          "name": "tailf-common-monitoring",
+          "revision": "2013-06-14",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/tailf-common-monitoring/2013-06-14",
+          "namespace": "http://tail-f.com/yang/common-monitoring"
+        },
+        {
+          "name": "tailf-common-query",
+          "revision": "2017-04-27",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/tailf-common-query/2017-04-27",
+          "namespace": "http://tail-f.com/ns/common/query"
+        },
+        {
+          "name": "tailf-confd-monitoring",
+          "revision": "2013-06-14",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/tailf-confd-monitoring/2013-06-14",
+          "namespace": "http://tail-f.com/yang/confd-monitoring"
+        },
+        {
+          "name": "tailf-netconf-monitoring",
+          "revision": "2016-11-24",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/tailf-netconf-monitoring/2016-11-24",
+          "namespace": "http://tail-f.com/yang/netconf-monitoring"
+        },
+        {
+          "name": "CISCO-IETF-ATM2-PVCTRAP-MIB-EXTN",
+          "revision": "2000-07-11",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/CISCO-IETF-ATM2-PVCTRAP-MIB-EXTN/2000-07-11",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:CISCO-IETF-ATM2-PVCTRAP-MIB-EXTN"
+        },
+        {
+          "name": "CISCO-SUBSCRIBER-IDENTITY-TC-MIB",
+          "revision": "2011-12-23",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/CISCO-SUBSCRIBER-IDENTITY-TC-MIB/2011-12-23",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:CISCO-SUBSCRIBER-IDENTITY-TC-MIB"
+        },
+        {
+          "name": "Cisco-IOS-XE-process-memory-oper",
+          "revision": "2017-02-07",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/Cisco-IOS-XE-process-memory-oper/2017-02-07",
+          "namespace": "http://cisco.com/ns/yang/Cisco-IOS-XE-process-memory-oper"
+        },
+        {
+          "name": "CISCO-IETF-MPLS-TE-EXT-STD-03-MIB",
+          "revision": "2012-06-06",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/CISCO-IETF-MPLS-TE-EXT-STD-03-MIB/2012-06-06",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:CISCO-IETF-MPLS-TE-EXT-STD-03-MIB"
+        },
+        {
+          "name": "CISCO-NBAR-PROTOCOL-DISCOVERY-MIB",
+          "revision": "2002-08-16",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/CISCO-NBAR-PROTOCOL-DISCOVERY-MIB/2002-08-16",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:CISCO-NBAR-PROTOCOL-DISCOVERY-MIB"
+        },
+        {
+          "name": "CISCO-SESS-BORDER-CTRLR-STATS-MIB",
+          "revision": "2010-09-15",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/CISCO-SESS-BORDER-CTRLR-STATS-MIB/2010-09-15",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:CISCO-SESS-BORDER-CTRLR-STATS-MIB"
+        },
+        {
+          "name": "Cisco-IOS-XE-device-hardware-oper",
+          "revision": "2017-11-01",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/Cisco-IOS-XE-device-hardware-oper/2017-11-01",
+          "namespace": "http://cisco.com/ns/yang/Cisco-IOS-XE-device-hardware-oper"
+        },
+        {
+          "name": "Cisco-IOS-XE-virtual-service-oper",
+          "revision": "2017-09-25",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/Cisco-IOS-XE-virtual-service-oper/2017-09-25",
+          "namespace": "http://cisco.com/ns/yang/Cisco-IOS-XE-virtual-service-oper"
+        },
+        {
+          "name": "cisco-xe-ietf-yang-push-deviation",
+          "revision": "2017-08-22",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/cisco-xe-ietf-yang-push-deviation/2017-08-22",
+          "namespace": "http://cisco.com/ns/yang/cisco-xe-ietf-yang-push-deviation"
+        },
+        {
+          "name": "cisco-xe-openconfig-acl-deviation",
+          "revision": "2017-08-25",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/cisco-xe-openconfig-acl-deviation/2017-08-25",
+          "namespace": "http://cisco.com/ns/cisco-xe-openconfig-acl-deviation"
+        },
+        {
+          "name": "cisco-xe-openconfig-bgp-deviation",
+          "revision": "2017-05-24",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/cisco-xe-openconfig-bgp-deviation/2017-05-24",
+          "namespace": "http://cisco.com/ns/yang/cisco-xe-openconfig-bgp-deviation"
+        },
+        {
+          "name": "openconfig-network-instance-types",
+          "revision": "2016-12-15",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/openconfig-network-instance-types/2016-12-15",
+          "namespace": "http://openconfig.net/yang/network-instance-types"
+        },
+        {
+          "name": "cisco-xe-openconfig-interfaces-ext",
+          "revision": "2017-03-05",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/cisco-xe-openconfig-interfaces-ext/2017-03-05",
+          "namespace": "http://cisco.com/ns/yang/cisco-xe-openconfig-interfaces-ext"
+        },
+        {
+          "name": "CISCO-VLAN-IFTABLE-RELATIONSHIP-MIB",
+          "revision": "2013-07-15",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/CISCO-VLAN-IFTABLE-RELATIONSHIP-MIB/2013-07-15",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:CISCO-VLAN-IFTABLE-RELATIONSHIP-MIB"
+        },
+        {
+          "name": "CISCO-VOICE-COMMON-DIAL-CONTROL-MIB",
+          "revision": "2010-06-30",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/CISCO-VOICE-COMMON-DIAL-CONTROL-MIB/2010-06-30",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:CISCO-VOICE-COMMON-DIAL-CONTROL-MIB"
+        },
+        {
+          "name": "Cisco-IOS-XE-platform-software-oper",
+          "revision": "2017-10-10",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/Cisco-IOS-XE-platform-software-oper/2017-10-10",
+          "namespace": "http://cisco.com/ns/yang/Cisco-IOS-XE-platform-software-oper"
+        },
+        {
+          "name": "cisco-xe-openconfig-if-ethernet-ext",
+          "revision": "2017-10-30",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/cisco-xe-openconfig-if-ethernet-ext/2017-10-30",
+          "namespace": "http://cisco.com/ns/yang/cisco-xe-openconfig-if-ethernet-ext"
+        },
+        {
+          "name": "cisco-xe-openconfig-if-ip-deviation",
+          "revision": "2017-03-04",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/cisco-xe-openconfig-if-ip-deviation/2017-03-04",
+          "namespace": "http://openconfig.net/yang/cisco-xe-openconfig-if-ip-deviation"
+        },
+        {
+          "name": "Cisco-IOS-XE-checkpoint-archive-oper",
+          "revision": "2017-04-01",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/Cisco-IOS-XE-checkpoint-archive-oper/2017-04-01",
+          "namespace": "http://cisco.com/ns/yang/Cisco-IOS-XE-checkpoint-archive-oper"
+        },
+        {
+          "name": "cisco-xe-openconfig-system-deviation",
+          "revision": "2017-11-27",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/cisco-xe-openconfig-system-deviation/2017-11-27",
+          "namespace": "http://openconfig.net/yang/cisco-xe-openconfig-system-deviation"
+        },
+        {
+          "name": "CISCO-SESS-BORDER-CTRLR-CALL-STATS-MIB",
+          "revision": "2010-09-03",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/CISCO-SESS-BORDER-CTRLR-CALL-STATS-MIB/2010-09-03",
+          "namespace": "urn:ietf:params:xml:ns:yang:smiv2:CISCO-SESS-BORDER-CTRLR-CALL-STATS-MIB"
+        },
+        {
+          "name": "cisco-xe-openconfig-bgp-policy-deviation",
+          "revision": "2017-07-24",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/cisco-xe-openconfig-bgp-policy-deviation/2017-07-24",
+          "namespace": "http://cisco.com/ns/yang/cisco-xe-bgp-policy-deviation"
+        },
+        {
+          "name": "cisco-xe-openconfig-interfaces-deviation",
+          "revision": "2017-12-07",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/cisco-xe-openconfig-interfaces-deviation/2017-12-07",
+          "namespace": "http://openconfig.net/yang/cisco-xe-openconfig-interfaces-deviation"
+        },
+        {
+          "name": "cisco-xe-openconfig-if-ethernet-deviation",
+          "revision": "2017-11-01",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/cisco-xe-openconfig-if-ethernet-deviation/2017-11-01",
+          "namespace": "http://openconfig.net/yang/cisco-xe-openconfig-if-ethernet-deviation"
+        },
+        {
+          "name": "cisco-xe-ietf-event-notifications-deviation",
+          "revision": "2017-08-22",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/cisco-xe-ietf-event-notifications-deviation/2017-08-22",
+          "namespace": "http://cisco.com/ns/yang/cisco-xe-ietf-event-notifications-deviation"
+        },
+        {
+          "name": "cisco-xe-ietf-ipv4-unicast-routing-deviation",
+          "revision": "2015-09-11",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/cisco-xe-ietf-ipv4-unicast-routing-deviation/2015-09-11",
+          "namespace": "http://cisco.com/ns/cisco-xe-ietf-ipv4-unicast-routing-deviation"
+        },
+        {
+          "name": "cisco-xe-ietf-ipv6-unicast-routing-deviation",
+          "revision": "2015-09-11",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/cisco-xe-ietf-ipv6-unicast-routing-deviation/2015-09-11",
+          "namespace": "http://cisco.com/ns/cisco-xe-ietf-ipv6-unicast-routing-deviation"
+        },
+        {
+          "name": "cisco-xe-openconfig-routing-policy-deviation",
+          "revision": "2017-03-30",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/cisco-xe-openconfig-routing-policy-deviation/2017-03-30",
+          "namespace": "http://cisco.com/ns/yang/cisco-xe-routing-policy-deviation"
+        },
+        {
+          "name": "cisco-xe-openconfig-network-instance-deviation",
+          "revision": "2017-02-14",
+          "schema": "https://10.10.20.48:443/restconf/tailf/modules/cisco-xe-openconfig-network-instance-deviation/2017-02-14",
+          "namespace": "http://cisco.com/ns/yang/cisco-xe-openconfig-network-instance-deviation"
+        }
+      ]
+    }
+  }
+}
+
