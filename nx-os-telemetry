@@ -1,0 +1,14 @@
+# Trying telemetry :
+
+# Nx-os config : 
+
+feature telemetry
+telemetry
+  destination-group 100
+    ip address 10.10.20.20 port 8888 protocol HTTP encoding JSON
+  sensor-group 100
+    data-source NX-API
+    path "show system resources" depth 0
+  subscription 100
+    dst-grp 100
+    snsr-grp 100 sample-interval 10000
