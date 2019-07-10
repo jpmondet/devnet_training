@@ -9,6 +9,18 @@
 | =struct icmp6hdr= | =<linux/icmpv6.h>=   |
 | =struct icmphdr=  | =<linux/icmp.h>=     |
 
+## Debugging 
+
+Very useful macro to be able to print variables on the BPF program.
+```c
+#define bpf_printk(fmt, ...)                    \
+({                              \
+           char ____fmt[] = fmt;                \
+           bpf_trace_printk(____fmt, sizeof(____fmt),   \
+                ##__VA_ARGS__);         \
+})
+```
+The ouput can be seen on `/sys/kernel/debug/tracing/trace_pipe`
 
 ## Catches 
 
@@ -30,4 +42,5 @@ struct xdp_md {
 	void *data = (void *)(long)ctx->data;
 ```
 
-- 
+- "The bpf_redirect helper actually shouldn't be used in production as it is slow and can't be configured from user space." (@xdp-tutorial)
+
