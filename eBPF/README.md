@@ -9,6 +9,12 @@
 | =struct icmp6hdr= | =<linux/icmpv6.h>=   |
 | =struct icmphdr=  | =<linux/icmp.h>=     |
 
+11 registers including : 
+  * r0 to store return values
+  * r1 to r5 (used as function call arguments -> Thus 5 arguments MAX per function call)
+  * r6 to r9 
+  * r10 (read-only)
+
 ## Debugging 
 
 Very useful macro to be able to print variables on the BPF program.
