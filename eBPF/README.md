@@ -15,6 +15,9 @@
   * r6 to r9 
   * r10 (read-only)
 
+
+`bpf_probe_read` is the equivalent of a safe memcpy which will be fully accepted by the verifier.
+
 ## Debugging 
 
 Very useful macro to be able to print variables on the BPF program.
@@ -50,3 +53,6 @@ struct xdp_md {
 
 - "The bpf_redirect helper actually shouldn't be used in production as it is slow and can't be configured from user space." (@xdp-tutorial)
 
+- Tail call cost is negligible until 8 successive tail calls. After that, there is a performance drop.
+
+- Sometimes, checking lower bound is not enough for the verifier and you must help him by adding unnecessary checks for upper bounds.
