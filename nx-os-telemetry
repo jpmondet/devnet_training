@@ -1,14 +1,69 @@
-# Trying telemetry :
+# NX-OS Telemetry quick guide
 
-# Nx-os config : 
+## Prep' the backend
 
-feature telemetry
+### ELK stack
+
+**TODO: Use cleaner images**
+
+`docker pull dockercisco/elklat`
+`docker run -p 5601:5601 -p 9200:9200 -it 02ae097bd96d bash`
+`service elasticsearch start`
+`service kibana start`
+
+`curl -XPUT 'localhost:9200/telemetry/' -d '{ "settings" : { "index.mapping.total_fields.limit" : 1000000000, "number_of_shards" : 1, "number_of_replicas" : 1 } }'`
+
+`curl -XPUT 'localhost:9200/telemetry/d852e3c1/_mapping' -d' { "d852e3c1" : { "properties" : { "postDate" : {"type" : "date", "format": "yyyy-MM-dd HH:mm:ss z||yyyy-MM-dd||epoch_millis||yyyy-MM-dd HH:mm:ss.SSS z" } } } }'`
+
+### Telemetry receiver
+
+Using GPB encoding, we need something to translate :
+
+**TODO: Use custom receiver since this one is very limited (some dme objects are translated only). It also use a huge amount of CPU resources.**
+
+`docker pull dockercisco/telemetryreceiver:latest`
+`sudo docker run -p 50001:50001 -it c7b476917147 bash`
+`/grpc/telemetry/src/telemetry_receiver 50001 172.17.0.2 9200 1`
+
+## NX-OS config
+
+```
 telemetry
-  destination-group 100
-    ip address 10.10.20.20 port 8888 protocol HTTP encoding JSON
-  sensor-group 100
+  destination-group 1
+    ip address 172.17.0.3 port 50001 protocol gRPC encoding GPB 
+  sensor-group 1
+    path sys/bgp/ depth unbounded
+    path sys/epId-1 depth unbounded
+    path sys/intf depth unbounded
+
+  sensor-group 2
     data-source NX-API
-    path "show system resources" depth 0
-  subscription 100
-    dst-grp 100
-    snsr-grp 100 sample-interval 10000
+    path "show environment power" depth 0   
+    path "show vlan id 2-5 counters" depth 0  
+    path "show processes cpu sort" depth 0
+
+  subscription 1
+    dst-grp 1
+    snsr-grp 1 sample-interval 30000
+
+  subscription 2
+    dst-grp 1  
+    snsr-grp 2 sample-interval 60000
+```
+
+## Using the frontend
+
+An index pattern must be configured (settings -> indices -> configure).  
+The telemetry receiver sends data to an index named `telemetry`.
+
+After receiving some trafic, this index MUST be refreshed, otherwise a lot of keys will be missing. 
+
+
+# Rerefences
+
+https://developer.cisco.com/site/nxapi-dme-model-reference-api/
+
+https://www.cisco.com/c/en/us/td/docs/switches/datacenter/nexus9000/sw/93x/nx-osv/configuration/guide/b-cisco-nexus-9000v-guide-93x/m_cisco_nexus_9000v_9x.html?dtid=osscdc000283#task_jhy_dwv_qy
+
+https://hub.docker.com/r/dockercisco/telemetryreceiver
+
