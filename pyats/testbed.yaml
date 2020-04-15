@@ -1,0 +1,44 @@
+devices:                # all device definition goes under devices block
+  local:           # start a device definition with its HOSTNAME
+    type: switch
+    os: nxos           # this tells the engine what type of OS its connected to
+    credentials:
+        default:                         # login credentials
+            username: admin
+            password: admin
+    connections:        # give the block on how to connect to its mgmt interface
+      console:
+        protocol: ssh
+        ip: 172.17.0.2
+  remote:           # start a device definition with its HOSTNAME
+    type: switch
+    os: nxos           # this tells the engine what type of OS its connected to
+    credentials:
+        default:                         # login credentials
+            username: admin
+            password: Admin_1234!
+    connections:        # give the block on how to connect to its mgmt interface
+      console:
+        protocol: ssh
+        ip: sbx-nxos-mgmt.cisco.com
+        port: 8181
+  csr:
+    type: router
+    os: iosxe
+    credentials:
+      default:
+        username: root
+        password: D_Vay!_10&
+    connections:
+      console:
+        ip: ios-xe-mgmt.cisco.com
+        protocol: ssh
+        port: 8181
+
+topology:
+  local:
+    interfaces:
+      Ethernet1/1:
+        ipv4: 10.0.0.1
+        link: flat
+        type: ethernet
