@@ -1,8 +1,12 @@
 # pyATS & Genie
 
-__Looks like it doesn't work very well for nxos.. Stuck on prompt__
+## Bugs to know
+
+- The devices keys MUST mirror the actual hostnames in `testbed.yaml`. If it doesn't, `pyats` gets stuck on device prompt (with no error or indication)
 
 ## Quick usage
+
+`pyats validate testbed testbed.yaml`
 
 `pyats shell --testbed-file testbed.yaml`
 
@@ -11,3 +15,5 @@ __Looks like it doesn't work very well for nxos.. Stuck on prompt__
 >>> local.connect()
 >>> output = local.parse("show interface")
 ```
+
+
