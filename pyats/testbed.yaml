@@ -1,28 +1,31 @@
 devices:                # all device definition goes under devices block
-  local:           # start a device definition with its HOSTNAME
+  Nexus9000v:           # start a device definition with its HOSTNAME
+    alias: local
     type: switch
     os: nxos           # this tells the engine what type of OS its connected to
     credentials:
-        default:                         # login credentials
-            username: admin
-            password: admin
+      default:                         # login credentials
+        username: admin
+        password: admin
     connections:        # give the block on how to connect to its mgmt interface
       console:
         protocol: ssh
         ip: 172.17.0.2
-  remote:           # start a device definition with its HOSTNAME
+  sbx-n9kv-ao:           # start a device definition with its HOSTNAME
+    alias: remote
     type: switch
     os: nxos           # this tells the engine what type of OS its connected to
     credentials:
-        default:                         # login credentials
-            username: admin
-            password: Admin_1234!
+      default:                         # login credentials
+        username: admin
+        password: Admin_1234!
     connections:        # give the block on how to connect to its mgmt interface
       console:
         protocol: ssh
         ip: sbx-nxos-mgmt.cisco.com
         port: 8181
-  csr:
+  csr1000v:
+    alias: csr
     type: router
     os: iosxe
     credentials:
