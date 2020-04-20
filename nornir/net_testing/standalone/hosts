@@ -1,0 +1,2 @@
+[cisco_nxos_remote]
+sbx-nxos-mgmt.cisco.com ansible_host=64.103.37.14 port=8181 platform=nxos_ssh

@@ -1,0 +1,6 @@
+---
+ansible_python_interpreter: /usr/bin/python3
+username: admin
+password: Admin_1234!
+platform: nxos_ssh
+type: network_device

@@ -1,0 +1,21 @@
+group: cisco_nxos
+data:
+  vlans:
+    - id: 1
+      name: default
+    - id: 100
+      name: mgmt
+    - id: 101
+      name: prod
+    - id: 102
+      name: dev
+    - id: 103
+      name: test
+    - id: 104
+      name: security
+    - id: 105
+      name: iot
+  as: 65535
+  neigh:
+    ip: "172.16.0.2"
+    remote_as: 65535
