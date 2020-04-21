@@ -9,7 +9,7 @@ from ruamel.yaml import YAML
 from nornir import InitNornir
 from nornir.plugins.tasks import networking
 
-#from nornir.core.filter import F
+# from nornir.core.filter import F
 from nornir.plugins.functions.text import print_result
 
 
@@ -78,7 +78,6 @@ def test_vlans(nr):
         ), f"Failed for host: {host.name} : configured vlans = {configured_vlans} vs desired vlans = {desired_vlans}"
 
 
-
 def get_bgp_neigh_state(task):
     """
        Using napalm this time  
@@ -109,7 +108,9 @@ def get_bgp_neigh_state(task):
 
     """
 
-    result = task.run(task=networking.napalm_get, getters=["get_bgp_neighbors"]).result
+    result = task.run(
+        task=networking.napalm_get, getters=["get_bgp_neighbors"]
+    ).result
     task.host["bgp_neigh_state"] = result
 
 
@@ -125,7 +126,9 @@ def test_bgp_state(nr):
 
     for host in nr.inventory.hosts.values():
         dict_bgp_neigh_state = host["bgp_neigh_state"]["get_bgp_neighbors"]
-        assert isinstance(dict_bgp_neigh_state["global"]["peers"][desired_bgp_neigh_ip], dict)
+        assert isinstance(
+            dict_bgp_neigh_state["global"]["peers"][desired_bgp_neigh_ip], dict
+        )
 
 
 def get_bgp_config(task):
@@ -152,8 +155,7 @@ def test_bgp_config(nr):
     desired_bgp_neigh_ip = config["data"]["neigh"]["ip"]
     desired_bgp_neigh_as = config["data"]["neigh"]["remote_as"]
     for host in nr.inventory.hosts.values():
-        #print(host['neighs'])
-        
+        # print(host['neighs'])
 
         dict_bgp_config = json.loads(host["bgp_config"])
         configured_bgp_as = dict_bgp_config["nf:filter"]["m:configure"][
@@ -167,9 +169,9 @@ vs desired bgp as = {desired_bgp_as}"
         neighbors_configured_list = dict_bgp_config["nf:filter"]["m:configure"][
             "m:terminal"
         ]["router"]["bgp"]["__XML__PARAM__as"]["m2:neighbor"]
-        #print(type(neighbors_configured_list))
-        #print(neighbors_configured_list)
-        #print(isinstance(neighbors_configured_list, list))
+        # print(type(neighbors_configured_list))
+        # print(neighbors_configured_list)
+        # print(isinstance(neighbors_configured_list, list))
         if not isinstance(neighbors_configured_list, list):
             configured_bgp_neigh_as = dict_bgp_config["nf:filter"][
                 "m:configure"
@@ -198,7 +200,8 @@ vs desired bgp as = {desired_bgp_as}"
             ), f"Failed for host: {host.name} : configured bgp neigh ip = {configured_bgp_neigh_ip} \
     vs desired bgp neigh ip = {desired_bgp_neigh_ip}"
             assert (
-                int(configured_bgp_neigh_as) == desired_bgp_neighs["configured_bgp_neigh_ip"]
+                int(configured_bgp_neigh_as)
+                == desired_bgp_neighs["configured_bgp_neigh_ip"]
             ), f"Failed for host: {host.name} : configured bgp neigh as = {configured_bgp_neigh_as} \
     vs desired bgp neigh as = {desired_bgp_neigh_as}"
         else:
@@ -211,7 +214,12 @@ vs desired bgp as = {desired_bgp_as}"
                 configured_bgp_neighs[
                     neighbor_configured["m2:__XML__PARAM__neighbor-id"][
                         "m2:__XML__value"
-                    ]] = int(neighbor_configured["m2:__XML__PARAM__neighbor-id"]["m4:remote-as"]["m4:__XML__PARAM__asn"]["m4:__XML__value"])
+                    ]
+                ] = int(
+                    neighbor_configured["m2:__XML__PARAM__neighbor-id"][
+                        "m4:remote-as"
+                    ]["m4:__XML__PARAM__asn"]["m4:__XML__value"]
+                )
 
             # We check is every desired neighbor is there (and that there isn't too much neighbors either)
             assert (
@@ -253,19 +261,19 @@ def main():
             "options": {"hostsfile": "hosts"},
         },
     )
-    #print(dir(nr.inventory))
-    #print(nr.inventory.get_inventory_dict())
-    #print(nr.inventory.groups['cisco_nxos_remote'])
-    #print(nr.inventory.hosts["sbx-nxos-mgmt.cisco.com"]['neighs'])
-    #results = nr.run(task=networking.napalm_get, getters=["get_config"])
-    #results = nr.run(task=networking.napalm_cli, commands=["sh run | json"])
-    #results = nr.run(task=networking.napalm_configure, dry_run=False, filename="rollback_config.txt", replace=True)
-    #results = nr.run(task=networking.napalm_get, getters=["get_route_to"], getters_options={"get_route_to" : {"destination":"172.16.1.10"}})
-    #results = nr.run(task=networking.napalm_ping, dest="172.16.110.1")
-    #print_result(results)
-    #results = nr.run(task=networking.napalm_cli, commands=["sh run int vlan 110"])
-    #print_result(results)
-    #for result in results['sbx-nxos-mgmt.cisco.com']:
+    # print(dir(nr.inventory))
+    # print(nr.inventory.get_inventory_dict())
+    # print(nr.inventory.groups['cisco_nxos_remote'])
+    # print(nr.inventory.hosts["sbx-nxos-mgmt.cisco.com"]['neighs'])
+    # results = nr.run(task=networking.napalm_get, getters=["get_config"])
+    # results = nr.run(task=networking.napalm_cli, commands=["sh run | json"])
+    # results = nr.run(task=networking.napalm_configure, dry_run=False, filename="rollback_config.txt", replace=True)
+    # results = nr.run(task=networking.napalm_get, getters=["get_route_to"], getters_options={"get_route_to" : {"destination":"172.16.1.10"}})
+    # results = nr.run(task=networking.napalm_ping, dest="172.16.110.1")
+    # print_result(results)
+    # results = nr.run(task=networking.napalm_cli, commands=["sh run int vlan 110"])
+    # print_result(results)
+    # for result in results['sbx-nxos-mgmt.cisco.com']:
     #    """
     #    ['__class__', '__delattr__', '__dict__', '__dir__', '__doc__', '__eq__', '__format__', '__ge__', '__getattribute__',
     #    '__gt__', '__hash__', '__init__', '__init_subclass__', '__le__', '__lt__', '__module__', '__ne__', '__new__', '__reduce__',
@@ -282,9 +290,9 @@ def main():
     #    print(result.stderr)
     #    print(result.stdout)
 
-    #print("#" * 15, "Starting BGP Config tests", "#" * 15)
-    #test_bgp_config(nr)
-    #print("#" * 15, "BGP Config tests Passed!", "#" * 15)
+    # print("#" * 15, "Starting BGP Config tests", "#" * 15)
+    # test_bgp_config(nr)
+    # print("#" * 15, "BGP Config tests Passed!", "#" * 15)
     print("#" * 15, "Starting BGP State tests", "#" * 15)
     test_bgp_state(nr)
     print("#" * 15, "BGP State tests Passed!", "#" * 15)
