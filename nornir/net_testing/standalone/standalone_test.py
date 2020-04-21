@@ -9,7 +9,7 @@ from ruamel.yaml import YAML
 from nornir import InitNornir
 from nornir.plugins.tasks import networking
 
-# from nornir.core.filter import F
+#from nornir.core.filter import F
 from nornir.plugins.functions.text import print_result
 
 
@@ -78,27 +78,54 @@ def test_vlans(nr):
         ), f"Failed for host: {host.name} : configured vlans = {configured_vlans} vs desired vlans = {desired_vlans}"
 
 
-#def get_bgp_neigh_state(task):
-#    """
-#       Using napalm this time  
-#    """
-#
-#    result = task.run(task=networking.napalm_get, getters=["get_bgp_neighbors"]).result
-#    task.host["bgp_neigh_state"] = result
-#
-#
-#def test_bgp_state(nr):
-#    nr.run(task=get_bgp_neigh_state)
-#
-#    config = load_config(CONFIG_FILE)
-#
-#    # Testing that the desired neighbors are up
-#    desired_bgp_neigh_ip = config["data"]["neigh"]["ip"]
-#    desired_bgp_neigh_as = config["data"]["neigh"]["remote_as"]
-#
-#    for host in nr.inventory.hosts.values():
-#        dict_bgp_neigh_state = json.loads(host["bgp_neigh_state"])
-#    assert True
+
+def get_bgp_neigh_state(task):
+    """
+       Using napalm this time  
+        { 
+            'get_bgp_neighbors': { 
+                'global': { 
+                    'peers': 
+                        { '172.16.110.2': 
+                            { 'address_family': 
+                                { 'ipv4': 
+                                    { 'accepted_prefixes': -1,
+                                      'received_prefixes': -1,
+                                      'sent_prefixes': -1}
+                                },
+                                'description': '',
+                                'is_enabled': True,
+                                'is_up': False,
+                                'local_as': 65535,
+                                'remote_as': 64444,
+                                'remote_id': '0.0.0.0',
+                                'uptime': -1
+                            }
+                        },
+                    'router_id': '172.16.0.1'
+                }
+            }
+        }
+
+    """
+
+    result = task.run(task=networking.napalm_get, getters=["get_bgp_neighbors"]).result
+    task.host["bgp_neigh_state"] = result
+
+
+def test_bgp_state(nr):
+    nr.run(task=get_bgp_neigh_state)
+
+    config = load_config(CONFIG_FILE)
+
+    # Testing that the desired neighbors are up
+    # First try with a unique neigh in the default vrf
+    desired_bgp_neigh_ip = config["data"]["neigh"]["ip"]
+    desired_bgp_neigh_as = config["data"]["neigh"]["remote_as"]
+
+    for host in nr.inventory.hosts.values():
+        dict_bgp_neigh_state = host["bgp_neigh_state"]["get_bgp_neighbors"]
+        assert isinstance(dict_bgp_neigh_state["global"]["peers"][desired_bgp_neigh_ip], dict)
 
 
 def get_bgp_config(task):
@@ -125,6 +152,9 @@ def test_bgp_config(nr):
     desired_bgp_neigh_ip = config["data"]["neigh"]["ip"]
     desired_bgp_neigh_as = config["data"]["neigh"]["remote_as"]
     for host in nr.inventory.hosts.values():
+        #print(host['neighs'])
+        
+
         dict_bgp_config = json.loads(host["bgp_config"])
         configured_bgp_as = dict_bgp_config["nf:filter"]["m:configure"][
             "m:terminal"
@@ -223,72 +253,42 @@ def main():
             "options": {"hostsfile": "hosts"},
         },
     )
-    results = nr.run(task=networking.napalm_get, getters=["get_bgp_neighbors"])
-    print_result(results)
+    #print(dir(nr.inventory))
+    #print(nr.inventory.get_inventory_dict())
+    #print(nr.inventory.groups['cisco_nxos_remote'])
+    #print(nr.inventory.hosts["sbx-nxos-mgmt.cisco.com"]['neighs'])
+    #results = nr.run(task=networking.napalm_get, getters=["get_config"])
+    #results = nr.run(task=networking.napalm_cli, commands=["sh run | json"])
+    #results = nr.run(task=networking.napalm_configure, dry_run=False, filename="rollback_config.txt", replace=True)
+    #results = nr.run(task=networking.napalm_get, getters=["get_route_to"], getters_options={"get_route_to" : {"destination":"172.16.1.10"}})
+    #results = nr.run(task=networking.napalm_ping, dest="172.16.110.1")
+    #print_result(results)
+    #results = nr.run(task=networking.napalm_cli, commands=["sh run int vlan 110"])
+    #print_result(results)
+    #for result in results['sbx-nxos-mgmt.cisco.com']:
+    #    """
+    #    ['__class__', '__delattr__', '__dict__', '__dir__', '__doc__', '__eq__', '__format__', '__ge__', '__getattribute__',
+    #    '__gt__', '__hash__', '__init__', '__init_subclass__', '__le__', '__lt__', '__module__', '__ne__', '__new__', '__reduce__',
+    #    '__reduce_ex__', '__repr__', '__setattr__', '__sizeof__', '__str__', '__subclasshook__', '__weakref__', 'changed', 'diff',
+    #    'exception', 'failed', 'host', 'name', 'result', 'severity_level', 'stderr', 'stdout']
+
+    #    """
+    #    print(result)
+    #    print(dir(result))
+    #    print(result.changed)
+    #    print(result.diff)
+    #    print(result.exception)
+    #    print(result.failed)
+    #    print(result.stderr)
+    #    print(result.stdout)
 
     #print("#" * 15, "Starting BGP Config tests", "#" * 15)
     #test_bgp_config(nr)
     #print("#" * 15, "BGP Config tests Passed!", "#" * 15)
+    print("#" * 15, "Starting BGP State tests", "#" * 15)
+    test_bgp_state(nr)
+    print("#" * 15, "BGP State tests Passed!", "#" * 15)
 
 
 if __name__ == "__main__":
     main()
-
-"""
-sbx-ao# sh run bgp | json-pretty 
-{
-    "nf:source": {
-        "nf:running": null
-    }, 
-    "nf:filter": {
-        "m:configure": {
-            "m:terminal": {
-                "feature": {
-                    "bgp": null
-                }, 
-                "router": {
-                    "bgp": {
-                        "__XML__PARAM__as": {
-                            "__XML__value": "65535", 
-                            "m1:router-id": {
-                                "m1:__XML__PARAM__router-id": {
-                                    "m1:__XML__value": "172.16.0.1"
-                                }
-                            }, 
-                            "m1:timers": {
-                                "m1:prefix-peer-timeout": {
-                                    "m1:__XML__PARAM__prefixpeer-timeout": {
-                                        "m1:__XML__value": "30"
-                                    }
-                                }
-                            }, 
-                            "m2:address-family": {
-                                "m2:ipv4": {
-                                    "m2:unicast": {
-                                        "m3:network": {
-                                            "m3:__XML__PARAM__ip-prefix": {
-                                                "m3:__XML__value": "172.16.0.0/16"
-                                            }
-                                        }
-                                    }
-                                }
-                            }, 
-                            "m2:neighbor": {
-                                "m2:__XML__PARAM__neighbor-id": {
-                                    "m2:__XML__value": "172.16.0.2", 
-                                    "m4:remote-as": {
-                                        "m4:__XML__PARAM__asn": {
-                                            "m4:__XML__value": "65535"
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-}
-
-"""
