@@ -14,6 +14,4 @@ def nr():
             }
         }
     )
-#   Using the config_file as parameter is not working for whatever reason
-#    return InitNornir(config_file="config.yaml")
     return nr

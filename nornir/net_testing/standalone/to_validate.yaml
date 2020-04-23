@@ -3,10 +3,26 @@ data:
   vlans:
     - id: 1
       name: default
+    - id: 2
+      name: VLAN0002
+    - id: 3
+      name: VLAN0003
+    - id: 4
+      name: VLAN0004
+    - id: 5
+      name: VLAN0005
+    - id: 6
+      name: VLAN0006
+    - id: 7
+      name: VLAN0007
+    - id: 8
+      name: VLAN0008
+    - id: 9
+      name: VLAN0009
     - id: 100
       name: mgmt
     - id: 101
-      name: prod
+      name: LL_VLAN_DEMO1
     - id: 102
       name: dev
     - id: 103
@@ -15,7 +31,12 @@ data:
       name: security
     - id: 105
       name: iot
+    - id: 110
+      name: bgp_neigh_configured_by_nornir
   as: 65535
   neigh:
-    ip: "172.16.0.2"
+    ip: "172.16.110.2"
     remote_as: 65535
+  neighs:
+    "172.16.0.2": 65535
+    "172.16.110.2": 64444
