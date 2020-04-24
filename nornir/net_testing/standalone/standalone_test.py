@@ -7,7 +7,8 @@ from typing import Dict, Any
 import json
 from ruamel.yaml import YAML
 from nornir import InitNornir
-from nornir.plugins.tasks import networking
+from nornir.plugins.tasks import networking, apis
+from requests.packages.urllib3 import disable_warnings
 
 # from nornir.core.filter import F
 from nornir.plugins.functions.text import print_result
@@ -254,6 +255,8 @@ def main():
     load_template
     """
 
+    disable_warnings()
+
     nr = InitNornir(
         core={"num_workers": 5},
         inventory={
@@ -266,11 +269,29 @@ def main():
     # print(nr.inventory.groups['cisco_nxos_remote'])
     # print(nr.inventory.hosts["sbx-nxos-mgmt.cisco.com"]['neighs'])
     # results = nr.run(task=networking.napalm_get, getters=["get_config"])
+    #url = "https://sbx-nxos-mgmt.cisco.com"
+    #restconf_part = "/restconf/data/openconfig-interfaces:interfaces/interface=eth1%2F5"
+    #url_restconf = url + restconf_part
+    #headers = {
+    #    'Accept': 'application/yang-data+json',
+    #    'Content-Type': 'application/yang-data+json'
+    #}
+    #headers = {
+    #    'Accept': 'application/yang.data+json',
+    #    'Content-Type': 'application/yang.data+json'
+    #}
+    #auth=('admin','Admin_1234!')
+    #results = nr.run(task=apis.http_method, method='get', url=url_restconf, headers=headers, auth=auth, verify=False)
+    #print_result(results)
+    #restconf_part = "/restconf/data/Cisco-NX-OS-device:System//urib-items/table4-items/Table4-list=management/route4-items"
+    #restconf_part = "/restconf/data/Cisco-NX-OS-device:System/arp-items"
+    #url_restconf = url + restconf_part
+    #results = nr.run(task=apis.http_method, method='get', url=url_restconf, headers=headers, auth=auth, verify=False)
+    #print_result(results)
     # results = nr.run(task=networking.napalm_cli, commands=["sh run | json"])
     # results = nr.run(task=networking.napalm_configure, dry_run=False, filename="rollback_config.txt", replace=True)
     # results = nr.run(task=networking.napalm_get, getters=["get_route_to"], getters_options={"get_route_to" : {"destination":"172.16.1.10"}})
     # results = nr.run(task=networking.napalm_ping, dest="172.16.110.1")
-    # print_result(results)
     # results = nr.run(task=networking.napalm_cli, commands=["sh run int vlan 110"])
     # print_result(results)
     # for result in results['sbx-nxos-mgmt.cisco.com']:
@@ -290,12 +311,12 @@ def main():
     #    print(result.stderr)
     #    print(result.stdout)
 
-    # print("#" * 15, "Starting BGP Config tests", "#" * 15)
-    # test_bgp_config(nr)
-    # print("#" * 15, "BGP Config tests Passed!", "#" * 15)
-    print("#" * 15, "Starting BGP State tests", "#" * 15)
-    test_bgp_state(nr)
-    print("#" * 15, "BGP State tests Passed!", "#" * 15)
+    #print("#" * 15, "Starting BGP Config tests", "#" * 15)
+    #test_bgp_config(nr)
+    #print("#" * 15, "BGP Config tests Passed!", "#" * 15)
+    #print("#" * 15, "Starting BGP State tests", "#" * 15)
+    #test_bgp_state(nr)
+    #print("#" * 15, "BGP State tests Passed!", "#" * 15)
 
 
 if __name__ == "__main__":
