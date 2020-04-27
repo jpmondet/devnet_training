@@ -37,6 +37,7 @@ def config_bgp_openconfig(nc_manager):
     """
         Trying to configure a whole bgp config with openconfig models
     """
+
     config_bgp = """
 <config>
     <bgp xmlns="http://openconfig.net/yang/bgp">

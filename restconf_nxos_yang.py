@@ -109,14 +109,23 @@ def get_api_url(uri):
     """
      Formats the REST Get request and launch it.
     """
+
+    #host = n9kv_restconf['address']
+    #port = n9kv_restconf['port']
+    #username = n9kv_restconf['username']
+    #password = n9kv_restconf['password']
+    host = "172.17.0.2"
+    port = "443"
+    username = "admin"
+    password = "admin"
     
     # Preparing the content & url
     urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
-    http_auth = requests.auth.HTTPBasicAuth(n9kv_restconf['username'], n9kv_restconf['password'])
+    http_auth = requests.auth.HTTPBasicAuth(username, password)
     headers = {'Content-Type': 'application/yang-data+json',
                'Accept': 'application/yang.data+json'}
-    url = "https://{host}:{port}/{uri}".format(host=n9kv_restconf['address'],
-                                               port=n9kv_restconf['port'], uri=uri)
+    url = "https://{host}:{port}/{uri}".format(host=host,
+                                               port=port, uri=uri)
     # Actual Get request is thrown
     print('Sending request on url : {}'.format(url))
     resp = requests.get(url,
@@ -180,7 +189,8 @@ if __name__ == '__main__':
     #response = get_api_url('restconf/data/Cisco-NX-OS-device:System/bgp-items/inst-items/dom-items/Dom-list?content=config')
     #response = get_api_url('restconf/data/openconfig-interfaces:interfaces/interface=vlan101')
     #response = get_api_url('restconf/data/openconfig-interfaces:interfaces/interface=vlan101/routed-vlan')
-    response = get_api_url('restconf/data/openconfig-interfaces:interfaces/interface=eth1%2F5/ethernet/state/counters/in-crc-errors')
+    #response = get_api_url('restconf/data/openconfig-interfaces:interfaces/interface=eth1%2F5/ethernet/state/counters/in-crc-errors')
+    response = get_api_url('restconf/data/openconfig-interfaces:interfaces/interface=eth1%2F5')
     
     print(response)
     print(response.text)

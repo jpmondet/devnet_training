@@ -43,6 +43,21 @@ def auth_and_refresh(payload):
         print("Oops, issue getting token")
         raise
 
+def get_user(token):
+    """
+        Authenticate and refresh when needed
+    """
+
+    headers = {"APIC-Request-Signature": token, "content-type": "application/json"}
+    payload = None
+    url = apicdc['address']
+    resp = requests.post(url + '/api/class/user.json', data=json.dumps(payload), headers=headers, verify=False)
+    try:
+        print(json.loads(resp.text))
+    except:
+        print("Oops, issue getting users")
+        raise
+
 if __name__ == '__main__':
     """
      Main function
@@ -52,3 +67,5 @@ if __name__ == '__main__':
 
     auth_and_refresh(AUTH_DATA)
     print(TOKEN)
+    get_user(TOKEN)
+
