@@ -1,5 +1,9 @@
+#! /usr/bin/env python3
+
+import asyncio
+
 from scrapli.driver.core import NXOSDriver, AsyncNXOSDriver
-from asyncio import get_event_loop
+
 
 n9kv_ssh = {
     "host": "sbx-nxos-mgmt.cisco.com",
@@ -10,11 +14,25 @@ n9kv_ssh = {
     "transport": "asyncssh",
 }
 
+switches = [ (n9kv_ssh, AsyncNXOSDriver) ]
 
-async def get_running():
-    async with AsyncNXOSDriver(**n9kv_ssh) as nx:
-        result = await nx.send_command("sh run")
-    print(result.result)
+async def agnosticonfig(switch):
+    switch_infos, driver = switch
+
+    async with driver(**switch_infos) as sw:
+        result = await sw.send_command("sh run")
+
+    return result.result
+    
+
+
+
+async def get_config():
+    coroutines = [ agnosticonfig(switch) for switch in switches ] 
+
+    results = await asyncio.gather(*coroutines)
+
+    print(results)
 
 
 def main():
@@ -25,7 +43,7 @@ def main():
         response = conn.send_command("show run")
         print(response.result)
     else:
-        get_event_loop().run_until_complete(get_running())
+        asyncio.get_event_loop().run_until_complete(get_config())
 
 
 if __name__ == "__main__":
