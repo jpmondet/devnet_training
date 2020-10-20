@@ -1,0 +1,9 @@
+version {{ os_version }} Bios:version
+vdc {{ hostname }} id 1
+
+router bgp {{ bgp_as }}
+  router-id {{ bgp_router_id }}
+    network {{ bgp_net_announced }}
+  neighbor {{ bgp_neigh }}
+    remote-as {{ bgp_neigh_as }}
+
