@@ -3,6 +3,7 @@
 import asyncio
 
 from scrapli.driver.core import NXOSDriver, AsyncNXOSDriver
+from ttp import ttp
 
 
 n9kv_ssh = {
@@ -12,15 +13,25 @@ n9kv_ssh = {
     "auth_password": "Admin_1234!",
     "auth_strict_key": False,
     "transport": "asyncssh",
+    "platform": "nxos",
 }
 
-switches = [ (n9kv_ssh, AsyncNXOSDriver) ]
+switches = [ n9kv_ssh ]
+
+drivers = { 'nxos': AsyncNXOSDriver }
+
+cmds = { 'nxos': 'sh run' }
 
 async def agnosticonfig(switch):
-    switch_infos, driver = switch
 
-    async with driver(**switch_infos) as sw:
-        result = await sw.send_command("sh run")
+    driver = drivers[switch['platform']]
+    cmd = cmds[switch['platform']]
+
+    # scrapli doesn't expect 'platform' keyword
+    switch.pop('platform') 
+
+    async with driver(**switch) as sw:
+        result = await sw.send_command(cmd)
 
     return result.result
     
@@ -32,7 +43,12 @@ async def get_config():
 
     results = await asyncio.gather(*coroutines)
 
-    print(results)
+    with open('ttp.tplate', 'r') as tplate:
+        tplate_text = tplate.read()
+        for result in results:
+            parser = ttp(result, tplate_text)
+            parser.parse()
+            print(parser.result())
 
 
 def main():
