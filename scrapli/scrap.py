@@ -33,9 +33,7 @@ async def agnosticonfig(switch):
     async with driver(**switch) as sw:
         result = await sw.send_command(cmd)
 
-    return result.result
-    
-
+    return result
 
 
 async def get_config():
@@ -43,10 +41,11 @@ async def get_config():
 
     results = await asyncio.gather(*coroutines)
 
-    with open('ttp.tplate', 'r') as tplate:
-        tplate_text = tplate.read()
-        for result in results:
-            parser = ttp(result, tplate_text)
+    for result in results:
+        platform = result.textfsm_platform
+        with open(f'{platform}_ttp.tplate', 'r') as tplate:
+            tplate_text = tplate.read()
+            parser = ttp(result.result, tplate_text)
             parser.parse()
             print(parser.result())
 
