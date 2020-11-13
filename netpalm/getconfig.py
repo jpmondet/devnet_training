@@ -1,5 +1,7 @@
 #! /usr/bin/env python3
 
+#TODO : Use a "service" template to do more complex automation. Could be a nice solution for automapping
+
 from os import getenv
 from time import sleep
 from json import dumps as jdumps
