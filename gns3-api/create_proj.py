@@ -4,6 +4,8 @@ from json import dumps
 from requests import get, post, Response
 from typing import Dict, List, Any, Tuple
 from random import randint
+from subprocess import call
+from time import sleep
 
 
 PROJECT_NAME: str = "testapiproj"
@@ -114,6 +116,26 @@ def start_nodes(project_id: str, nodes_ids: List[str]) -> None:
         print(resp.__dict__)
         return ""
 
+def connect_to_nodes(project_id: str, nodes_ids: List[str], terminal_to_launch: str = "xfce4-terminal") -> None:
+    # We assume to be on a linux machine. Who would use something else anyways ? :troll:
+
+    resp: Response = get(GNS_SERVER + f"projects/{project_id}/nodes")
+    if resp.status_code != 200:
+        print(resp)
+        print(resp.__dict__)
+        return None
+
+    for node in resp.json():
+        console_port: int = node["console"]
+        console_ip: str = node["console_host"]
+        console_type: str = node["console_type"]
+        node_name: str = node["name"]
+        call([terminal_to_launch, '-T', f'{node_name}', '-x', f'{console_type}', f'{console_ip}', f'{str(console_port)}'])
+        
+
+
+
+
 def main() -> None:
 
     proj_id: str = get_proj_id_or_create(PROJECT_NAME)
@@ -134,9 +156,8 @@ def main() -> None:
         all_nodes_ids.extend(switches_ids)
 
         start_nodes(proj_id, all_nodes_ids)
-        
-
-
+        sleep(10)
+        connect_to_nodes(proj_id, all_nodes_ids)
 
 
 if __name__ == "__main__":
