@@ -1,11 +1,13 @@
 #! /usr/bin/env python3
 
 from json import dumps
-from requests import get, post, Response
 from typing import Dict, List, Any, Tuple
 from random import randint
 from subprocess import call
 from time import sleep
+
+from requests import get, post, Response
+from netmiko import ConnectHandler
 
 
 PROJECT_NAME: str = "testapiproj"
@@ -44,6 +46,20 @@ def get_template(name: str) -> Dict[str, Any]:
             return tplate
 
     return ""
+
+def list_nodes(project_id: str) -> List[Dict[str, Any]]:
+
+    resp: Response = get(GNS_SERVER + f"projects/{project_id}/nodes")
+
+    if resp.status_code != 200:
+        print(resp)
+        print(resp.__dict__)
+        return None
+
+    return resp.json()
+
+
+
 
 def create_node(project_id: str, name: str, template_name: str = "l2sw", node_type: str = "iou", compute_id: str = "local") -> str:
 
@@ -133,6 +149,34 @@ def connect_to_nodes(project_id: str, nodes_ids: List[str], terminal_to_launch: 
         call([terminal_to_launch, '-T', f'{node_name}', '-x', f'{console_type}', f'{console_ip}', f'{str(console_port)}'])
         
 
+def init_nodes(nodes: List[Dict[str, Any]]) -> None:
+
+    for node in nodes:
+        nodes_data = {
+            'device_type': 'cisco_ios_telnet',
+            'host':   node['console_host'],
+            'username': '',
+            'password': '',
+            'port' : node['console'],
+            'secret': '',
+        }
+        try:
+            con: ConnectHandler = ConnectHandler(**nodes_data)
+        except AttributeError:
+            sleep(1)
+
+        output: str = con.send_command_timing(
+            command_string="\n", strip_prompt=False, strip_command=False
+        )
+        if "initial configuration" in output:
+            output += net_connect.send_command_timing(
+                command_string="no \n", strip_prompt=False, strip_command=False
+            )
+        if "Would you like to terminate autoinstall" in output:
+            output += net_connect.send_command_timing(
+                command_string="\n", strip_prompt=False, strip_command=False
+            )
+        print(output)
 
 
 
@@ -143,21 +187,37 @@ def main() -> None:
     if proj_id:
         print(proj_id)
         # Now that we have to project id, we can do pretty much everything
-        switches_ids: List[str] = create_nodes(proj_id, 'sw', 4)
-            
-        create_loop_topo(proj_id, switches_ids)
 
         all_nodes_ids: List[str] = []
-        for sw_id in switches_ids:
-            rtr_ids: List[str] = create_nodes(proj_id, 'rtr', 2)
-            all_nodes_ids.extend(rtr_ids)
-            create_star_topo(proj_id, sw_id, rtr_ids)
-        
-        all_nodes_ids.extend(switches_ids)
+        nodes: List[Dict[str, Any]] = list_nodes(proj_id)
 
-        start_nodes(proj_id, all_nodes_ids)
-        sleep(10)
-        connect_to_nodes(proj_id, all_nodes_ids)
+        if nodes: 
+            # For my tests, I dun need to recreate all nodes all the time:
+            for node in nodes:
+                all_nodes_ids.append(node["node_id"])
+        else:
+            switches_ids: List[str] = create_nodes(proj_id, 'sw', 4)
+                
+            create_loop_topo(proj_id, switches_ids)
+
+            for sw_id in switches_ids:
+                rtr_ids: List[str] = create_nodes(proj_id, 'rtr', 2)
+                all_nodes_ids.extend(rtr_ids)
+                create_star_topo(proj_id, sw_id, rtr_ids)
+            
+            all_nodes_ids.extend(switches_ids)
+            nodes = list_nodes(proj_id)
+
+        if nodes[0]["status"] != "started":
+            # Just for my tests, I assume that if 1 node is started, all nodes are (since I start them all together all the time for now):
+            start_nodes(proj_id, all_nodes_ids)
+            sleep(5)
+            connect_to_nodes(proj_id, all_nodes_ids)
+
+        init_nodes(nodes)
+
+
+
 
 
 if __name__ == "__main__":
