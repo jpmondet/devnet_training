@@ -132,7 +132,7 @@ def start_nodes(project_id: str, nodes_ids: List[str]) -> None:
         print(resp.__dict__)
         return ""
 
-def connect_to_nodes(project_id: str, nodes_ids: List[str], terminal_to_launch: str = "xfce4-terminal") -> None:
+def console(project_id: str, nodes_ids: List[str], terminal_to_launch: str = "xfce4-terminal") -> None:
     # We assume to be on a linux machine. Who would use something else anyways ? :troll:
 
     resp: Response = get(GNS_SERVER + f"projects/{project_id}/nodes")
@@ -148,11 +148,12 @@ def connect_to_nodes(project_id: str, nodes_ids: List[str], terminal_to_launch: 
         node_name: str = node["name"]
         call([terminal_to_launch, '-T', f'{node_name}', '-x', f'{console_type}', f'{console_ip}', f'{str(console_port)}'])
         
+def convert_nodes_list_to_inventory(nodes: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
 
-def init_nodes(nodes: List[Dict[str, Any]]) -> None:
+    inventory: List[Dict[str, Any]] = []
 
     for node in nodes:
-        nodes_data = {
+        node_data: Dict[str, Any] = {
             'device_type': 'cisco_ios_telnet',
             'host':   node['console_host'],
             'username': '',
@@ -160,25 +161,63 @@ def init_nodes(nodes: List[Dict[str, Any]]) -> None:
             'port' : node['console'],
             'secret': '',
         }
-        try:
-            con: ConnectHandler = ConnectHandler(**nodes_data)
-        except AttributeError:
-            sleep(1)
+        inventory.append(node_data)
 
+    return inventory
+
+
+def init_nodes(inventory: List[Dict[str, Any]]) -> None:
+
+    for node in inventory:
+        retries: int = 10
+        con = None
+        while not con:
+            if retries == 0:
+                print("Hmm, something's not right...Can't init the nodes")
+                return
+            try:
+                con: ConnectHandler = ConnectHandler(**node)
+            except AttributeError:
+                sleep(1)
+            retries -= 1
+
+        # Had to patch netmiko locally since it doesn't like telnet 
+        # without login & pass
         output: str = con.send_command_timing(
             command_string="\n", strip_prompt=False, strip_command=False
         )
         if "initial configuration" in output:
-            output += net_connect.send_command_timing(
+            output += con.send_command_timing(
                 command_string="no \n", strip_prompt=False, strip_command=False
             )
         if "Would you like to terminate autoinstall" in output:
-            output += net_connect.send_command_timing(
+            output += con.send_command_timing(
                 command_string="\n", strip_prompt=False, strip_command=False
             )
         print(output)
 
+def config_all_nodes(inventory: List[Dict[str, Any]], cmds: List[str]) -> None:
+    for node in inventory:
+        con: ConnectHandler = ConnectHandler(**node)
+        con.enable()
+        output: str = con.send_config_set(cmds)
+        print(output)
 
+def get_from_all_nodes(inventory: List[Dict[str, Any]], cmds: List[str]) -> None:
+    for node in inventory:
+        con: ConnectHandler = ConnectHandler(**node)
+        con.enable()
+        for cmd in cmds:
+            output: str = con.send_command(cmd)
+            print(output)
+
+def bring_up_ifaces(inventory: List[Dict[str, Any]]) -> None:
+    configs: List[str] = [ "int range e0/0-3,e1/0-3", "no shut" ]
+    config_all_nodes(inventory, configs)
+
+def get_cdp_infos(inventory: List[Dict[str, Any]]) -> None:
+    cmds: List[str] = [ "sh cdp neigh" ]
+    get_from_all_nodes(inventory, cmds)
 
 def main() -> None:
 
@@ -208,13 +247,19 @@ def main() -> None:
             all_nodes_ids.extend(switches_ids)
             nodes = list_nodes(proj_id)
 
+
+        inventory: List[Dict[str, Any]] = convert_nodes_list_to_inventory(nodes)
+
         if nodes[0]["status"] != "started":
             # Just for my tests, I assume that if 1 node is started, all nodes are (since I start them all together all the time for now):
             start_nodes(proj_id, all_nodes_ids)
             sleep(5)
-            connect_to_nodes(proj_id, all_nodes_ids)
+            console_to_nodes(proj_id, all_nodes_ids)
+            init_nodes(inventory)
+            bring_up_ifaces(inventory)
 
-        init_nodes(nodes)
+
+        get_cdp_infos(inventory)
 
 
 
