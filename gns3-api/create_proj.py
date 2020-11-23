@@ -1,4 +1,15 @@
 #! /usr/bin/env python3
+""" Just playing with gns3 api for my own lab needs.
+    This particular script:
+        - creates a project (or use it if it already exists)
+        - creates switches & routers
+        - adds links between those nodes
+        - starts the nodes
+        - spawns consoles for all the nodes
+        - inits all the nodes (mainly to bypass first config wizard)
+        - brings up all interfaces
+        - get cdp infos as a first check
+"""
 
 from json import dumps
 from typing import Dict, List, Any, Tuple
@@ -7,8 +18,10 @@ from subprocess import call
 from time import sleep
 
 from requests import get, post, Response
-from netmiko import ConnectHandler
+from netmiko import ConnectHandler  # type: ignore
+from netmiko.ssh_exception import NetmikoTimeoutException
 
+# pylint: disable=missing-function-docstring
 
 PROJECT_NAME: str = "testapiproj"
 GNS_SERVER: str = "http://192.168.56.1:3080/v2/"
@@ -21,15 +34,18 @@ def get_proj_id_or_create(name: str) -> str:
     if resp.status_code != 200:
         if resp.status_code == 409:
             # project exists
-            resp = get(GNS_SERVER + "projects").json()
-            for proj in resp:
+            resp_json: List[Dict[str, Any]] = get(
+                GNS_SERVER + "projects"
+            ).json()
+            for proj in resp_json:
                 if proj["name"] == name:
-                    return proj["project_id"]
+                    proj_id: str = proj["project_id"]
+                    return proj_id
         print(resp)
         print(resp.__dict__)
         return ""
 
-    proj_id: str = resp.json()["project_id"]
+    proj_id = resp.json()["project_id"]
 
     return proj_id
 
@@ -78,7 +94,9 @@ def create_node(
         "y": randint(-300, 500),
         "properties": {"path": tplate["path"]},
     }
-    resp: Response = post(GNS_SERVER + f"projects/{project_id}/nodes", data=dumps(data))
+    resp: Response = post(
+        GNS_SERVER + f"projects/{project_id}/nodes", data=dumps(data)
+    )
     if resp.status_code != 201:
         print(resp)
         print(resp.__dict__)
@@ -89,18 +107,23 @@ def create_node(
     return node_id
 
 
-def create_nodes(project_id: str, sw_or_rtr: str, nb_to_create: int) -> List[str]:
+def create_nodes(
+    project_id: str, sw_or_rtr: str, nb_to_create: int
+) -> List[str]:
 
     nodes_ids: List[str] = []
     tplate_name = "l2sw"
 
     if sw_or_rtr not in ["sw", "rtr"]:
         return []
-    elif sw_or_rtr == "rtr":
+
+    if sw_or_rtr == "rtr":
         tplate_name = "l3rtr"
 
-    for nb in range(nb_to_create):
-        node_id = create_node(project_id, f"{sw_or_rtr}{nb + 1}", template_name=tplate_name)
+    for num_node in range(nb_to_create):
+        node_id = create_node(
+            project_id, f"{sw_or_rtr}{num_node + 1}", template_name=tplate_name
+        )
         nodes_ids.append(node_id)
 
     return nodes_ids
@@ -129,7 +152,9 @@ def create_link(
         ]
     }
 
-    resp: Response = post(GNS_SERVER + f"projects/{project_id}/links", data=dumps(data_to_send))
+    resp: Response = post(
+        GNS_SERVER + f"projects/{project_id}/links", data=dumps(data_to_send)
+    )
     if resp.status_code != 201:
         print(resp)
         print(resp.__dict__)
@@ -141,46 +166,69 @@ def create_link(
 
 def create_loop_topo(project_id: str, nodes_ids: List[str]) -> None:
 
-    for i, node_id in enumerate(nodes_ids):
+    for i, _ in enumerate(nodes_ids):
         # Right & Left are based on clockwise rotation
         neigh_right = i + 1
         if neigh_right == len(nodes_ids):
-            # I think there is a rotating index in a python lib for that. Have to check...(Maybe in "collections" ?)
+            # I think there is a rotating index in a python lib for that.
+            # Have to check...(Maybe in "collections" ?)
             neigh_right = 0
-        create_link(project_id, nodes_ids[i], nodes_ids[neigh_right], (0, neigh_right), (0, i))
+        create_link(
+            project_id,
+            nodes_ids[i],
+            nodes_ids[neigh_right],
+            (0, neigh_right),
+            (0, i),
+        )
 
 
-def create_star_topo(project_id: str, central_node_id: str, nodes_ids: List[str]) -> None:
+def create_star_topo(
+    project_id: str, central_node_id: str, nodes_ids: List[str]
+) -> None:
     """ Create a star topology around the first node of the list """
 
     for i, node_id in enumerate(nodes_ids):
         create_link(project_id, central_node_id, node_id, (1, i), (0, 0))
 
 
-def start_nodes(project_id: str, nodes_ids: List[str]) -> None:
+def start_nodes(
+    project_id: str, nodes_ids: List[str] = None  # type: ignore
+) -> None:
 
     data_to_send: Dict[None, None] = {}
 
-    resp: Response = post(
-        GNS_SERVER + f"projects/{project_id}/nodes/start", data=dumps(data_to_send)
-    )
-    if resp.status_code != 204:
-        print(resp)
-        print(resp.__dict__)
+    if not nodes_ids:
+        resp: Response = post(
+            GNS_SERVER + f"projects/{project_id}/nodes/start",
+            data=dumps(data_to_send),
+        )
+        if resp.status_code != 204:
+            print(resp)
+            print(resp.__dict__)
+    else:
+        # Start only the nodes specified
+        pass
 
 
 def console_to_nodes(
-    project_id: str, nodes_ids: List[str], terminal_to_launch: str = "xfce4-terminal"
+    project_id: str,
+    nodes_ids: List[str] = None,  # type: ignore
+    terminal_to_launch: str = "xfce4-terminal",
 ) -> None:
-    # We assume to be on a linux machine. Who would use something else anyways ? :troll:
+    # We assume to be on a linux machine.
+    # Who would use something else anyways ? :troll:
 
     resp: Response = get(GNS_SERVER + f"projects/{project_id}/nodes")
     if resp.status_code != 200:
         print(resp)
         print(resp.__dict__)
-        return None
+        return
 
     for node in resp.json():
+        if nodes_ids:
+            if node["id"] not in nodes_ids:
+                continue
+
         console_port: int = node["console"]
         console_ip: str = node["console_host"]
         console_type: str = node["console_type"]
@@ -198,7 +246,9 @@ def console_to_nodes(
         )
 
 
-def convert_nodes_list_to_inventory(nodes: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+def convert_nodes_list_to_inventory(
+    nodes: List[Dict[str, Any]]
+) -> List[Dict[str, Any]]:
 
     inventory: List[Dict[str, Any]] = []
 
@@ -210,27 +260,39 @@ def convert_nodes_list_to_inventory(nodes: List[Dict[str, Any]]) -> List[Dict[st
             "password": "",
             "port": node["console"],
             "secret": "",
+            "fast_cli": True,
         }
         inventory.append(node_data)
 
     return inventory
 
 
-def init_nodes(inventory: List[Dict[str, Any]]) -> None:
+def connect_to_nodes(inventory: List[Dict[str, Any]]) -> List[ConnectHandler]:
+    conns: List[ConnectHandler] = []
 
     for node in inventory:
         retries: int = 10
         con: ConnectHandler = None
         while not con:
             if retries == 0:
-                print("Hmm, something's not right...Can't init the nodes")
-                return
+                print(f"Can't connect the node {node} :-/")
+                # Will likely crash after that, but it's ok, it's just a lab
+                continue
             try:
                 con = ConnectHandler(**node)
             except AttributeError:
-                sleep(1)
+                pass
+            sleep(3)
             retries -= 1
+        conns.append(con)
 
+    return conns
+
+
+def init_nodes(inventory: List[Dict[str, Any]]) -> None:
+
+    conns: List[ConnectHandler] = connect_to_nodes(inventory)
+    for con in conns:
         # Had to patch netmiko locally since it doesn't like telnet
         # without login & pass
         output: str = con.send_command_timing(
@@ -248,20 +310,29 @@ def init_nodes(inventory: List[Dict[str, Any]]) -> None:
 
 
 def config_all_nodes(inventory: List[Dict[str, Any]], cmds: List[str]) -> None:
-    for node in inventory:
-        con: ConnectHandler = ConnectHandler(**node)
-        con.enable()
+    conns: List[ConnectHandler] = connect_to_nodes(inventory)
+    for con in conns:
+        # for node in inventory:
+        #    con: ConnectHandler = ConnectHandler(**node)
+        #    con.enable()
+        try:
+            con.enable()
+        except NetmikoTimeoutException:
+            print("con already enabled")
         output: str = con.send_config_set(cmds)
         print(output)
+        con.disconnect()
 
 
-def get_from_all_nodes(inventory: List[Dict[str, Any]], cmds: List[str]) -> None:
-    for node in inventory:
-        con: ConnectHandler = ConnectHandler(**node)
-        con.enable()
+def get_from_all_nodes(
+    inventory: List[Dict[str, Any]], cmds: List[str]
+) -> None:
+    conns: List[ConnectHandler] = connect_to_nodes(inventory)
+    for con in conns:
         for cmd in cmds:
             output: str = con.send_command(cmd)
             print(output)
+        con.disconnect()
 
 
 def bring_up_ifaces(inventory: List[Dict[str, Any]]) -> None:
@@ -272,6 +343,15 @@ def bring_up_ifaces(inventory: List[Dict[str, Any]]) -> None:
 def get_cdp_infos(inventory: List[Dict[str, Any]]) -> None:
     cmds: List[str] = ["sh cdp neigh"]
     get_from_all_nodes(inventory, cmds)
+
+
+def prevent_console_timeouts(inventory: List[Dict[str, Any]]) -> None:
+    configs: List[str] = [
+        "line con 0",
+        "exec-timeout 0",
+        "session-timeout 0",
+    ]
+    config_all_nodes(inventory, configs)
 
 
 def main() -> None:
@@ -302,15 +382,22 @@ def main() -> None:
             all_nodes_ids.extend(switches_ids)
             nodes = list_nodes(proj_id)
 
-        inventory: List[Dict[str, Any]] = convert_nodes_list_to_inventory(nodes)
+        inventory: List[Dict[str, Any]] = convert_nodes_list_to_inventory(
+            nodes
+        )
 
+        # Netmiko is a lil' slow, should use nornir instead
+        # to do this in parallel
         if nodes[0]["status"] != "started":
-            # Just for my tests, I assume that if 1 node is started, all nodes are (since I start them all together all the time for now):
-            start_nodes(proj_id, all_nodes_ids)
+            # Just for my tests:
+            # I assume that if 1 node is started, all nodes are
+            # (since I start them all together all the time for now):
+            start_nodes(proj_id)
             sleep(5)
-            console_to_nodes(proj_id, all_nodes_ids)
+            console_to_nodes(proj_id)
             init_nodes(inventory)
             bring_up_ifaces(inventory)
+            prevent_console_timeouts(inventory)  # Again, it's a lab ^^
 
         get_cdp_infos(inventory)
 
