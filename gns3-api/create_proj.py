@@ -399,7 +399,6 @@ def main() -> None:
             bring_up_ifaces(inventory)
             prevent_console_timeouts(inventory)  # Again, it's a lab ^^
 
-        bring_up_ifaces(inventory)
         get_cdp_infos(inventory)
 
 
