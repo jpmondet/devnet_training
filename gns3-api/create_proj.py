@@ -336,7 +336,7 @@ def get_from_all_nodes(
 
 
 def bring_up_ifaces(inventory: List[Dict[str, Any]]) -> None:
-    configs: List[str] = ["int range e0/0-3,e1/0-3", "no shut"]
+    configs: List[str] = ["lldp run", "int range e0/0-3,e1/0-3", "no shut"]
     config_all_nodes(inventory, configs)
 
 
@@ -399,6 +399,7 @@ def main() -> None:
             bring_up_ifaces(inventory)
             prevent_console_timeouts(inventory)  # Again, it's a lab ^^
 
+        bring_up_ifaces(inventory)
         get_cdp_infos(inventory)
 
 
