@@ -353,8 +353,25 @@ def prevent_console_timeouts(inventory: List[Dict[str, Any]]) -> None:
     ]
     config_all_nodes(inventory, configs)
 
+def config_basics(inventory: List[Dict[str, Any]]) -> None:
+    configs: List[str] = [
+        "line con 0",
+        "exec-timeout 0",
+        "session-timeout 0",
+        "lldp run",
+        "int range e0/0-3,e1/0-3",
+        "no shut",
+    ]
+    config_all_nodes(inventory, configs)
+    for node in inventory:
+        configs = [ f"hostname {node['name']}", "int e1/3", "no switchport", "ip addr dhcp" ] 
+        config_specific_node(node, configs)
+
 
 def main() -> None:
+
+    #TODO : Add a "cloud" (local iface) to ssh properly instead of relying on console
+    #       which is really funky
 
     proj_id: str = get_proj_id_or_create(PROJECT_NAME)
 
@@ -396,8 +413,11 @@ def main() -> None:
             sleep(5)
             console_to_nodes(proj_id)
             init_nodes(inventory)
+             
             bring_up_ifaces(inventory)
             prevent_console_timeouts(inventory)  # Again, it's a lab ^^
+            config_hostname_and_mgt_ip(inventory)
+            #config_basics(inventory)
 
         get_cdp_infos(inventory)
 
