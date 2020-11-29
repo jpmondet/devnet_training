@@ -191,6 +191,14 @@ def create_star_topo(
         create_link(project_id, central_node_id, node_id, (1, i), (0, 0))
 
 
+def create_mgt_infra(
+    project_id: str, nodes: List[Dict[str, Any]]
+) -> None:
+    """Create a 'cloud' device (which connect to the mgt station),
+    and a simple switch to connect to all mgt interfaces"""
+    pass
+
+
 def start_nodes(
     project_id: str, nodes_ids: List[str] = None  # type: ignore
 ) -> None:
@@ -253,6 +261,8 @@ def convert_nodes_list_to_inventory(
     inventory: List[Dict[str, Any]] = []
 
     for node in nodes:
+        if node["node_type"] != "iou":
+            continue
         node_data: Dict[str, Any] = {
             "device_type": "cisco_ios_telnet",
             "host": node["console_host"],
@@ -309,7 +319,14 @@ def init_nodes(inventory: List[Dict[str, Any]]) -> None:
         print(output)
 
 
-def config_all_nodes(inventory: List[Dict[str, Any]], cmds: List[str]) -> None:
+def config_specific_node(con_to_node: ConnectHandler, cmds: List[str]) -> None:
+    output: str = con_to_node.send_config_set(cmds)
+    print(output)
+
+
+def config_all_nodes(
+    inventory: List[Dict[str, Any]], cmds: List[str]
+) -> List[ConnectHandler]:
     conns: List[ConnectHandler] = connect_to_nodes(inventory)
     for con in conns:
         # for node in inventory:
@@ -321,7 +338,7 @@ def config_all_nodes(inventory: List[Dict[str, Any]], cmds: List[str]) -> None:
             print("con already enabled")
         output: str = con.send_config_set(cmds)
         print(output)
-        con.disconnect()
+    return conns
 
 
 def get_from_all_nodes(
@@ -340,8 +357,8 @@ def bring_up_ifaces(inventory: List[Dict[str, Any]]) -> None:
     config_all_nodes(inventory, configs)
 
 
-def get_cdp_infos(inventory: List[Dict[str, Any]]) -> None:
-    cmds: List[str] = ["sh cdp neigh"]
+def get_lldp_infos(inventory: List[Dict[str, Any]]) -> None:
+    cmds: List[str] = ["sh lldp neigh"]
     get_from_all_nodes(inventory, cmds)
 
 
@@ -353,25 +370,48 @@ def prevent_console_timeouts(inventory: List[Dict[str, Any]]) -> None:
     ]
     config_all_nodes(inventory, configs)
 
-def config_basics(inventory: List[Dict[str, Any]]) -> None:
+
+def config_basics(
+    inventory: List[Dict[str, Any]], nodes: List[Dict[str, Any]]
+) -> None:
     configs: List[str] = [
         "line con 0",
         "exec-timeout 0",
         "session-timeout 0",
+        "exit",
         "lldp run",
         "int range e0/0-3,e1/0-3",
         "no shut",
     ]
-    config_all_nodes(inventory, configs)
-    for node in inventory:
-        configs = [ f"hostname {node['name']}", "int e1/3", "no switchport", "ip addr dhcp" ] 
-        config_specific_node(node, configs)
+    conns = config_all_nodes(inventory, configs)
+
+    iou_nodes = [node for node in nodes if node["node_type"] == "iou"]
+    for index, node in enumerate(iou_nodes):
+        configs = [
+            f"hostname {node['name']}",
+            "username iou privilege 15 secret iou",
+            "ip domain name iou",
+            "crypto key generate rsa modulus 1024 label iou",
+            "ip ssh version 2",
+            "int e1/3",
+            "no switchport",
+            f"ip addr 192.168.77.{ index + 1 } 255.255.255.0",
+            "no lldp receive",
+            "no lldp transmit",
+            "exit",
+            "line vty 0 4",
+            "password iou",
+            "privilege level 15",
+            "transport input all",
+        ]
+        config_specific_node(conns[index], configs)
 
 
 def main() -> None:
 
-    #TODO : Add a "cloud" (local iface) to ssh properly instead of relying on console
-    #       which is really funky
+    # TODO :
+    #       Add a "cloud" (local iface) to telnet/ssh properly
+    #       instead of relying on console which is really funky
 
     proj_id: str = get_proj_id_or_create(PROJECT_NAME)
 
@@ -399,6 +439,8 @@ def main() -> None:
             all_nodes_ids.extend(switches_ids)
             nodes = list_nodes(proj_id)
 
+            create_mgt_infra(proj_id, nodes)
+
         inventory: List[Dict[str, Any]] = convert_nodes_list_to_inventory(
             nodes
         )
@@ -413,13 +455,13 @@ def main() -> None:
             sleep(5)
             console_to_nodes(proj_id)
             init_nodes(inventory)
-             
-            bring_up_ifaces(inventory)
-            prevent_console_timeouts(inventory)  # Again, it's a lab ^^
-            config_hostname_and_mgt_ip(inventory)
-            #config_basics(inventory)
 
-        get_cdp_infos(inventory)
+            # bring_up_ifaces(inventory)
+            # prevent_console_timeouts(inventory)  # Again, it's a lab ^^
+            # config_hostname_and_mgt_ip(inventory)
+            config_basics(inventory, nodes)
+
+        get_lldp_infos(inventory)
 
 
 if __name__ == "__main__":
