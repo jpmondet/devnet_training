@@ -82,6 +82,7 @@ def create_node(
     template_name: str = "l2sw",
     node_type: str = "iou",
     compute_id: str = "local",
+    console_type: str = "telnet",
 ) -> str:
 
     tplate: Dict[str, Any] = get_template(template_name)
@@ -90,10 +91,13 @@ def create_node(
         "name": name,
         "node_type": node_type,
         "compute_id": compute_id,
+        "console_type": console_type,
         "x": randint(-1000, 500),
         "y": randint(-300, 500),
-        "properties": {"path": tplate["path"]},
     }
+    if tplate.get("path"):
+        data["properties"] = {"path": tplate["path"]}
+
     resp: Response = post(
         GNS_SERVER + f"projects/{project_id}/nodes", data=dumps(data)
     )
@@ -191,12 +195,33 @@ def create_star_topo(
         create_link(project_id, central_node_id, node_id, (1, i), (0, 0))
 
 
-def create_mgt_infra(
-    project_id: str, nodes: List[Dict[str, Any]]
-) -> None:
+def create_mgt_infra(project_id: str, nodes_ids: List[str]) -> None:
     """Create a 'cloud' device (which connect to the mgt station),
-    and a simple switch to connect to all mgt interfaces"""
-    pass
+    and a simple switch to connect to all mgt interfaces
+    and links everything"""
+
+    # Create mgt nodes
+    
+    # cloud_gns3 is a custom template derived from the built-in
+    # 'cloud' with only 1 'gns3' bridge iface
+    cloud_id: str = create_node(
+        project_id, "cloud_gns3", template_name="cloud-gns3", node_type="cloud", console_type="none"
+    )
+    # ethswitch_gns3 is a custom template derived
+    # from the built-in 'ethernet switch' with 16 ifaces
+    # instead of 8
+    mgmt_sw_id: str = create_node(
+        project_id,
+        "mgmt_sw",
+        template_name="ethswitch_gns3",
+        node_type="ethernet_switch",
+        console_type="none",
+    )
+
+    # Link both nodes
+    create_link(project_id, cloud_id, mgmt_sw_id, (0, 0), (0, 0))
+    for i, node_id in enumerate(nodes_ids):
+        create_link(project_id, mgmt_sw_id, node_id, (0, i + 1), (1, 3))
 
 
 def start_nodes(
@@ -409,10 +434,6 @@ def config_basics(
 
 def main() -> None:
 
-    # TODO :
-    #       Add a "cloud" (local iface) to telnet/ssh properly
-    #       instead of relying on console which is really funky
-
     proj_id: str = get_proj_id_or_create(PROJECT_NAME)
 
     if proj_id:
@@ -439,7 +460,7 @@ def main() -> None:
             all_nodes_ids.extend(switches_ids)
             nodes = list_nodes(proj_id)
 
-            create_mgt_infra(proj_id, nodes)
+            create_mgt_infra(proj_id, all_nodes_ids)
 
         inventory: List[Dict[str, Any]] = convert_nodes_list_to_inventory(
             nodes
