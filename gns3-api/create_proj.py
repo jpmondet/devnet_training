@@ -83,9 +83,14 @@ def create_node(
     node_type: str = "iou",
     compute_id: str = "local",
     console_type: str = "telnet",
+    custom_properties: Dict[str, Any] = {},
+    ports: List[Dict[str, Any]] = None,
 ) -> str:
 
     tplate: Dict[str, Any] = get_template(template_name)
+    if not custom_properties:
+        if tplate.get("path"):
+            custom_properties = {"path": tplate["path"]}
 
     data: Dict[str, Any] = {
         "name": name,
@@ -94,9 +99,10 @@ def create_node(
         "console_type": console_type,
         "x": randint(-1000, 500),
         "y": randint(-300, 500),
+        "properties": custom_properties,
     }
-    if tplate.get("path"):
-        data["properties"] = {"path": tplate["path"]}
+    if ports:
+        data["ports"] = ports
 
     resp: Response = post(
         GNS_SERVER + f"projects/{project_id}/nodes", data=dumps(data)
@@ -204,18 +210,55 @@ def create_mgt_infra(project_id: str, nodes_ids: List[str]) -> None:
     
     # cloud_gns3 is a custom template derived from the built-in
     # 'cloud' with only 1 'gns3' bridge iface
+    port_map_struct : Dict[str, Any] = {
+        "name": "gns3",   
+        "special": True,
+        "type": "ethernet"
+    }
+    ports_struct: Dict[str, Any] = {
+        "adapter_number": 0,      
+        "data_link_types": {      
+          "Ethernet": "DLT_EN10MB"
+        },                        
+        "link_type": "ethernet",
+        "name": "gns3",       
+        "port_number": 0,         
+        "short_name": "gns3"    
+    }
+
     cloud_id: str = create_node(
-        project_id, "cloud_gns3", template_name="cloud-gns3", node_type="cloud", console_type="none"
+        project_id, "cloud_gns3", template_name="cloud-gns3", node_type="cloud", console_type="none",
+        custom_properties={"interfaces": [port_map_struct]} #, ports=[ports_struct]  <-- gns3 crash when adding this...
     )
-    # ethswitch_gns3 is a custom template derived
-    # from the built-in 'ethernet switch' with 16 ifaces
-    # instead of 8
+
+    ports: List[Dict[str, Any]] = []
+    for port in range(16):
+        #port_struct = {                    
+        #        "adapter_number": 0,    
+        #        "data_link_types": {
+        #            "Ethernet": "DLT_EN10MB"
+        #            },
+        #        "link_type": "ethernet",
+        #        "name": f"Ethernet{port}",      
+        #        "port_number": port,                    
+        #        "short_name": f"e{port}"      
+        #        }
+        port_struct = {                     
+              "name": f"Ethernet{port}",
+              "port_number": port,   
+              "type": "access",   
+              "vlan": 1         
+        }                  
+        ports.append(port_struct)
+
     mgmt_sw_id: str = create_node(
         project_id,
         "mgmt_sw",
         template_name="ethswitch_gns3",
         node_type="ethernet_switch",
         console_type="none",
+        #ports=ports
+        custom_properties={ "ports_mapping": ports }
     )
 
     # Link both nodes
@@ -312,7 +355,7 @@ def connect_to_nodes(inventory: List[Dict[str, Any]]) -> List[ConnectHandler]:
             if retries == 0:
                 print(f"Can't connect the node {node} :-/")
                 # Will likely crash after that, but it's ok, it's just a lab
-                continue
+                break
             try:
                 con = ConnectHandler(**node)
             except AttributeError:
