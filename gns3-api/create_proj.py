@@ -305,10 +305,13 @@ def console_to_nodes(
             if node["id"] not in nodes_ids:
                 continue
 
+        console_type: str = node["console_type"]
+        if console_type != "telnet":
+            continue
         console_port: int = node["console"]
         console_ip: str = node["console_host"]
-        console_type: str = node["console_type"]
         node_name: str = node["name"]
+
         call(
             [
                 terminal_to_launch,
