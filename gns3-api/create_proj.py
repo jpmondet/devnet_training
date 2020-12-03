@@ -474,6 +474,7 @@ def config_basics(
             "password iou",
             "privilege level 15",
             "transport input all",
+            "login local",
         ]
         config_specific_node(conns[index], configs)
 
