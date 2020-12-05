@@ -19,7 +19,7 @@ from time import sleep
 
 from requests import get, post, Response
 from netmiko import ConnectHandler  # type: ignore
-from netmiko.ssh_exception import NetmikoTimeoutException
+from netmiko.ssh_exception import NetmikoTimeoutException  # type: ignore
 
 # pylint: disable=missing-function-docstring
 
@@ -76,6 +76,7 @@ def list_nodes(project_id: str) -> Any:
     return resp.json()
 
 
+# pylint: disable=too-many-arguments
 def create_node(
     project_id: str,
     name: str,
@@ -83,12 +84,13 @@ def create_node(
     node_type: str = "iou",
     compute_id: str = "local",
     console_type: str = "telnet",
-    custom_properties: Dict[str, Any] = {},
-    ports: List[Dict[str, Any]] = None,
+    custom_properties: Dict[str, Any] = None,  # type: ignore
+    ports: List[Dict[str, Any]] = None,  # type: ignore
 ) -> str:
 
     tplate: Dict[str, Any] = get_template(template_name)
     if not custom_properties:
+        custom_properties = {}
         if tplate.get("path"):
             custom_properties = {"path": tplate["path"]}
 
@@ -207,48 +209,52 @@ def create_mgt_infra(project_id: str, nodes_ids: List[str]) -> None:
     and links everything"""
 
     # Create mgt nodes
-    
+
     # cloud_gns3 is a custom template derived from the built-in
     # 'cloud' with only 1 'gns3' bridge iface
-    port_map_struct : Dict[str, Any] = {
-        "name": "gns3",   
+    port_map_struct: Dict[str, Any] = {
+        "name": "gns3",
         "special": True,
-        "type": "ethernet"
+        "type": "ethernet",
     }
-    ports_struct: Dict[str, Any] = {
-        "adapter_number": 0,      
-        "data_link_types": {      
-          "Ethernet": "DLT_EN10MB"
-        },                        
-        "link_type": "ethernet",
-        "name": "gns3",       
-        "port_number": 0,         
-        "short_name": "gns3"    
-    }
+    # ports_struct: Dict[str, Any] = {
+    #    "adapter_number": 0,
+    #    "data_link_types": {"Ethernet": "DLT_EN10MB"},
+    #    "link_type": "ethernet",
+    #    "name": "gns3",
+    #    "port_number": 0,
+    #    "short_name": "gns3",
+    # }
 
     cloud_id: str = create_node(
-        project_id, "cloud_gns3", template_name="cloud-gns3", node_type="cloud", console_type="none",
-        custom_properties={"interfaces": [port_map_struct]} #, ports=[ports_struct]  <-- gns3 crash when adding this...
+        project_id,
+        "cloud_gns3",
+        template_name="cloud-gns3",
+        node_type="cloud",
+        console_type="none",
+        custom_properties={
+            "interfaces": [port_map_struct]
+        },  # , ports=[ports_struct]  <-- gns3 crash when adding this...
     )
 
     ports: List[Dict[str, Any]] = []
     for port in range(16):
-        #port_struct = {                    
-        #        "adapter_number": 0,    
+        # port_struct = {
+        #        "adapter_number": 0,
         #        "data_link_types": {
         #            "Ethernet": "DLT_EN10MB"
         #            },
         #        "link_type": "ethernet",
-        #        "name": f"Ethernet{port}",      
-        #        "port_number": port,                    
-        #        "short_name": f"e{port}"      
+        #        "name": f"Ethernet{port}",
+        #        "port_number": port,
+        #        "short_name": f"e{port}"
         #        }
-        port_struct = {                     
-              "name": f"Ethernet{port}",
-              "port_number": port,   
-              "type": "access",   
-              "vlan": 1         
-        }                  
+        port_struct = {
+            "name": f"Ethernet{port}",
+            "port_number": port,
+            "type": "access",
+            "vlan": 1,
+        }
         ports.append(port_struct)
 
     mgmt_sw_id: str = create_node(
@@ -257,8 +263,8 @@ def create_mgt_infra(project_id: str, nodes_ids: List[str]) -> None:
         template_name="ethswitch_gns3",
         node_type="ethernet_switch",
         console_type="none",
-        #ports=ports
-        custom_properties={ "ports_mapping": ports }
+        # ports=ports
+        custom_properties={"ports_mapping": ports},
     )
 
     # Link both nodes
@@ -268,7 +274,8 @@ def create_mgt_infra(project_id: str, nodes_ids: List[str]) -> None:
 
 
 def start_nodes(
-    project_id: str, nodes_ids: List[str] = None  # type: ignore
+    project_id: str,
+    nodes_ids: List[str] = None  # type: ignore
 ) -> None:
 
     data_to_send: Dict[None, None] = {}
@@ -443,7 +450,9 @@ def prevent_console_timeouts(inventory: List[Dict[str, Any]]) -> None:
 
 
 def config_basics(
-    inventory: List[Dict[str, Any]], nodes: List[Dict[str, Any]]
+    inventory: List[Dict[str, Any]],
+    nodes: List[Dict[str, Any]],
+    saveconfig: bool = True,
 ) -> None:
     configs: List[str] = [
         "line con 0",
@@ -476,6 +485,8 @@ def config_basics(
             "transport input all",
             "login local",
         ]
+        if saveconfig:
+            configs.append("do wr")
         config_specific_node(conns[index], configs)
 
 
