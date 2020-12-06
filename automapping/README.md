@@ -10,18 +10,18 @@ This is an ambitious goal but we'll see how far we can go...
 
 ## Some ideas to start with
 
-- Get devices/links datas by leveraging LLDP recursively starting from 
+- Get devices/links datas by leveraging LLDP recursively starting from 1 or 2 devices (recursively because we can have some unknown devices on large snow flakes topologies)
 - Build a graph (networkx) from those datas
-- Generating an html/js output to show the graph on a browser
+- Generate an html/js output to show the graph on a browser
 
 At this point, we have the net topology drawn.  
 However, still nothing about link utilization.
 
-- Scrap devices interfaces utilization (snmp or ssh? ssh seems overkill for this. Telemetry is so badly supported by net vendors that it's not really a solution)
-- Store those datas on a DB (need at least a 3 months of storage)
+- Scrap devices interfaces utilization (snmp or ssh? ssh seems overkill for this. Telemetry is so badly supported by net vendors that it's not really a solution right now :-\ )
+  - would be interesting to look at pushing solutions instead of pulling from devices
+- Store those datas on a DB (need at least 3 months storage)
 - Depending on time frame chosen, average the values and colorize the links accordingly
 
 Or 
 
-- Leverage datas already store in cacti..
-
+- Leverage datas already stored in something like cacti as weathermap did... (but clearly not an ideal solution since cacti doesn't have a proper API)
