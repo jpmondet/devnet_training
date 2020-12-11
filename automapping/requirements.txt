@@ -1,0 +1,8 @@
+nornir<3.0.0
+plotly
+networkx
+matplotlib
+scipy
+chart_studio
+python-dotenv
+ttp
