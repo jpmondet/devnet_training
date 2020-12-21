@@ -25,6 +25,9 @@ For next steps (particularly the third one), I'll have to reshape my lost forgot
   - would be interesting to look at pushing solutions instead of pulling from devices
 - Store those datas on a DB (need at least 3 months storage)
 - Depending on time frame chosen, average the values and colorize the links accordingly
+  - This will have to be done in javascript or something alike
+    - As a PoC and to validate the backend part, I'll use the html/js part of a similar project from zerxen.
+      - Next step will be to write my own frontend depending on my needs
 
 Or 
 
