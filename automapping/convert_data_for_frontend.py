@@ -30,7 +30,7 @@
                         {
                             group: 1,
                             id: "deviceName",
-                            image: "image.png",
+                            image: "default.png",
                         },
                         {}]
                 }
@@ -46,9 +46,10 @@
         - no_neighbor_interfaces.json: {
                     "deviceName": [
                         {
-                            "interfaceName": "Ethernet0/0",
-                            "interfaceSpeed": 10000,
-                            "interfaceIndex": 1,
+                            "ifDescr": "Ethernet0/0",
+                            "ifSpeed": 10000,
+                            "ifType": "ethernet",
+                            "index": 1,
                         },
                         {},
                     ],
@@ -57,17 +58,18 @@
         - interfaces.json: {
                     "deviceName" : [
                         {
-                            "interfaceName": "Ethernet0/0",
-                            "interfaceSpeed": 10000,
-                            "interfaceIndex": 1,
+                            "ifDescr": "Ethernet0/0",
+                            "ifSpeed": 10000,
+                            "ifType": "ethernet",
+                            "index": 1,
                         },
                         {},
                     ],
                     "deviceName2" : [],
                 }
         - deviceName_ifaceIndex.json: {
-                    "interfaceName": "Ethernet0/0",
-                    "interfaceIndex": 1,
+                    "ifDescr": "Ethernet0/0",
+                    "index": 1,
                     "stats": [
                         {
                             "InSpeed": 0,
@@ -81,6 +83,7 @@
 from typing import Dict, List, Any
 from ast import literal_eval
 from time import strftime, localtime
+from random import randint
 from json import dump
 
 LldpInfos = Dict[str, List[Dict[str, str]]]
@@ -88,6 +91,8 @@ IfacesStats = Dict[str, Dict[str, Dict[str, Dict[str, str]]]]
 IfacesOutStruct = Dict[str, List[Dict[str, Any]]]
 NeighsOutStruct = Dict[str, List[Dict[str, str]]]
 GraphLinksStruct = List[Dict[str, Any]]
+
+FRONTEND_DATA_DIR = "./public-html/data"
 
 def format_interfaces(ifaces_stats: IfacesStats) -> IfacesOutStruct:
     """ interfaces.json & deviceName_ifaceIndex.json being very similar, 
@@ -100,12 +105,12 @@ def format_interfaces(ifaces_stats: IfacesStats) -> IfacesOutStruct:
         iface_index: int = 0
         for iface_name, iface_timed_infos in iface_infos.items():
             iface_details: Dict[str, Any] = {}
-            iface_details["interfaceName"] = iface_name
-            iface_details["interfaceIndex"] = iface_index
+            iface_details["ifDescr"] = iface_name
+            iface_details["index"] = iface_index
             iface_details["stats"] = []
             for timestamp, stats in iface_timed_infos.items():
                 iface_det_stats: Dict[str, Any] = {}
-                iface_details["interfaceSpeed"] = stats["bw"]
+                iface_details["ifSpeed"] = int(stats["bw"]) / 1000
                 iface_det_stats["InSpeed"] = int(stats["in_bytes"]) * 8
                 iface_det_stats["OutSpeed"] = int(stats["out_bytes"]) * 8
                 iface_det_stats["time"] =  strftime("%Y-%m-%d %H:%M:%S", localtime(int(timestamp)))
@@ -117,7 +122,7 @@ def format_interfaces(ifaces_stats: IfacesStats) -> IfacesOutStruct:
 
 def get_iface_infos(device_name: str, iface_name: str, ifaces_out_struct: IfacesOutStruct) -> Dict[str, Any]:
     for iface in ifaces_out_struct[device_name]:
-        if iface["interfaceName"] == iface_name:
+        if iface["ifDescr"] == iface_name:
             return iface
     return {}
 
@@ -134,14 +139,14 @@ def format_neighborships(lldp_infos: LldpInfos, ifaces_out_struct: IfacesOutStru
             iface_infos_nei = get_iface_infos(nei["neighbor"], nei["port_descr"], ifaces_out_struct)
 
             link: Dict[str, Any] = {}
-            link["highest_utilization"] = 0
+            link["highest_utilization"] = randint(1, 100) 
             link["source"] = device
             link["source_interfaces"] = [source_iface_name]
-            link["source_interfaces_indes"] = [iface_infos["interfaceIndex"]]
-            link["speed"] = iface_infos["interfaceSpeed"]
+            link["source_interfaces_indes"] = [iface_infos["index"]]
+            link["speed"] = iface_infos["ifSpeed"]
             link["target"] = nei["neighbor"]
             link["target_interfaces"] = [nei["port_descr"]]
-            link["target_interfaces_indes"] = [iface_infos_nei["interfaceIndex"]]
+            link["target_interfaces_indes"] = [iface_infos_nei["index"]]
             graph_links.append(link)
 
             device_nei: Dict[str, str] = {}
@@ -166,30 +171,30 @@ def write_into_appropriate_files(ifaces_out_struct: IfacesOutStruct, neigh_struc
     # Will certainly put this into its own func to handle different images & stuff
     for device_name in ifaces_out_struct:
         graph_node = {}
-        graph_node["group"] = 1
+        graph_node["group"] = randint(1,6)
         graph_node["id"] = device_name
-        graph_node["image"] = "image.png"
+        graph_node["image"] = "default.png"
         graph_struct["nodes"].append(graph_node)
-    with open("frontend/graph.json", "w") as gfile:
+    with open(f"{FRONTEND_DATA_DIR}/graph.json", "w") as gfile:
         dump(graph_struct, gfile)
 
 
     # neighborships.json & no_neighbor_interfaces.json
-    with open("frontend/neighborships.json", "w") as neifile:
+    with open(f"{FRONTEND_DATA_DIR}/neighborships.json", "w") as neifile:
         dump(neigh_struct, neifile)
     # I've no use for it for now so it'll be empty
-    with open("frontend/no_neighbor_interfaces.json", "w") as neifile:
+    with open(f"{FRONTEND_DATA_DIR}/no_neighbor_interfaces.json", "w") as neifile:
         dump({}, neifile)
 
 
     # interfaces.json & deviceName_ifaceIndex.json
     for device_name, device_ifaces in ifaces_out_struct.items():
         for iface in device_ifaces:
-            with open(f"frontend/{device_name}_{iface['interfaceIndex']}.json", "w") as device_file:
+            with open(f"{FRONTEND_DATA_DIR}/stats/{device_name}_{iface['index']}.json", "w") as device_file:
                 dump(iface, device_file)
             del(iface["stats"])
 
-    with open("frontend/interfaces.json", "w") as int_file:
+    with open(f"{FRONTEND_DATA_DIR}/interfaces.json", "w") as int_file:
         dump(ifaces_out_struct, int_file)
 
     return None
