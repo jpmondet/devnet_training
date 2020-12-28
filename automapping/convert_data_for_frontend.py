@@ -126,6 +126,29 @@ def get_iface_infos(device_name: str, iface_name: str, ifaces_out_struct: Ifaces
             return iface
     return {}
 
+def get_highest_utilization(iface_left: Dict[str, Any], iface_right: Dict[str, Any]) -> int:
+    """ Determine the highest utilization of a link depending on the interface stats 
+    on both sides. The highest utilization is an integer representing a percentage """
+
+    # Get highest speed iface
+    highest_speed = iface_left["ifSpeed"] if iface_left["ifSpeed"] > iface_right["ifSpeed"] else iface_right["ifSpeed"]
+    highest_speed = highest_speed * 1000000 # convert from Mbits to bits
+
+    # Get highest last timestamp stats:
+    iface_left_last = iface_left["stats"][-1]
+    iface_left_highest = iface_left_last["InSpeed"]
+    if iface_left_last["OutSpeed"] > iface_left_highest:
+        iface_left_highest = iface_left_last["OutSpeed"]
+
+    iface_right_last = iface_right["stats"][-1]
+    iface_right_highest = iface_right_last["InSpeed"]
+    if iface_right_last["OutSpeed"] > iface_right_highest:
+        iface_right_highest = iface_right_last["OutSpeed"]
+
+    highest_utilization = iface_left_highest if iface_left_highest > iface_right_highest else iface_right_highest 
+    
+    return int(highest_utilization / highest_speed * 100)
+
 def format_neighborships(lldp_infos: LldpInfos, ifaces_out_struct: IfacesOutStruct) -> (NeighsOutStruct, GraphLinksStruct) :
     neighs: NeighsOutStruct = {}
     graph_links: GraphLinksStruct = []
@@ -139,7 +162,7 @@ def format_neighborships(lldp_infos: LldpInfos, ifaces_out_struct: IfacesOutStru
             iface_infos_nei = get_iface_infos(nei["neighbor"], nei["port_descr"], ifaces_out_struct)
 
             link: Dict[str, Any] = {}
-            link["highest_utilization"] = randint(1, 100) 
+            link["highest_utilization"] = get_highest_utilization(iface_infos, iface_infos_nei)
             link["source"] = device
             link["source_interfaces"] = [source_iface_name]
             link["source_interfaces_indes"] = [iface_infos["index"]]
@@ -171,7 +194,8 @@ def write_into_appropriate_files(ifaces_out_struct: IfacesOutStruct, neigh_struc
     # Will certainly put this into its own func to handle different images & stuff
     for device_name in ifaces_out_struct:
         graph_node = {}
-        graph_node["group"] = randint(1,6)
+        graph_node["group"] = 4 if "sw" in device_name else 5
+        #graph_node["group"] = randint(1,6)
         graph_node["id"] = device_name
         graph_node["image"] = "default.png"
         graph_struct["nodes"].append(graph_node)
