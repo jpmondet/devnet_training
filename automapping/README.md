@@ -32,3 +32,7 @@ For next steps (particularly the third one), I'll have to reshape my lost forgot
 Or 
 
 - Leverage datas already stored in something like cacti as weathermap did... (but clearly not an ideal solution since cacti doesn't have a proper API)
+
+## Next steps
+
+- Have a better storage than raw files (https://github.com/couchbase-guides/python-sdk ? )
