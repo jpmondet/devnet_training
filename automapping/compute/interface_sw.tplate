@@ -1,0 +1,9 @@
+<group name="ifaces">
+{{ iface }} is up,  line protocol is up (connected)
+  Hardware is Ethernet, address is {{ mac }} (bia {{bia_mac}})
+  MTU {{ mtu }} bytes, BW {{ bw }} Kbit/sec, DLY {{ delay }} usec,
+     {{ in_packets }} packets input, {{ in_bytes }} bytes, {{ in_no_buffer }} no buffer
+     {{ in_errors }} input errors, {{ in_crc }} CRC, {{ in_frame }} frame, {{ in_overrun }} overrun, {{ in_ignored }} ignored
+     {{ out_packets}} packets output, {{ out_bytes }} bytes, {{ out_underruns }} underruns
+     {{ out_errors }} output errors, {{ out_collisions }}, {{ nb_iface_resets }}
+</group>
