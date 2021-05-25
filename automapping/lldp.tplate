@@ -1,9 +1,0 @@
-<group name="neighs">
------------------------------------------------- {{ _start_ }}
-Local Intf: {{ local_interface }}
-Chassis id: {{ mac }}
-Port id: {{ neighbor_interface }}
-Port Description: {{ port_descr }}
-System Name: {{ neighbor }}
-    IP: {{ mgmt_address }}
-</group>

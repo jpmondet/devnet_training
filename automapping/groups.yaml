@@ -1,6 +1,0 @@
----
-cisco_ios:
-  login: "iou"
-  password: "iou"
-  platform: "cisco_ios"
-  port: "22"
