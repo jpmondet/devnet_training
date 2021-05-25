@@ -1,0 +1,14 @@
+{
+    "sw1.iou": [
+        {
+            "ifAdminStatus": "up",
+            "ifDescr": "GigabitEthernet1/0",
+            "ifMtu": "1500",
+            "ifOperStatus": "up",
+            "ifPhysAddress": "08:00:27:07:f1:46",
+            "ifSpeed": "1000000000",
+            "ifType": "ethernetCsmacd",
+            "index": 17
+        }
+    ]
+}
