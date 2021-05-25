@@ -2,7 +2,7 @@
 <html>
 <head>
 	<meta charset="utf-8" />
-	<title></title>
+	<title>AutoMappah</title>
 	<meta name="keywords" content="" />
 	<meta name="description" content="" />
 	<link href="layout.css" rel="stylesheet">
@@ -35,12 +35,13 @@
                     <!-- <a href=""><img src="img/site/TitleRibbon.png" align="right" valign="top" width="600px" height="150px"></a> -->
                     <!--<td style="width: 30%; padding-left: 15px; padding-right: 15px;font-size: 110px;"> -->
                     <!-- </td> -->
+                    AutoMappah
                 </div>
                 <br>
 
                 <!-- neighborship tables -->
                 <div align="middle" style="font-size: 18px; padding: 200px 0px 0px 0px;" class="infobox" id="infobox_header" >
-                    <!-- CLICK ON DEVICE FOR DETAILED INFORMATION -->
+                    Click on devices or links to get traffic/neigh details
                 </div>
                 <div align="middle" style="font-size: 18px;" class="infobox" id="infobox">
                 </div>
@@ -97,6 +98,12 @@
 <!-- scripts from our software -->
 <script src="./src/automapping-scripts.js"></script>
 <script>
+
+window.onload = function() {
+  setTimeout(function () {
+      location.reload()
+  }, 300000);
+};
 
 
 var apiUrl = "http://127.0.0.1:8000"
@@ -602,6 +609,7 @@ d3.json(apiUrl + "/graph", function(error, graph) {
 
   node.append("text")
       .attr("font-size", "1em")
+      .style("fill", "#ffffff")
       .attr("dx", 12)
       .attr("dy", ".35em")
       .attr("x", +8)
