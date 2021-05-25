@@ -7,10 +7,9 @@
     Expected output : 
         (see in respective GET methods : 
             graph,
-            interfaces,
+            stats,
             neighborships
-            no_neigh_ifaces,
-            stats)
+        )
 """
 
 from collections import defaultdict
@@ -25,9 +24,15 @@ from secrets import compare_digest
 from fastapi import Depends, FastAPI, HTTPException, status, Query
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
 
-from storage.db_layer import get_stats_devices, get_all_nodes, get_all_links, get_links_device, get_speed_iface, get_highest_utilization as db_highest_utilization
+from storage.db_layer import (
+    get_stats_devices,
+    get_all_nodes,
+    get_all_links,
+    get_links_device,
+    get_speed_iface,
+    get_highest_utilization as db_highest_utilization,
+)
 
 app = FastAPI()
 
@@ -51,7 +56,7 @@ app.add_middleware(
 API_USER: str = "user"
 API_PASS: str = "pass"
 
-security = HTTPBasic() # TODO: Needs better security
+security = HTTPBasic()  # TODO: Needs better security
 
 LldpInfos = Dict[str, List[Dict[str, str]]]
 IfacesStats = Dict[str, Dict[str, Dict[str, Dict[str, str]]]]
@@ -60,6 +65,7 @@ NeighsOutStruct = Dict[str, List[Dict[str, str]]]
 GraphLinksStruct = List[Dict[str, Any]]
 
 FRONTEND_DATA_DIR = "../frontend/public-html/data"
+
 
 def check_credentials(credentials: HTTPBasicCredentials = Depends(security)):
     correct_username = compare_digest(credentials.username, API_USER)
@@ -72,8 +78,9 @@ def check_credentials(credentials: HTTPBasicCredentials = Depends(security)):
         )
     return credentials
 
+
 @app.get("/graph")
-#def get_graph(credentials=Depends(check_credentials)):
+# def get_graph(credentials=Depends(check_credentials)):
 def get_graph():
     """
                 "links": [
@@ -113,18 +120,20 @@ def get_graph():
 
     nodes: List[Dict[str, Any]] = get_all_nodes()
     for node in nodes:
-        node["group"] = 4 if 'sw' in node["device_name"] else 5
+        node["group"] = 4 if "sw" in node["device_name"] else 5
         node["id"] = node["device_name"]
         node["image"] = "default.png"
-        del(node["_id"]) # removing mongodb objectId
-    sorted_links: List[Dict[str, Any]] = sorted(get_all_links(), key=lambda d: (d['device_name'], d['neighbor_name']))
+        del node["_id"]  # removing mongodb objectId
+    sorted_links: List[Dict[str, Any]] = sorted(
+        get_all_links(), key=lambda d: (d["device_name"], d["neighbor_name"])
+    )
     formatted_links: Dict[str, Any] = {}
     for link in sorted_links:
         device = link["device_name"]
         iface = link["iface_name"]
         neigh = link["neighbor_name"]
         neigh_iface = link["neighbor_interface"]
-        if not formatted_links.get(device+neigh) and not formatted_links.get(neigh+device):
+        if not formatted_links.get(device + neigh) and not formatted_links.get(neigh + device):
             highest_utilization = db_highest_utilization(device, iface)
             speed = get_speed_iface(device, iface)
             percent_highest = int(int(highest_utilization) / int(speed))
@@ -136,56 +145,21 @@ def get_graph():
                 "target": neigh,
                 "target_interfaces": [neigh_iface],
             }
-            formatted_links[device+neigh] = f_link
+            formatted_links[device + neigh] = f_link
         else:
             try:
-                if iface not in formatted_links[device+neigh]["source_interfaces"]:
-                    formatted_links[device+neigh]["source_interfaces"].append(iface)
-                if neigh_iface not in formatted_links[device+neigh]["target_interfaces"]:
-                    formatted_links[device+neigh]["target_interfaces"].append(neigh_iface)
+                if iface not in formatted_links[device + neigh]["source_interfaces"]:
+                    formatted_links[device + neigh]["source_interfaces"].append(iface)
+                if neigh_iface not in formatted_links[device + neigh]["target_interfaces"]:
+                    formatted_links[device + neigh]["target_interfaces"].append(neigh_iface)
             except KeyError:
-                if neigh_iface not in formatted_links[neigh+device]["source_interfaces"]:
-                    formatted_links[neigh+device]["source_interfaces"].append(neigh_iface)
-                if iface not in formatted_links[neigh+device]["target_interfaces"]:
-                    formatted_links[neigh+device]["target_interfaces"].append(iface)
+                if neigh_iface not in formatted_links[neigh + device]["source_interfaces"]:
+                    formatted_links[neigh + device]["source_interfaces"].append(neigh_iface)
+                if iface not in formatted_links[neigh + device]["target_interfaces"]:
+                    formatted_links[neigh + device]["target_interfaces"].append(iface)
 
-    return  { "nodes": nodes, "links": list(formatted_links.values()) }
+    return {"nodes": nodes, "links": list(formatted_links.values())}
 
-#@app.get("/interfaces")
-#def ifaces():
-#    """
-#    {
-#       "deviceName": [
-#           {
-#               "ifDescr": "Ethernet0/0",
-#               "ifSpeed": 10000,
-#               "ifType": "ethernet",
-#               "index": 1,
-#           },
-#           {},
-#       ],
-#       "deviceName2" : [],
-#    } 
-#    """
-#    pass
-
-#@app.get("/interfaces/{device_name}")
-#def ifaces(device_name: str):
-#    """
-#    {
-#       "deviceName": [
-#           {
-#               "ifDescr": "Ethernet0/0",
-#               "ifSpeed": 10000,
-#               "ifType": "ethernet",
-#               "index": 1,
-#           },
-#           {},
-#       ],
-#       "deviceName2" : [],
-#    } 
-#    """
-#    pass
 
 @app.get("/stats/")
 def stats(q: List[str] = Query(None)):
@@ -207,41 +181,44 @@ def stats(q: List[str] = Query(None)):
         # Validate incoming query
         for device in q:
             if not isinstance(device, str):
-                raise HTTPException(
-                    status_code=status.HTTP_400_BAD_REQUEST
-                )
+                raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST)
             if len(device) != 7 and len(device) != 8:
-                raise HTTPException(
-                    status_code=status.HTTP_400_BAD_REQUEST
-                )
-            if 'iou' not in device:
-                raise HTTPException(
-                    status_code=status.HTTP_400_BAD_REQUEST
-                )
+                raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST)
+            if "iou" not in device:
+                raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST)
 
         stats_by_device: Dict[str, Any] = {}
-        sorted_stats = sorted(list(get_stats_devices(q)), key=lambda d: (d['device_name'], d['iface_name'], d['timestamp']))
+        sorted_stats = sorted(
+            list(get_stats_devices(q)),
+            key=lambda d: (d["device_name"], d["iface_name"], d["timestamp"]),
+        )
         for stat in sorted_stats:
             dname = stat["device_name"]
-            #ifname = stat["iface_name"].replace("Ethernet", "Et")
+            # ifname = stat["iface_name"].replace("Ethernet", "Et")
             ifname = stat["iface_name"]
             dbtime = stat["timestamp"]
             inttimestamp: int = int(dbtime)
             time = strftime("%y-%m-%d %H:%M:%S", localtime(inttimestamp))
-            stat_formatted = { "InSpeed": 0, "OutSpeed": 0, "time": time}
+            stat_formatted = {"InSpeed": 0, "OutSpeed": 0, "time": time}
             inbits: int = int(stat["in_bytes"]) * 8
             outbits: int = int(stat["out_bytes"]) * 8
             # This iface wasn't in the struct.
             # We add default infos (and speed to 0 since we don't know at how much speed it was before)
             if not stats_by_device.get(dname):
-                stats_by_device[dname] = { ifname : { "ifDescr": ifname, "index": ifname, "stats": [stat_formatted]} }
+                stats_by_device[dname] = {
+                    ifname: {"ifDescr": ifname, "index": ifname, "stats": [stat_formatted]}
+                }
             elif not stats_by_device[dname].get(ifname):
-                stats_by_device[dname][ifname] = { "ifDescr": ifname, "index": ifname, "stats": [stat_formatted]}
+                stats_by_device[dname][ifname] = {
+                    "ifDescr": ifname,
+                    "index": ifname,
+                    "stats": [stat_formatted],
+                }
             else:
                 # Must calculate speed. Not just adding in_bytes or it will only increase.
                 # Assuming it's ordered for now
                 prev_date = stats_by_device[dname][ifname]["stats"][-1]["time"]
-                prev_timestamp: int =  datetime.strptime(prev_date, "%y-%m-%d %H:%M:%S").timestamp()
+                prev_timestamp: int = datetime.strptime(prev_date, "%y-%m-%d %H:%M:%S").timestamp()
                 prev_inbits: int = stats_by_device[dname][ifname]["stats"][-1]["InSpeed"]
                 prev_outbits: int = stats_by_device[dname][ifname]["stats"][-1]["OutSpeed"]
 
@@ -250,17 +227,18 @@ def stats(q: List[str] = Query(None)):
                 stat_formatted["OutSpeed"] = int((outbits - prev_outbits) / interval)
 
                 stats_by_device[dname][ifname]["stats"].append(stat_formatted)
-            
+
         return stats_by_device
 
     else:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST
-        )
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST)
+
 
 @app.get("/neighborships/")
 # Leveraging query string validation built in FastApi to avoid having multiple IFs
-def neighborships(q: str = Query(..., min_length=7, max_length=8, regex="^[a-z]{2,3}[0-9]{1}.iou$")):
+def neighborships(
+    q: str = Query(..., min_length=7, max_length=8, regex="^[a-z]{2,3}[0-9]{1}.iou$")
+):
     """
         {
                         "deviceName":[
@@ -283,16 +261,11 @@ def neighborships(q: str = Query(..., min_length=7, max_length=8, regex="^[a-z]{
             device1, device2 = device2, device1
             iface1, iface2 = iface2, iface1
 
-        neighs.append({ 
-            "local_intf": iface1,
-            "neighbor": device2,
-            "neighbor_intf": iface2,
-        })
-
+        neighs.append(
+            {"local_intf": iface1, "neighbor": device2, "neighbor_intf": iface2,}
+        )
 
     return neighs
-
-
 
 
 def format_interfaces(ifaces_stats: IfacesStats) -> IfacesOutStruct:
@@ -333,7 +306,7 @@ def format_interfaces(ifaces_stats: IfacesStats) -> IfacesOutStruct:
                     interval = int(timestamp) - prev_timestamp
                     iface_det_stats["InSpeed"] = int((inbits - prev_inbits) / interval)
                     iface_det_stats["OutSpeed"] = int((outbits - prev_outbits) / interval)
-                iface_det_stats["time"] =  strftime("%Y-%m-%d %H:%M:%S", localtime(inttimestamp))
+                iface_det_stats["time"] = strftime("%Y-%m-%d %H:%M:%S", localtime(inttimestamp))
                 iface_details["stats"].append(iface_det_stats)
                 prev_timestamp = inttimestamp
                 prev_inbits = inbits
@@ -343,19 +316,27 @@ def format_interfaces(ifaces_stats: IfacesStats) -> IfacesOutStruct:
 
     return ifaces_struct
 
-def get_iface_infos(device_name: str, iface_name: str, ifaces_out_struct: IfacesOutStruct) -> Dict[str, Any]:
+
+def get_iface_infos(
+    device_name: str, iface_name: str, ifaces_out_struct: IfacesOutStruct
+) -> Dict[str, Any]:
     for iface in ifaces_out_struct[device_name]:
         if iface["ifDescr"] == iface_name:
             return iface
     return {}
+
 
 def get_highest_utilization(iface_left: Dict[str, Any], iface_right: Dict[str, Any]) -> int:
     """ Determine the highest utilization of a link depending on the interface stats 
     on both sides. The highest utilization is an integer representing a percentage """
 
     # Get highest speed iface
-    highest_speed = iface_left["ifSpeed"] if iface_left["ifSpeed"] > iface_right["ifSpeed"] else iface_right["ifSpeed"]
-    highest_speed = highest_speed * 1000000 # convert from Mbits to bits
+    highest_speed = (
+        iface_left["ifSpeed"]
+        if iface_left["ifSpeed"] > iface_right["ifSpeed"]
+        else iface_right["ifSpeed"]
+    )
+    highest_speed = highest_speed * 1000000  # convert from Mbits to bits
 
     # Get highest last timestamp stats:
     iface_left_last = iface_left["stats"][-1]
@@ -368,11 +349,16 @@ def get_highest_utilization(iface_left: Dict[str, Any], iface_right: Dict[str, A
     if iface_right_last["OutSpeed"] > iface_right_highest:
         iface_right_highest = iface_right_last["OutSpeed"]
 
-    highest_utilization = iface_left_highest if iface_left_highest > iface_right_highest else iface_right_highest 
-    
+    highest_utilization = (
+        iface_left_highest if iface_left_highest > iface_right_highest else iface_right_highest
+    )
+
     return int(highest_utilization / highest_speed * 100)
 
-def format_neighborships(lldp_infos: LldpInfos, ifaces_out_struct: IfacesOutStruct) -> (NeighsOutStruct, GraphLinksStruct) :
+
+def format_neighborships(
+    lldp_infos: LldpInfos, ifaces_out_struct: IfacesOutStruct
+) -> (NeighsOutStruct, GraphLinksStruct):
     neighs: NeighsOutStruct = {}
     graph_links: GraphLinksStruct = []
 
@@ -404,6 +390,7 @@ def format_neighborships(lldp_infos: LldpInfos, ifaces_out_struct: IfacesOutStru
 
     return neighs, graph_links
 
+
 def create_graph_struct(graph_links, ifaces_out_struct):
     graph_struct: Dict[str, List[Any]] = {}
     graph_struct["links"] = graph_links
@@ -412,15 +399,17 @@ def create_graph_struct(graph_links, ifaces_out_struct):
     for device_name in ifaces_out_struct:
         graph_node = {}
         graph_node["group"] = 4 if "sw" in device_name else 5
-        #graph_node["group"] = randint(1,6)
+        # graph_node["group"] = randint(1,6)
         graph_node["id"] = device_name
         graph_node["image"] = "default.png"
         graph_struct["nodes"].append(graph_node)
-    
+
     return graph_struct
 
 
-def write_into_appropriate_files(ifaces_out_struct: IfacesOutStruct, neigh_struct: NeighsOutStruct, graph_links: GraphLinksStruct) -> None:
+def write_into_appropriate_files(
+    ifaces_out_struct: IfacesOutStruct, neigh_struct: NeighsOutStruct, graph_links: GraphLinksStruct
+) -> None:
     """ With all the datas formatted before, we write them for frontend requirements into : 
     graph.json, neighborships.json, no_neighbor_interfaces.json, interfaces.json, deviceName_ifaceIndex.json
     """
@@ -432,7 +421,6 @@ def write_into_appropriate_files(ifaces_out_struct: IfacesOutStruct, neigh_struc
     with open(f"{FRONTEND_DATA_DIR}/graph.json", "w") as gfile:
         dump(graph_struct, gfile)
 
-
     # neighborships.json & no_neighbor_interfaces.json
     with open(f"{FRONTEND_DATA_DIR}/neighborships.json", "w") as neifile:
         dump(neigh_struct, neifile)
@@ -440,13 +428,14 @@ def write_into_appropriate_files(ifaces_out_struct: IfacesOutStruct, neigh_struc
     with open(f"{FRONTEND_DATA_DIR}/no_neighbor_interfaces.json", "w") as neifile:
         dump({}, neifile)
 
-
     # interfaces.json & deviceName_ifaceIndex.json
     for device_name, device_ifaces in ifaces_out_struct.items():
         for iface in device_ifaces:
-            with open(f"{FRONTEND_DATA_DIR}/stats/{device_name}_{iface['index']}.json", "w") as device_file:
+            with open(
+                f"{FRONTEND_DATA_DIR}/stats/{device_name}_{iface['index']}.json", "w"
+            ) as device_file:
                 dump(iface, device_file)
-            del(iface["stats"])
+            del iface["stats"]
 
     with open(f"{FRONTEND_DATA_DIR}/interfaces.json", "w") as int_file:
         dump(ifaces_out_struct, int_file)
@@ -471,6 +460,7 @@ def main() -> None:
     neigh_struct, graph_links = format_neighborships(lldp_infos, ifaces_out_struct)
 
     write_into_appropriate_files(ifaces_out_struct, neigh_struct, graph_links)
+
 
 if __name__ == "__main__":
     main()
