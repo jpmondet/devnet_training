@@ -6,3 +6,6 @@ scipy
 chart_studio
 python-dotenv
 ttp
+pymongo
+fastapi
+uvicorn[standard]

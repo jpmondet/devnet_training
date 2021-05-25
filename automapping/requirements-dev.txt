@@ -1,4 +1,6 @@
 pylint
 black
 mypy
+bandit
+scalene
 -r requirements.txt
