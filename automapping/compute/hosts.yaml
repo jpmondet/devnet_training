@@ -1,0 +1,49 @@
+!!omap
+- sw1.iou: !!omap
+  - hostname: 192.168.77.1
+  - groups:
+    - cisco_ios
+- sw4.iou: !!omap
+  - hostname: 192.168.77.4
+  - groups:
+    - cisco_ios
+- rtr1.iou: !!omap
+  - hostname: 192.168.77.5
+  - groups:
+    - cisco_ios
+- rtr2.iou: !!omap
+  - hostname: 192.168.77.6
+  - groups:
+    - cisco_ios
+- sw2.iou: !!omap
+  - hostname: 192.168.77.2
+  - groups:
+    - cisco_ios
+- rtr8.iou: !!omap
+  - hostname: 192.168.77.12
+  - groups:
+    - cisco_ios
+- rtr7.iou: !!omap
+  - hostname: 192.168.77.11
+  - groups:
+    - cisco_ios
+- sw3.iou: !!omap
+  - hostname: 192.168.77.3
+  - groups:
+    - cisco_ios
+- rtr4.iou: !!omap
+  - hostname: 192.168.77.8
+  - groups:
+    - cisco_ios
+- rtr3.iou: !!omap
+  - hostname: 192.168.77.7
+  - groups:
+    - cisco_ios
+- rtr5.iou: !!omap
+  - hostname: 192.168.77.9
+  - groups:
+    - cisco_ios
+- rtr6.iou: !!omap
+  - hostname: 192.168.77.10
+  - groups:
+    - cisco_ios
