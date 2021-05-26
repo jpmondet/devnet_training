@@ -1,0 +1,5 @@
+terraform-cli
+.terraform
+terraform*
+.terraform.lock.hcl
+testPlan

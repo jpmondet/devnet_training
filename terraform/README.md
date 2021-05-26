@@ -1,7 +1,10 @@
 # Terraform usage
 
-
 Looking at the providers, it seems like the easiest way to try locally is by using `docker provider`
+
+## Docker provider
+
+### Basic usage
 
 (Had to enable docker api though 
  `vi /lib/systemd/system/docker.service`  
@@ -74,3 +77,6 @@ Then it works ok.
 
 
 Finally, we can destroy the infrastructure : `terraform destroy`
+
+
+### Building images
