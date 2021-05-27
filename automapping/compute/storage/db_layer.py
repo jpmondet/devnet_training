@@ -17,6 +17,7 @@ from requests import get as rget
 import requests.exceptions
 
 DB_STRING: str="mongodb://mongodb:27017/"
+#DB_STRING: str="mongodb://127.0.0.1:27017/"
 
 DB_CLIENT: MongoClient = MongoClient(DB_STRING)
 DB = DB_CLIENT.automapping
@@ -93,7 +94,7 @@ def prep_db_if_not_exist():
 
     if (
         get_entire_collection(STATS_COLLECTION)
-        #and get_entire_collection(LBOARDS_COLLECTION)
+        #and get_entire_collection(NODES_COLLECTION)
         and get_entire_collection(SCRAPPED_DEVICES_COLLECTION)
     ):
         # Looks like everything is already migrated and ready
@@ -104,7 +105,7 @@ def prep_db_if_not_exist():
 
     # We ensure that ids will be unique
     # (this is a mongodb feature)
-    #IFACES_STATS_COLLECTION.create_index({"device_id": 1, "iface_id": 1, "timestamp": 1}, unique=True)
+    #STATS_COLLECTION.create_index({"device_id": 1, "iface_id": 1, "timestamp": 1}, unique=True)
 
     ifaces_stats = _safe_load_json_file(IFACES_STATS)
     if ifaces_stats:
@@ -115,8 +116,8 @@ def prep_db_if_not_exist():
 
     # Leaderboards are lil' more specific since they were stored in customs
     # Thus we have to do more processing here to extract lboards
-    if not get_entire_collection(LBOARDS_COLLECTION) or not get_entire_collection(
-        IFACES_STATS_COLLECTION
+    if not get_entire_collection(NODES_COLLECTION) or not get_entire_collection(
+        STATS_COLLECTION
     ):
 
         # We leverage this migration to use data from
@@ -126,7 +127,7 @@ def prep_db_if_not_exist():
         rs_maps: List[Dict[str, Any]] = get_all_maps_from_api()
         # We add them to our db since this is the new source of truth
         try:
-            IFACES_STATS_COLLECTION.insert_many(rs_maps)
+            STATS_COLLECTION.insert_many(rs_maps)
         except BulkWriteError as bwe:
             if "E11000 duplicate key error collection" in str(bwe):
                 pass
@@ -150,11 +151,11 @@ def prep_db_if_not_exist():
                     for score in cs["leaderboard"]:
                         lb_to_add = score.copy()
                         lb_to_add["map_uuid"] = rsmap["uuid"]
-                        LBOARDS_COLLECTION.insert_one(lb_to_add)
+                        NODES_COLLECTION.insert_one(lb_to_add)
 
-    if not get_entire_collection(ACCOUNTS_COLLECTION):
-        acc = _safe_load_json_file(ACCOUNTS)
-        players_details = _safe_load_json_file(PLAYERS_DETAILS)
+    if not get_entire_collection(LINKS_COLLECTION):
+        acc = _safe_load_json_file("")
+        players_details = _safe_load_json_file("")
 
         if acc and players_details:
             player_name_id = {}
@@ -179,10 +180,10 @@ def prep_db_if_not_exist():
                         "total_triggers": 0,
                     }
                 )
-            ACCOUNTS_COLLECTION.insert_many(acc_updated)
+            LINKS_COLLECTION.insert_many(acc_updated)
 
     # Now that we have migrated all data, we suppress redondant datas that are still in leaderboards collection
-    scores = get_entire_collection(LBOARDS_COLLECTION)
+    scores = get_entire_collection(NODES_COLLECTION)
     for score in scores:
         if not score.get("map_name"):
             continue
@@ -197,8 +198,8 @@ def prep_db_if_not_exist():
         del score_updated["player_discord_id"]
         del score_updated["player_discord_name"]
         del score_updated["difficulty"]
-        # LBOARDS_COLLECTION.update_one(score, { '$set': score_updated })
-        LBOARDS_COLLECTION.find_one_and_replace(score, score_updated)
+        # NODES_COLLECTION.update_one(score, { '$set': score_updated })
+        NODES_COLLECTION.find_one_and_replace(score, score_updated)
         # We also take this chance to update account stats:
         account["total_score"] = float(account["total_score"]) + float(score["score"])
         account["total_perfects_percent"] = float(account["total_perfects_percent"]) + float(
@@ -258,10 +259,12 @@ def get_stats_devices(devices: List[str]):
 
 def get_speed_iface(device_name: str, iface_name: str):
     #return IFACES_COLLECTION.find_one({ "device_name": device_name, "iface_name": iface_name })
+    speed: int = 1
     try:
-        return list(STATS_COLLECTION.find({ "device_name": device_name, "iface_name": iface_name }))[-1]["bw"]
+        speed = list(STATS_COLLECTION.find({ "device_name": device_name, "iface_name": iface_name }))[-1]["speed"]
     except KeyError:
         return 1
+    return speed
 
 def get_highest_utilization(device_name: str, iface_name: str):
     utilization_line = UTILIZATION_COLLECTION.find_one({ "device_name": device_name, "iface_name": iface_name })
@@ -272,49 +275,49 @@ def get_highest_utilization(device_name: str, iface_name: str):
 
 
 def get_account_by_discord_id(discord_id: int) -> Dict[str, Any]:
-    return ACCOUNTS_COLLECTION.find_one({"discord_id": str(discord_id)})
+    return LINKS_COLLECTION.find_one({"discord_id": str(discord_id)})
 
 
 def get_account_by_player_id(player_id: int) -> Dict[str, Any]:
-    return ACCOUNTS_COLLECTION.find_one({"player_id": player_id})
+    return LINKS_COLLECTION.find_one({"player_id": player_id})
 
 
 def get_accounts() -> List[Dict[str, Any]]:
-    return get_entire_collection(ACCOUNTS_COLLECTION)
+    return get_entire_collection(LINKS_COLLECTION)
 
 
 def get_pending_submissions() -> List[Dict[str, Any]]:
-    return PENDING_SCORES_COLLECTION.find({})
+    return NODES_COLLECTION.find({})
 
 
 def get_pending_submissions_by_player_id(player_id: int) -> List[Dict[str, Any]]:
-    return PENDING_SCORES_COLLECTION.find({"player_id": player_id})
+    return NODES_COLLECTION.find({"player_id": player_id})
 
 
 def get_map_by_name(title: str, artist: str) -> Dict[str, Any]:
     # This can be dangerous if there are multiple maps with the same name
     # It will be used only for migration purpose
-    return IFACES_STATS_COLLECTION.find_one({"title": title, "artist": artist})
+    return STATS_COLLECTION.find_one({"title": title, "artist": artist})
 
 
 def get_scores_by_player_id(player_id: int) -> List[Dict[str, Any]]:
-    return LBOARDS_COLLECTION.find({"player_id": player_id})
+    return NODES_COLLECTION.find({"player_id": player_id})
 
 
 def get_score_by_map_uuid_and_diff(map_uuid: str, difficulty: str) -> List[Dict[str, Any]]:
-    return LBOARDS_COLLECTION.find({"map_uuid": map_uuid, "difficulty_played": difficulty})
+    return NODES_COLLECTION.find({"map_uuid": map_uuid, "difficulty_played": difficulty})
 
 
 def get_score_by_player_id_map_uuid_diff(
     player_id: int, map_uuid: str, difficulty: str
 ) -> Dict[str, Any]:
-    return LBOARDS_COLLECTION.find_one(
+    return NODES_COLLECTION.find_one(
         {"player_id": player_id, "map_uuid": map_uuid, "difficulty_played": difficulty}
     )
 
 
 def get_map_by_uuid(uuid: str) -> Dict[str, Any]:
-    return IFACES_STATS_COLLECTION.find_one({"uuid": uuid})
+    return STATS_COLLECTION.find_one({"uuid": uuid})
 
 
 @_retryer()
@@ -328,11 +331,11 @@ def get_from_api(url: str) -> Dict[str, Any]:
 def get_all_maps_from_api() -> List[Dict[str, Any]]:
     try:
         start_count: int = 0
-        resp: Dict[str, Any] = get_from_api(RAGNASONG_MAPS.format(start_count))
+        resp: Dict[str, Any] = get_from_api(IFACES_STATS.format(start_count))
         nb_resp: int = len(resp["results"])
         rs_maps: List[Dict[str, Any]] = resp["results"]
         for start_count in range(nb_resp, resp["count"] + 1, nb_resp):
-            resp = get_from_api(RAGNASONG_MAPS.format(start_count))
+            resp = get_from_api(IFACES_STATS.format(start_count))
             rs_maps.extend(resp["results"])
         return rs_maps
     except NetworkError:
@@ -340,7 +343,7 @@ def get_all_maps_from_api() -> List[Dict[str, Any]]:
 
 
 def get_new_maps_from_api() -> List[Dict[str, Any]]:
-    current_maps = IFACES_STATS_COLLECTION.find({})
+    current_maps = STATS_COLLECTION.find({})
     rs_maps = get_all_maps_from_api()
 
     current_maps_uuids = {dcm["uuid"]: dcm for dcm in current_maps}
@@ -356,11 +359,11 @@ def get_new_maps_from_api() -> List[Dict[str, Any]]:
 
 
 def search_account_by_name(player_name: str):
-    return ACCOUNTS_COLLECTION.find({"player_name": rcompile(player_name, rIGNORECASE)})
+    return LINKS_COLLECTION.find({"player_name": rcompile(player_name, rIGNORECASE)})
 
 
 def search_map_by_title_artist_mapper(title: str, artist: str, mapper: str) -> List[Dict[str, Any]]:
-    return IFACES_STATS_COLLECTION.find(
+    return STATS_COLLECTION.find(
         {
             "$and": [
                 {"title": rcompile(title, rIGNORECASE)},
@@ -372,7 +375,7 @@ def search_map_by_title_artist_mapper(title: str, artist: str, mapper: str) -> L
 
 
 def search_map_by_pattern(pattern: str):
-    return IFACES_STATS_COLLECTION.find(
+    return STATS_COLLECTION.find(
         {
             "$or": [
                 {"uuid": rcompile(pattern, rIGNORECASE)},
@@ -387,7 +390,7 @@ def search_map_by_pattern(pattern: str):
 
 
 def add_account(account: Dict[str, Any]) -> None:
-    ACCOUNTS_COLLECTION.insert_one(account)
+    LINKS_COLLECTION.insert_one(account)
 
 def add_iface_stats_at_time(device_name: str, iface_name: str, timestamp: int, stats: Dict[str, Any]) -> None:
     stats_line: Dict[str, Any] = {"device_name": device_name, "iface_name":iface_name}
@@ -399,19 +402,19 @@ def add_iface_stats(stats: Dict[str, Any]) -> None:
 
 
 def add_pending_submission(submission: Dict[str, Any]) -> None:
-    PENDING_SCORES_COLLECTION.insert_one(submission)
+    NODES_COLLECTION.insert_one(submission)
 
 
 def add_score_to_cslboard(submission: Dict[str, Any]) -> None:
-    LBOARDS_COLLECTION.insert_one(submission)
+    NODES_COLLECTION.insert_one(submission)
 
 
 def add_map_to_custom_songs(map_to_add: Dict[str, Any]) -> None:
-    IFACES_STATS_COLLECTION.insert_one(map_to_add)
+    STATS_COLLECTION.insert_one(map_to_add)
 
 
 def add_multiple_maps_to_custom_songs(maps_to_add: List[Dict[str, Any]]) -> None:
-    IFACES_STATS_COLLECTION.insert_many(maps_to_add)
+    STATS_COLLECTION.insert_many(maps_to_add)
 
 def bulk_update_collection(mongodb_collection, list_tuple_key_query) -> None:
     # Request is using UpdateMany (https://pymongo.readthedocs.io/en/stable/api/pymongo/collection.html?highlight=update#pymongo.collection.Collection.update_many)
@@ -434,24 +437,24 @@ def update_set_collection(
 def update_multiple_value_on_account_by_player_id(
     player_id: int, replace_query: Dict[str, Any]
 ) -> None:
-    update_set_collection(ACCOUNTS_COLLECTION, {"player_id": player_id}, replace_query)
+    update_set_collection(LINKS_COLLECTION, {"player_id": player_id}, replace_query)
 
 
 def update_account_by_player_id(player_id: int, attr_to_set: str, attr_value: Any) -> None:
-    update_set_collection(ACCOUNTS_COLLECTION, {"player_id": player_id}, {attr_to_set: attr_value})
+    update_set_collection(LINKS_COLLECTION, {"player_id": player_id}, {attr_to_set: attr_value})
 
 
 def update_map_by_uuid(uuid: str, attr_to_set: str, attr_value: Any) -> None:
-    update_set_collection(IFACES_STATS_COLLECTION, {"uuid": uuid}, {attr_to_set: attr_value})
+    update_set_collection(STATS_COLLECTION, {"uuid": uuid}, {attr_to_set: attr_value})
 
 
 def delete_account(player_id: int) -> None:
-    ACCOUNTS_COLLECTION.delete_one({"player_id": player_id})
+    LINKS_COLLECTION.delete_one({"player_id": player_id})
 
 
 def delete_scores_on_lboard_by_player_id(player_id: int) -> None:
-    LBOARDS_COLLECTION.delete_many({"player_id": player_id})
+    NODES_COLLECTION.delete_many({"player_id": player_id})
 
 
 def delete_pending_submission(submission: Dict[str, Any]) -> None:
-    PENDING_SCORES_COLLECTION.delete_one(submission)
+    NODES_COLLECTION.delete_one(submission)
