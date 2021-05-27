@@ -92,9 +92,9 @@ def dump_results_to_db() -> None:
                 }
             ))
 
-    print(nodes_list)
+    #print(nodes_list)
     #print(ifaces_list)
-    print(links_list)
+    #print(links_list)
     bulk_update_collection(NODES_COLLECTION, nodes_list)
     #bulk_update_collection(IFACES_COLLECTION, ifaces_list)
     bulk_update_collection(LINKS_COLLECTION, links_list)
