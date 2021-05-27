@@ -21,10 +21,16 @@ services:
     build:
       context: /home/christ/Documents/git/devnet_training/automapping/compute/
       dockerfile: Dockerfile.scrapper
-  stats_crawler:
+  #stats_crawler:
+  #  build:
+  #    context: /home/christ/Documents/git/devnet_training/automapping/compute/
+  #    dockerfile: Dockerfile.stats
+  stats_crawler_snmp:
     build:
       context: /home/christ/Documents/git/devnet_training/automapping/compute/
-      dockerfile: Dockerfile.stats
+      dockerfile: Dockerfile.statsnmp
+    env_file:
+    - /home/christ/Documents/git/devnet_training/automapping/.snmp
   apache:  
     image: "httpd:2.4"
     volumes:
