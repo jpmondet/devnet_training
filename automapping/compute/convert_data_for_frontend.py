@@ -33,6 +33,7 @@ from storage.db_layer import (
     get_speed_iface,
     get_highest_utilization as db_highest_utilization,
 )
+from utils.timing import timing
 
 app = FastAPI()
 
@@ -49,7 +50,7 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
     allow_credentials=True,
-    allow_methods=["GET"],
+    allow_methods=["*"],
     allow_headers=["*"],
 )
 
@@ -79,6 +80,7 @@ def check_credentials(credentials: HTTPBasicCredentials = Depends(security)):
     return credentials
 
 
+@timing
 @app.get("/graph")
 # def get_graph(credentials=Depends(check_credentials)):
 def get_graph():
@@ -120,7 +122,12 @@ def get_graph():
 
     nodes: List[Dict[str, Any]] = get_all_nodes()
     for node in nodes:
-        node["group"] = 4 if "sw" in node["device_name"] else 5
+        node["group"] = 1 if "sw" in node["device_name"] else 2 
+        if node["device_name"].startswith('fake'):
+            node['group'] = 3
+        elif node["device_name"].startswith('down_fake'):
+            node['group'] = 5
+
         node["id"] = node["device_name"]
         node["image"] = "default.png"
         del node["_id"]  # removing mongodb objectId
@@ -136,7 +143,9 @@ def get_graph():
         if not formatted_links.get(device + neigh) and not formatted_links.get(neigh + device):
             highest_utilization = db_highest_utilization(device, iface)
             speed = get_speed_iface(device, iface)
-            percent_highest = int(int(highest_utilization) / int(speed))
+            speed = speed * 1000000 #Convert speed to bits
+            highest_utilization = highest_utilization * 8 #convert to bits
+            percent_highest = highest_utilization / speed * 100
             f_link = {
                 "highest_utilization": percent_highest,
                 "source": device,
@@ -160,7 +169,7 @@ def get_graph():
 
     return {"nodes": nodes, "links": list(formatted_links.values())}
 
-
+@timing
 @app.get("/stats/")
 def stats(q: List[str] = Query(None)):
     """
@@ -223,8 +232,9 @@ def stats(q: List[str] = Query(None)):
                 prev_outbits: int = stats_by_device[dname][ifname]["stats"][-1]["OutSpeed"]
 
                 interval = inttimestamp - prev_timestamp
-                stat_formatted["InSpeed"] = int((inbits - prev_inbits) / interval)
-                stat_formatted["OutSpeed"] = int((outbits - prev_outbits) / interval)
+                if interval:
+                    stat_formatted["InSpeed"] = int((inbits - prev_inbits) / interval)
+                    stat_formatted["OutSpeed"] = int((outbits - prev_outbits) / interval)
 
                 stats_by_device[dname][ifname]["stats"].append(stat_formatted)
 
@@ -234,10 +244,11 @@ def stats(q: List[str] = Query(None)):
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST)
 
 
+@timing
 @app.get("/neighborships/")
 # Leveraging query string validation built in FastApi to avoid having multiple IFs
 def neighborships(
-    q: str = Query(..., min_length=7, max_length=8, regex="^[a-z]{2,3}[0-9]{1}.iou$")
+    q: str = Query(..., min_length=7, max_length=8)#, regex="^[a-z]{2,3}[0-9]{1}.iou$")
 ):
     """
         {
