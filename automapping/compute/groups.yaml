@@ -4,3 +4,8 @@ cisco_ios:
   password: "iou"
   platform: "cisco_ios"
   port: "22"
+cisco_nxos:
+  login: "admin"
+  password: "admin"
+  platform: "cisco_nxos"
+  port: "22"
