@@ -40,26 +40,31 @@
     /* #padding-bottom: 100%; */
     vertical-align: top;
     overflow: hidden;
+    /*color:#ffffff;*/
 }
 .svg-content {
     display: inline-block;
     position: absolute;
     top: 0;
     left: 0;
+    /*color:#ffffff;*/
 }
 
 .links line {
   stroke: #999;
   stroke-opacity: 0.6;
+  /*color:#ffffff;*/
 }
 
 div.infobox {
     padding: 0px 0px 0px 15px;
+    color:#ffffff;
     background: #000000;
 }
 
 div.infobox_header {
     background: #000000;
+    color:#ffffff;
 }
 
 table.infobox {
@@ -67,13 +72,16 @@ table.infobox {
   width: 600px;
   text-align: center;
   background: rgba(0, 0, 0, 0);
+  color:#ffffff;
 }
 table.infobox td, table.infobox th {
-  border: 1px solid #000000;
+  border: 1px solid #615656;
   padding: 4px 4px;
+  color: #ffffff;
 }
 table.infobox tbody td {
   font-size: 13px;
+  color: #ffffff;
 }
 table.infobox thead {
   background: #000000;
@@ -84,15 +92,18 @@ table.infobox thead {
 table.infobox thead th {
   font-size: 17px;
   font-weight: bold;
+  color:#ffffff;
   text-align: left;
   border-left: 2px solid #948473;
 }
 table.infobox thead th:first-child {
   border-left: none;
+  color: #ffffff;
 }
 
 table.infobox tfoot td {
   font-size: 16px;
+  color:#ffffff;
 }
 
 
@@ -100,19 +111,23 @@ table.infobox tfoot td {
   /* margin: 15px 0px 0px 15px; */
   font-size:  0.7em;
   width: 600px;
+  color:#ffffff;
 }
 
 table.infobox2 {
   width: 600px;
   text-align: center;
   background: rgba(0, 0, 0, 0.5);
+  color:#ffffff;
 }
 table.infobox2 td, table.infobox2 th {
   border: 1px solid #948473;
   padding: 4px 4px;
+  color:#ffffff;
 }
 table.infobox2 tbody td {
   font-size: 13px;
+  color:#ffffff;
 }
 table.infobox2 thead {
   background: #000000;
@@ -123,16 +138,18 @@ table.infobox2 thead {
 table.infobox2 thead th {
   font-size: 17px;
   font-weight: bold;
-  color: #1c1a1a;
+  color: #ffffff;
   text-align: left;
   border-left: 2px solid #948473;
 }
 table.infobox2 thead th:first-child {
   border-left: none;
+  color:#ffffff;
 }
 
 table.infobox2 tfoot td {
   font-size: 16px;
+  color:#ffffff;
 }
 
 .nodes circle {

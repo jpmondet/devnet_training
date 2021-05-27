@@ -13,10 +13,10 @@ function cleanDivWithID(id){
 
 function OnClickLinkDetails(source_name, target_name, source_interfaces, target_interfaces ){
 
-    console.log(source_name.id)
-    console.log(source_interfaces)
-    console.log(target_name.id)
-    console.log(target_interfaces)
+    //console.log(source_name.id)
+    //console.log(source_interfaces)
+    //console.log(target_name.id)
+    //console.log(target_interfaces)
 
     cleanDivWithID("infobox")
     cleanDivWithID("infobox_header")
@@ -33,12 +33,12 @@ function OnClickLinkDetails(source_name, target_name, source_interfaces, target_
       for (var iface of source_interfaces){
 
           var interface = data[source_name.id][iface];
-          console.log("index " + iface + " on " + source_name.id)
+          //console.log("index " + iface + " on " + source_name.id)
           //var filename = "data/stats/" + source_name.id + "_" + index + ".json"
           //console.log("filename: " + filename)
           //readTextFile(filename, function(text){
           //    var interface = JSON.parse(text);
-          console.log(JSON.stringify(interface))
+          //console.log(JSON.stringify(interface))
           var iDivGraph = document.createElement('div');
           iDivGraph.id = source_name.id + "_" + interface['ifDescr'] + "_graph";
           targetdiv.appendChild(iDivGraph);
@@ -49,12 +49,12 @@ function OnClickLinkDetails(source_name, target_name, source_interfaces, target_
       //# SIMPLIFIED GRAPH PRINTING
       for (var iface of target_interfaces){
           var interface = data[target_name.id][iface];
-          console.log("index " + iface + " on " + target_name.id)
+          //console.log("index " + iface + " on " + target_name.id)
           //var filename = "data/stats/" + target_name.id + "_" + index + ".json"
           //console.log("filename: " + filename)
           //readTextFile(filename, function(text){
           //    var interface = JSON.parse(text);
-          console.log(interface)
+          //console.log(interface)
           var iDivGraph = document.createElement('div');
           iDivGraph.id = target_name.id + "_" + interface['ifDescr'] + "_graph";
           targetdiv.appendChild(iDivGraph);
