@@ -9,3 +9,5 @@ ttp
 pymongo
 fastapi
 uvicorn[standard]
+pysnmp
+dpath
