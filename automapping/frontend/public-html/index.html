@@ -170,7 +170,7 @@ function OnViewChange(deviceid, view = "traffic"){
     // # CREATING GRAPHS      #
     // #############################
     if (view == "traffic"){
-        console.log("we want network traffic graphs for " + deviceid)
+        //console.log("we want network traffic graphs for " + deviceid)
 
         // # SIMPLIFIED
         //readTextFile("data/interfaces.json", function(text){
@@ -178,10 +178,10 @@ function OnViewChange(deviceid, view = "traffic"){
         //getJsonFromLink(apiUrl + "/stats/?q=" + deviceid, function(data){
             var data = JSON.parse(text);
             for (var iface in data[deviceid]) {
-              console.log(iface)
+              //console.log(iface)
               var interface = data[deviceid][iface]
-              console.log(JSON.stringify(interface))
-              console.log("interface index: " + interface['index'] + " name: " + interface['ifDescr'])
+              //console.log(JSON.stringify(interface))
+              //console.log("interface index: " + interface['index'] + " name: " + interface['ifDescr'])
               //var filename = "data/stats/" + deviceid + "_" + interface['index'] + ".json"
               //var filename = apiUrl + "/stats/?q=" + deviceid + "&q=" + interface['index']
               //console.log("filename: " + filename)
@@ -214,8 +214,8 @@ function OnViewChange(deviceid, view = "traffic"){
         //readTextFile(apiUrl + "/neighborships", function(text){
         readTextFile(apiUrl + "/neighborships/?q=" + deviceid, function(text){
           var data = JSON.parse(text);
-          console.log(data);
-          console.log(deviceid);
+          //console.log(data);
+          //console.log(deviceid);
 
           //bFoundMatch = 0;
           //for (var key in data) {
@@ -240,28 +240,28 @@ function OnViewChange(deviceid, view = "traffic"){
 
         // # READING NEIGHBOR-LESS INTERFACES #
         // ####################################
-        readTextFile("data/no_neighbor_interfaces.json", function(text){
-        //getJsonFromLink(apiUrl + "/no_neighbor_interfaces", function(data){
-        //readTextFile(apiUrl + "/no_neighbor_interfaces", function(text){
-          var data = JSON.parse(text);
-          console.log(data);
-          console.log(deviceid);
+        //readTextFile("data/no_neighbor_interfaces.json", function(text){
+        ////getJsonFromLink(apiUrl + "/no_neighbor_interfaces", function(data){
+        ////readTextFile(apiUrl + "/no_neighbor_interfaces", function(text){
+        //  var data = JSON.parse(text);
+        //  //console.log(data);
+        //  //console.log(deviceid);
 
-          bFoundMatch = 0;
-          for (var key in data) {
-            console.log("Key: " + key + " vs " + deviceid);
+        //  bFoundMatch = 0;
+        //  for (var key in data) {
+        //    //console.log("Key: " + key + " vs " + deviceid);
 
-            if ((deviceid.localeCompare(key)) == 0){
-              console.log("match!");
-              bFoundMatch = 1;
-              text = tableFromUnusedInterfaces(key,data);
-              printToDivWithID("infobox","<br><font style=\"font-size:12px;\" color=\"#943434\">Interfaces (only link state UP) without LLDP Neighbor:</font><br>" + text)
-            }
-          }
-          if (!(bFoundMatch)){
-            console.log("No interfaces without neighbor found");
-          }
-        });
+        //    if ((deviceid.localeCompare(key)) == 0){
+        //      //console.log("match!");
+        //      bFoundMatch = 1;
+        //      text = tableFromUnusedInterfaces(key,data);
+        //      printToDivWithID("infobox","<br><font style=\"font-size:12px;\" color=\"#943434\">Interfaces (only link state UP) without LLDP Neighbor:</font><br>" + text)
+        //    }
+        //  }
+        //  if (!(bFoundMatch)){
+        //    console.log("No interfaces without neighbor found");
+        //  }
+        //});
     };
 }
 
@@ -277,7 +277,7 @@ function tableFromUnusedInterfaces(key,data){
   for (var neighbor in data[key]) {
     text+= "<tr>";
 
-    console.log("local_intf:" + data[key][neighbor]['ifDescr']);
+    //console.log("local_intf:" + data[key][neighbor]['ifDescr']);
     text+= "<td>" + data[key][neighbor]['ifDescr'] + "</td>";
     console.log("description:" + data[key][neighbor]['ifType']);
     text+= "<td>" + data[key][neighbor]['ifType'] + "</td>";
@@ -304,11 +304,11 @@ function tableFromNeighbor(data){
   for (let neighbor of data) {
     text+= "<tr>";
 
-    console.log("local_intf:" + neighbor['local_intf']);
+    //console.log("local_intf:" + neighbor['local_intf']);
     text+= "<td>" + neighbor['local_intf'] + "</td>";
-    console.log("neighbor_intf:" + neighbor['neighbor_intf']);
+    //console.log("neighbor_intf:" + neighbor['neighbor_intf']);
     text+= "<td>" + neighbor['neighbor'] + "</td>";
-    console.log("neighbor:" + neighbor['neighbor']);
+    //console.log("neighbor:" + neighbor['neighbor']);
     text+= "<td>" + neighbor['neighbor_intf'] + "</td>";
 
     text+= "</tr>";
@@ -345,10 +345,10 @@ var y_trans = 0
 function transform_delta(delta_x,delta_y){
 	var nodes_g = document.getElementById('nodes-g');
 	var links_g = document.getElementById('links-g');
-	console.log("Current transforms: " + x_trans + ":" + y_trans)
+	//console.log("Current transforms: " + x_trans + ":" + y_trans)
 	x_trans = x_trans + delta_x
 	y_trans = y_trans + delta_y
-	console.log("New transforms: " + x_trans + ":" + y_trans)
+	//console.log("New transforms: " + x_trans + ":" + y_trans)
 	nodes_g.setAttribute("transform", "translate(" + x_trans + "," + y_trans +")")
 	links_g.setAttribute("transform", "translate(" + x_trans + "," + y_trans +")")
 }
@@ -356,58 +356,58 @@ function transform_delta(delta_x,delta_y){
 // ########### DOWN BUTTON ###############
 function navDownFunctionClick() {
   document.getElementById("down-button").style["color"] = "red";
-  console.log("navDownFunctionClick")
+  //console.log("navDownFunctionClick")
   if(MouseDownID==-1)  //Prevent multimple loops!
      MouseDownID = setInterval(WhileNavDownMouseDown, 100 /*execute every 100ms*/);
 }
 function WhileNavDownMouseDown() {
    /*here put your code*/
-   console.log("WhileNavDownMouseDown")
+   //console.log("WhileNavDownMouseDown")
    transform_delta(0,10)
 }
 
 // ########### UP BUTTON ###############
 function navUpFunctionClick() {
   document.getElementById("up-button").style["color"] = "red";
-  console.log("navUpFunctionClick")
+  //console.log("navUpFunctionClick")
   if(MouseDownID==-1)  //Prevent multimple loops!
      MouseDownID = setInterval(WhileNavUpMouseDown, 100 /*execute every 100ms*/);
 }
 function WhileNavUpMouseDown() {
    /*here put your code*/
-   console.log("WhileNavUpMouseDown")
+   //console.log("WhileNavUpMouseDown")
    transform_delta(0,-10)
 }
 // ########### LEFT BUTTON ###############
 function navLeftFunctionClick() {
   document.getElementById("left-button").style["color"] = "red";
-  console.log("navLeftFunctionClick")
+  //console.log("navLeftFunctionClick")
   if(MouseDownID==-1)  //Prevent multimple loops!
      MouseDownID = setInterval(WhileNavLeftMouseDown, 100 /*execute every 100ms*/);
 }
 function WhileNavLeftMouseDown() {
    /*here put your code*/
-   console.log("WhileNavLeftMouseDown")
+   //console.log("WhileNavLeftMouseDown")
    transform_delta(-10,0)
 }
 
 // ########### RIGHT BUTTON ###############
 function navRightFunctionClick() {
   document.getElementById("right-button").style["color"] = "red";
-  console.log("navRightFunctionClick")
+  //console.log("navRightFunctionClick")
   if(MouseDownID==-1)  //Prevent multimple loops!
      MouseDownID = setInterval(WhileNavRightMouseDown, 100 /*execute every 100ms*/);
 }
 function WhileNavRightMouseDown() {
    /*here put your code*/
-   console.log("WhileNavRightMouseDown")
+   //console.log("WhileNavRightMouseDown")
    transform_delta(10,0)
 }
 
 
 // ########### COMMON RELEASE BUTTON ###############
 function navRelease() {
-  console.log("navRelease")
+  //console.log("navRelease")
   document.getElementById("down-button").style["color"] = "black";
   document.getElementById("up-button").style["color"] = "black";
   document.getElementById("left-button").style["color"] = "black";
@@ -422,7 +422,7 @@ function navRelease() {
 
 var intervalID = setInterval(resize_svg_on_window_resize, 5000);
 function resize_svg_on_window_resize(){
-    console.log("resize_svg_on_window_resize TRIGGERED")
+    //console.log("resize_svg_on_window_resize TRIGGERED")
     var svg_element = document.getElementById('primary-svg');
     var original_viewBox = svg_element.getAttribute("viewBox")
     var res = original_viewBox.split(" ");
@@ -438,7 +438,7 @@ function resize_svg_on_window_resize(){
     }
 
     // ### SET THE HIGHT OF THE SVG AND SURROUNDING CONTAINER
-    console.log("new height: " + newClientHeight)
+    //console.log("new height: " + newClientHeight)
     svg_element.setAttribute("viewBox", res[0] + " " + res[1] + " " + res[2] + " " + newClientHeight)
     // Trying to set height of main SVG
     document.getElementById('container').style.height = newClientHeight + "px";
@@ -465,8 +465,8 @@ var positionInfo = svg_element.getBoundingClientRect();
     width = positionInfo.width ;
     svg_element.setAttribute("preserveAspectRatio", "xMinYMin")
     svg_element.setAttribute("viewBox", "0 0 " + width + " " + height)
-    console.log("Initial width:" + width)
-    console.log("Initial height:"+ height)
+    //console.log("Initial width:" + width)
+    //console.log("Initial height:"+ height)
 
 // Trying to set height of main SVG
 document.getElementById('container').style.height = height + "px";
@@ -484,7 +484,7 @@ function slider_input() {
   var slider = document.getElementById("scale_slider");
 
   output.innerHTML = slider.value;
-  console.log("Scale_input: " + slider.value)
+  //console.log("Scale_input: " + slider.value)
 
   // Change element attribute
   var svg_element = document.getElementById('primary-svg');
@@ -493,7 +493,7 @@ function slider_input() {
   res[0] = (initial_scale - slider.value) / 2
   wh_ratio = ( (window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight) / initial_scale )
   res[1] = wh_ratio + res[0] * wh_ratio
-  console.log("view X: " + res[0] + " view Y: " + res[1])
+  //console.log("view X: " + res[0] + " view Y: " + res[1])
   svg_element.setAttribute("viewBox", res[0] + " " + res[1] + " " + slider.value + " " + slider.value)
 }
 
@@ -501,15 +501,15 @@ function slider_input() {
 var force_slider = document.getElementById("force_slider");
 var force_output = document.getElementById("force_indicator");
 force_output.value = 50
-console.log("Force_output.value:" + force_output.value)
+//console.log("Force_output.value:" + force_output.value)
 force_output.innerHTML = force_output.value;
 
 force_slider.oninput = function() {
   force_output.innerHTML = this.value;
-  console.log("force_output: " + this.value)
+  //console.log("force_output: " + this.value)
 
   simulation.force("y", d3.forceY(height/2).strength(this.value / 1000))  //### PARAMETRIZED FORCE TO SLIDER
-  console.log("starting simulation");
+  //console.log("starting simulation");
   simulation.alphaTarget(0.03).restart()
   simulation.alpha(1).restart()
   //delay
@@ -522,7 +522,22 @@ var color = d3.scaleOrdinal(d3.schemeCategory20);
 var simulation = d3.forceSimulation()
     .force("link", d3.forceLink().id(function(d) { return d.id }).distance(100).strength(0.001))
     .force("charge", d3.forceManyBody().strength(-200).distanceMax(500).distanceMin(50))
-    .force("x", d3.forceX().x(function(d) { return ((d.group * width * 0.1) + width / 2) }).strength(1))
+    //.force("x", d3.forceX().x(function(d) { return ((d.group * width * 0.1) + width / 2) }).strength(1))
+		.force("x", d3.forceX(function(d){
+			if(d.group === "1"){
+				return 5*(width*0.7)/6
+			} else if (d.group === "2"){
+				return 4*(width*0.7)/6
+			} else if (d.group === "3"){
+				return 3*(width*0.7)/6
+			} else if (d.group === "4"){
+				return 2*(width*0.7)/6  
+			} else if (d.group === "5"){
+				return 1*(width*0.7)/6                       
+			} else {
+				return 0*(width*0.7)/6 
+			}
+		 }).strength(1))
     .force("y", d3.forceY(height/2).strength(force_output.value / 1000))  //### PARAMETRIZED FORCE TO SLIDER
     .force("center", d3.forceCenter(width * 2/3, height / 2))
     .force("collision", d3.forceCollide().radius(25));
@@ -531,21 +546,21 @@ var simulation = d3.forceSimulation()
 // # Read graph.json and draw SVG graph #
 // ######################################
 function percentage_to_utilization_color(percentage){
-    console.log(percentage)
+    //console.log(percentage)
     if (percentage >= 75){
-        console.log("#FF0000")
+        //console.log("#FF0000")
         return "#FF0000"
     } else if (percentage >= 50){
-        console.log("#FFA500")
+        //console.log("#FFA500")
         return "#FFA500"
     } else if (percentage >= 25){
-        console.log("#8DD25D")
+        //console.log("#8DD25D")
         return "#8DD25D"
     } else if (percentage >= 1){
-        console.log("#001693")
+        //console.log("#001693")
         return "#001693"
     } else {
-        console.log("#646464")
+        //console.log("#646464")
         return "#646464"
     }
 }
@@ -565,7 +580,7 @@ d3.json(apiUrl + "/graph", function(error, graph) {
 
             .append("line")
             .attr("stroke", function(d) { return percentage_to_utilization_color(d.highest_utilization) })   // # COLOR
-            .attr("stroke-width", function(d) { return Math.sqrt(parseInt(d.speed) / 10000) * 2 })  // # WIDTH
+            .attr("stroke-width", function(d) { return Math.sqrt(parseInt(d.speed) / 1000000) })  // # WIDTH
             .attr("source", function(d) { d.source })
             .attr("target", function(d) { d.target });
 
@@ -605,7 +620,7 @@ d3.json(apiUrl + "/graph", function(error, graph) {
       .attr("height", 32)
       .attr("x", - 16)
       .attr("y", - 16)
-      .attr("fill", function(d) { console.log(d.group) ; return color(d.group) });
+      .attr("fill", function(d) { /*console.log(d.group) ; */ return color(d.group) });
 
   node.append("text")
       .attr("font-size", "1em")
@@ -663,37 +678,6 @@ elem.value = positionInfo.width;
 var elem2 = document.getElementById("scale_indicator");
 elem2.value = positionInfo.width;
 
-
-/*
-I'm surprised nobody has mentioned the new Fetch API, supported by all browsers except IE11 at the time of writing. It simplifies the XMLHttpRequest syntax you see in many of the other examples.
-
-The API includes a lot more, but start with the fetch() method. It takes two arguments:
-
-    A URL or an object representing the request.
-    Optional init object containing the method, headers, body etc.
-
-Simple GET:
-
-const userAction = async () => {
-  const response = await fetch('http://example.com/movies.json');
-  const myJson = await response.json(); //extract JSON from the http response
-  // do something with myJson
-}
-
-Recreating the previous top answer, a POST:
-
-const userAction = async () => {
-  const response = await fetch('http://example.com/movies.json', {
-    method: 'POST',
-    body: myBody, // string or object
-    headers: {
-      'Content-Type': 'application/json'
-    }
-  });
-  const myJson = await response.json(); //extract JSON from the http response
-  // do something with myJson
-}
-*/
 </script>
 
 </body>
