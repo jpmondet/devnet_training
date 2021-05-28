@@ -1,0 +1,5 @@
+host: n9k.local.lab
+user: admin
+password: admin
+port: 80
+transport: http

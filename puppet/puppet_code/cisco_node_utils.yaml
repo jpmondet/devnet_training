@@ -1,0 +1,9 @@
+default:
+  host: 172.17.0.2
+  username: admin
+  password: admin
+
+nxapi_remote:
+  host: 172.17.0.2
+  username: admin
+  password: admin

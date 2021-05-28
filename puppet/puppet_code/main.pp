@@ -1,0 +1,1 @@
+ciscopuppet::proxy
