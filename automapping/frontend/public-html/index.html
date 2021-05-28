@@ -279,9 +279,9 @@ function tableFromUnusedInterfaces(key,data){
 
     //console.log("local_intf:" + data[key][neighbor]['ifDescr']);
     text+= "<td>" + data[key][neighbor]['ifDescr'] + "</td>";
-    console.log("description:" + data[key][neighbor]['ifType']);
+    //console.log("description:" + data[key][neighbor]['ifType']);
     text+= "<td>" + data[key][neighbor]['ifType'] + "</td>";
-    console.log("actual_bandwith:" + data[key][neighbor]['ifSpeed']);
+    //console.log("actual_bandwith:" + data[key][neighbor]['ifSpeed']);
     text+= "<td>" + data[key][neighbor]['ifSpeed'] + "</td>";
 
     text+= "</tr>";
@@ -513,7 +513,7 @@ force_slider.oninput = function() {
   simulation.alphaTarget(0.03).restart()
   simulation.alpha(1).restart()
   //delay
-  setTimeout(function(){ simulation.alphaTarget(0); console.log("Ending simulation"); }, "1000")
+  setTimeout(function(){ simulation.alphaTarget(0); /*console.log("Ending simulation");*/ }, "1000")
 }
 
 // ##### GRAPH POPULATION #######
@@ -576,7 +576,7 @@ d3.json(apiUrl + "/graph", function(error, graph) {
     .enter()
             .append("a")
             .attr("target", '_blank')
-            .attr("xlink:href", function(d) { console.log(d); return (window.location.href + '?node_a=' + d.source + "&node_b=" + d.target) })
+            .attr("xlink:href", function(d) { /*console.log(d);*/ return (window.location.href + '?node_a=' + d.source + "&node_b=" + d.target) })
 
             .append("line")
             .attr("stroke", function(d) { return percentage_to_utilization_color(d.highest_utilization) })   // # COLOR
