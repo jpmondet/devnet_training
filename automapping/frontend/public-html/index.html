@@ -92,6 +92,7 @@
 
 <!-- D3 graphs -->
 <script type='text/javascript' src='./src/d3.v4.min.js'></script>
+<!-- <script type='text/javascript' src='./src/d3-drag.min.js'></script> -->
 <script type="text/javascript" src="./src/jquery.min.js"></script>
 <!-- line charts -->
 <script src="./src/plotly-latest.min.js"></script>
@@ -457,7 +458,10 @@ var svg = d3.select("div#container")
     .attr("id", "primary-svg")
     .attr("preserveAspectRatio", "xMinYMin")
     .attr("viewBox", "0 0 6000 6000")
+    //.attr("viewBox", [0, 0, width, height])
     .classed("svg-content", true);
+
+
 
 var svg_element = document.getElementById('primary-svg');
 var positionInfo = svg_element.getBoundingClientRect();
@@ -521,21 +525,21 @@ var color = d3.scaleOrdinal(d3.schemeCategory20);
 
 var simulation = d3.forceSimulation()
     .force("link", d3.forceLink().id(function(d) { return d.id }).distance(100).strength(0.001))
-    .force("charge", d3.forceManyBody().strength(-200).distanceMax(500).distanceMin(50))
+    .force("charge", d3.forceManyBody().strength(-200).distanceMax(500).distanceMin(150))
     //.force("x", d3.forceX().x(function(d) { return ((d.group * width * 0.1) + width / 2) }).strength(1))
 		.force("x", d3.forceX(function(d){
-			if(d.group === "1"){
+			if(d.group === 5){
 				return 5*(width*0.7)/6
-			} else if (d.group === "2"){
+			} else if (d.group === 4){
 				return 4*(width*0.7)/6
-			} else if (d.group === "3"){
+			} else if (d.group === 3){
 				return 3*(width*0.7)/6
-			} else if (d.group === "4"){
+			} else if (d.group === 2){
 				return 2*(width*0.7)/6  
-			} else if (d.group === "5"){
+			} else if (d.group === 1){
 				return 1*(width*0.7)/6                       
 			} else {
-				return 0*(width*0.7)/6 
+				return 6*(width*0.7)/6 
 			}
 		 }).strength(1))
     .force("y", d3.forceY(height/2).strength(force_output.value / 1000))  //### PARAMETRIZED FORCE TO SLIDER
@@ -577,7 +581,6 @@ d3.json(apiUrl + "/graph", function(error, graph) {
             .append("a")
             .attr("target", '_blank')
             .attr("xlink:href", function(d) { /*console.log(d);*/ return (window.location.href + '?node_a=' + d.source + "&node_b=" + d.target) })
-
             .append("line")
             .attr("stroke", function(d) { return percentage_to_utilization_color(d.highest_utilization) })   // # COLOR
             .attr("stroke-width", function(d) { return Math.sqrt(parseInt(d.speed) / 1000000) })  // # WIDTH
@@ -595,6 +598,7 @@ d3.json(apiUrl + "/graph", function(error, graph) {
   var node = svg.append("g")
     .attr("class", "nodes")
     .attr("id","nodes-g")
+    .attr("cursor", "grab")
     .selectAll("a")
     .data(graph.nodes)
     .enter().append("a")
@@ -613,6 +617,15 @@ d3.json(apiUrl + "/graph", function(error, graph) {
           .on("start", dragstarted)
           .on("drag", dragged)
           .on("end", dragended));
+
+  //svg.call(d3.drag()
+  //        .on("start", svgdragstarted)
+  //        .on("drag", svgdragged)
+  //        .on("end", svgdragended));
+  svg.call(d3.zoom()
+      .extent([[0, 0], [width, height]])
+      .scaleExtent([1, 8])
+      .on("zoom", zoomed));
 
   node.append("image")
       .attr("xlink:href", function(d) { return ("img/" + d.image); })
@@ -667,6 +680,10 @@ function dragended(d) {
   if (!d3.event.active) simulation.alphaTarget(0);
   d.fx = null;
   d.fy = null;
+}
+
+function zoomed() {
+    svg.attr("transform", d3.event.transform);
 }
 
 // ### LAST IN SCRIPT UPDATING SLIDER POSITION
