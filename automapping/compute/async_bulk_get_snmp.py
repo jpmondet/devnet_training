@@ -9,11 +9,14 @@ from time import time, sleep
 from typing import List, Dict, Any, Tuple
 from pysnmp import hlapi
 from pysnmp.entity.rfc3413.oneliner import cmdgen
+from pysnmp.error import PySnmpError
+from pymongo.errors import InvalidOperation
 #from dotenv import load_dotenv
 from dpath.util import search
 from storage.db_layer import (
     bulk_update_collection,
     add_iface_stats,
+    get_all_nodes,
     STATS_COLLECTION,
     UTILIZATION_COLLECTION
 )
@@ -172,18 +175,23 @@ def dump_results_to_db(device_name, ifaces_infos) -> None:
         utilization = {"device_name": device_name, "iface_name": iface_name, "last_utilization": highest}
         utilization_list.append((query, utilization))
 
-    bulk_update_collection(UTILIZATION_COLLECTION, utilization_list)
-    add_iface_stats(stats_list)
+    try:
+        bulk_update_collection(UTILIZATION_COLLECTION, utilization_list)
+        add_iface_stats(stats_list)
+    except InvalidOperation:
+        print("Nothing to dump to db (wasn't able to scrap devices?), passing..")
 
 async def get_bulk_auto(target_name, oids, credentials, count_oid, start_from=0, port=161,
                   engine=hlapi.SnmpEngine(), context=hlapi.ContextData(), target_ip=None):
     
     target = target_ip if target_ip else target_name
 
-    count = get(target, [count_oid], credentials, port, engine, context)[count_oid]
-    res = get_bulk(target, oids, credentials, count, start_from, port, engine, context)
-
-    dump_results_to_db(target_name, res)
+    try:
+        count = get(target, [count_oid], credentials, port, engine, context)[count_oid]
+        res = get_bulk(target, oids, credentials, count, start_from, port, engine, context)
+        dump_results_to_db(target_name, res)
+    except (RuntimeError, PySnmpError) as err:
+        print(err, "\n (can't access to devices?) Passing for now...")
 
 
 def main():
@@ -192,25 +200,34 @@ def main():
     #test_devices = ['n9k.local.lab']
     #test_devices = ['192.168.77.1']
 
-    scrapped: Dict[str, str] = {}
-    with open("scrapped_devices") as sdf:
-        scrapped = literal_eval(sdf.read())
+    #scrapped: Dict[str, str] = {}
+    #with open("scrapped_devices") as sdf:
+    #    scrapped = literal_eval(sdf.read())
 
-    test_devices: List[Tuple[str, str]] = []
-    for hostname, ip in scrapped.items():
-        test_devices.append((hostname, ip))
+
+    #test_devices: List[Tuple[str, str]] = []
+    #for hostname, ip in scrapped.items():
+    #    test_devices.append((hostname, ip))
 
     while True:
 
-        loop = asyncio.get_event_loop()
-        loop.run_until_complete(
-            asyncio.wait(
-                [
-                    #get_bulk_auto(device, NEEDED_MIBS.values(), CREDS, IFACES_TABLE_TO_COUNT) for device in test_devices
-                    get_bulk_auto(hostname, NEEDED_MIBS.values(), CREDS, IFACES_TABLE_TO_COUNT, target_ip=ip) for hostname, ip in test_devices
-                ]
+        scrapped: List[Dict[str, str]] = get_all_nodes()
+        devices: List[Tuple[str, str]] = []
+        for device in scrapped:
+            devices.append((device["device_name"], None))
+
+        if devices:
+            loop = asyncio.get_event_loop()
+            loop.run_until_complete(
+                asyncio.wait(
+                    [
+                        #get_bulk_auto(device, NEEDED_MIBS.values(), CREDS, IFACES_TABLE_TO_COUNT) for device in test_devices
+                        get_bulk_auto(hostname, NEEDED_MIBS.values(), CREDS, IFACES_TABLE_TO_COUNT, target_ip=ip) for hostname, ip in devices
+                    ]
+                )
             )
-        )
+        else:
+            print("No devices retrieved from db... Waiting till there are any.")
 
         sleep(60)
 

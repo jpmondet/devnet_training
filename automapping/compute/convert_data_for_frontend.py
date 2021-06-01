@@ -457,20 +457,23 @@ def write_into_appropriate_files(
 def main() -> None:
 
     # {'sw1.iou': [{'mgmt_address': '192.168.77.4', 'neighbor': 'sw4.iou', 'port_descr': 'Ethernet0/0', 'neighbor_interface': 'Et0/0', 'mac': 'aabb.cc00.0400', 'local_interface': 'Et0/3'},
-    lldp_infos: LldpInfos = {}
-    with open("graph_ct", "r") as res:
-        lldp_infos = literal_eval(res.read())
+    #lldp_infos: LldpInfos = {}
+    #with open("graph_ct", "r") as res:
+    #    lldp_infos = literal_eval(res.read())
 
-    # {"sw1.iou": {"Ethernet0/0": {"1607408237": {"out_packets": "2365", "out_bytes": "212667", "out_underruns": "0", "in_errors": "0", "in_crc": "0", "in_frame": "0", "in_overrun": "0", "in_ignored": "0", "in_packets": "0", "in_bytes": "0", "in_no_buffer": "0", "mtu": "1500", "bw": "10000", "delay": "1000", "mac": "aabb.cc00.0100", "bia_mac": "aabb.cc00.0100", "iface": "Ethernet0/0"},
-    ifaces_stats: IfacesStats = {}
-    with open("ifaces_stats.json", "r") as res:
-        ifaces_stats = literal_eval(res.read())
+    ## {"sw1.iou": {"Ethernet0/0": {"1607408237": {"out_packets": "2365", "out_bytes": "212667", "out_underruns": "0", "in_errors": "0", "in_crc": "0", "in_frame": "0", "in_overrun": "0", "in_ignored": "0", "in_packets": "0", "in_bytes": "0", "in_no_buffer": "0", "mtu": "1500", "bw": "10000", "delay": "1000", "mac": "aabb.cc00.0100", "bia_mac": "aabb.cc00.0100", "iface": "Ethernet0/0"},
+    #ifaces_stats: IfacesStats = {}
+    #with open("ifaces_stats.json", "r") as res:
+    #    ifaces_stats = literal_eval(res.read())
 
-    ifaces_out_struct = format_interfaces(ifaces_stats)
+    #ifaces_out_struct = format_interfaces(ifaces_stats)
 
-    neigh_struct, graph_links = format_neighborships(lldp_infos, ifaces_out_struct)
+    #neigh_struct, graph_links = format_neighborships(lldp_infos, ifaces_out_struct)
 
-    write_into_appropriate_files(ifaces_out_struct, neigh_struct, graph_links)
+    #write_into_appropriate_files(ifaces_out_struct, neigh_struct, graph_links)
+
+    # Used only for quick tests
+    get_graph()
 
 
 if __name__ == "__main__":

@@ -21,6 +21,7 @@ from storage.db_layer import (
     NODES_COLLECTION,
     LINKS_COLLECTION,
 )
+from pymongo.errors import InvalidOperation
 from nornir import InitNornir
 from nornir.core import Nornir
 from nornir.plugins.tasks.networking import netmiko_send_command
@@ -92,12 +93,11 @@ def dump_results_to_db() -> None:
                 }
             ))
 
-    #print(nodes_list)
-    #print(ifaces_list)
-    #print(links_list)
-    bulk_update_collection(NODES_COLLECTION, nodes_list)
-    #bulk_update_collection(IFACES_COLLECTION, ifaces_list)
-    bulk_update_collection(LINKS_COLLECTION, links_list)
+    try:
+        bulk_update_collection(NODES_COLLECTION, nodes_list)
+        bulk_update_collection(LINKS_COLLECTION, links_list)
+    except InvalidOperation:
+        print("Nothing to dump to db (wasn't able to scrap devices?), passing..")
 
 
 def format_neighbor_to_inventory(neighbor):
