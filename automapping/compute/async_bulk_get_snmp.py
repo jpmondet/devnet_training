@@ -4,14 +4,10 @@ from os import getenv
 import asyncio
 from itertools import groupby
 from binascii import hexlify
-from ast import literal_eval
 from time import time, sleep
 from typing import List, Dict, Any, Tuple
-from pysnmp import hlapi
-from pysnmp.entity.rfc3413.oneliner import cmdgen
-from pysnmp.error import PySnmpError
 from pymongo.errors import InvalidOperation
-#from dotenv import load_dotenv
+from pysnmp.error import PySnmpError
 from dpath.util import search
 from storage.db_layer import (
     bulk_update_collection,
@@ -20,103 +16,12 @@ from storage.db_layer import (
     STATS_COLLECTION,
     UTILIZATION_COLLECTION
 )
-#from utils.timing import timing
-
-#load_dotenv(dotenv_path='../.env')
+from snmp_functions import get_bulk_auto, get_snmp_v3_creds, NEEDED_MIBS_FOR_STATS as NEEDED_MIBS, IFACES_TABLE_TO_COUNT
 
 SNMP_USR = getenv("SNMP_USR")
 SNMP_AUTH_PWD = getenv("SNMP_AUTH_PWD")
 SNMP_PRIV_PWD = getenv("SNMP_PRIV_PWD")
 
-CREDS = hlapi.UsmUserData(SNMP_USR, SNMP_AUTH_PWD, SNMP_PRIV_PWD,
-        authProtocol=cmdgen.usmHMACSHAAuthProtocol,
-        privProtocol=cmdgen.usmAesCfb128Protocol)
-IFACES_TABLE_TO_COUNT = '1.3.6.1.2.1.2.1.0'
-NEEDED_MIBS = { 
-    'lldp': '1.0.8802.1.1.2.1.4.1', # LLDP neighs
-    'iface_name': '1.3.6.1.2.1.2.2.1.2', # ifDescr
-    'mtu': '1.3.6.1.2.1.2.2.1.4', # ifMtu
-    'speed': '1.3.6.1.2.1.31.1.1.1.15', #ifHighSpeed
-    'mac': '1.3.6.1.2.1.2.2.1.6', # ifPhysAddress
-    'in_disc': '1.3.6.1.2.1.2.2.1.13', # ifInDiscards
-    'in_err': '1.3.6.1.2.1.2.2.1.14', # ifInErrors
-    'out_disc': '1.3.6.1.2.1.2.2.1.19', # ifOutDiscards
-    'out_err': '1.3.6.1.2.1.2.2.1.20', # ifOutErrors
-    'in_octets': '1.3.6.1.2.1.31.1.1.1.6', # ifHCInOctets
-    'in_ucast_pkts': '1.3.6.1.2.1.31.1.1.1.7', # ifHCInUcastPkts
-    'in_mcast_pkts': '1.3.6.1.2.1.31.1.1.1.8', # ifHCInMulticastPkts
-    'in_bcast_pkts': '1.3.6.1.2.1.31.1.1.1.9', # ifHCInBroadcastPkts
-    'out_octets': '1.3.6.1.2.1.31.1.1.1.10', # ifHCOutOctets
-    'out_ucast_pkts': '1.3.6.1.2.1.31.1.1.1.11', # ifHCOutUcastPkts
-    'out_mcast_pkts': '1.3.6.1.2.1.31.1.1.1.12', # ifHCOutMulticastPkts
-    'out_bcast_pkts': '1.3.6.1.2.1.31.1.1.1.13', # ifHCOutBroadcastPkts
-}
-
-def construct_value_pairs(list_of_pairs):
-    pairs = []
-    for key, value in list_of_pairs.items():
-        pairs.append(hlapi.ObjectType(hlapi.ObjectIdentity(key), value))
-    return pairs
-
-def construct_object_types(list_of_oids):
-    object_types = []
-    for oid in list_of_oids:
-        object_types.append(hlapi.ObjectType(hlapi.ObjectIdentity(oid)))
-    return object_types
-
-def cast(value):
-    try:
-        return int(value)
-    except (ValueError, TypeError):
-        try:
-            return float(value)
-        except (ValueError, TypeError):
-            try:
-                return str(value)
-            except (ValueError, TypeError):
-                pass
-    return value
-
-def fetch(handler, count):
-    result = []
-    for _ in range(count):
-        try:
-            error_indication, error_status, _, var_binds = next(handler)
-            if not error_indication and not error_status:
-                items = {}
-                for var_bind in var_binds:
-                    items[str(var_bind[0])] = cast(var_bind[1])
-                result.append(items)
-            else:
-                raise RuntimeError('Got SNMP error: {0}'.format(error_indication))
-        except StopIteration:
-            break
-    return result
-
-def get(target, oids, credentials, port=161, engine=hlapi.SnmpEngine(), context=hlapi.ContextData()):
-    handler = hlapi.getCmd(
-        engine,
-        credentials,
-        hlapi.UdpTransportTarget((target, port)),
-        context,
-        *construct_object_types(oids)
-    )
-    return fetch(handler, 1)[0]
-
-
-def get_bulk(target, oids, credentials, count, start_from=0, port=161,
-             engine=hlapi.SnmpEngine(), context=hlapi.ContextData()):
-    handler = hlapi.bulkCmd(
-        engine,
-        credentials,
-        hlapi.UdpTransportTarget((target, port)),
-        context,
-        start_from, count,
-        *construct_object_types(oids)
-    )
-    return fetch(handler, count)
-
-#@timing
 def dump_results_to_db(device_name, ifaces_infos) -> None:
     utilization_list: List[Tuple[Dict[str, str], Dict[str,str]]] = []
     stats_list: List[[Dict[str, str], Dict[str,str]]] = []
@@ -181,14 +86,12 @@ def dump_results_to_db(device_name, ifaces_infos) -> None:
     except InvalidOperation:
         print("Nothing to dump to db (wasn't able to scrap devices?), passing..")
 
-async def get_bulk_auto(target_name, oids, credentials, count_oid, start_from=0, port=161,
-                  engine=hlapi.SnmpEngine(), context=hlapi.ContextData(), target_ip=None):
+async def get_stats_and_dump(target_name, oids, credentials, count_oid, target_ip=None):
     
     target = target_ip if target_ip else target_name
 
     try:
-        count = get(target, [count_oid], credentials, port, engine, context)[count_oid]
-        res = get_bulk(target, oids, credentials, count, start_from, port, engine, context)
+        res = get_bulk_auto(target, oids, credentials, count_oid)
         dump_results_to_db(target_name, res)
     except (RuntimeError, PySnmpError) as err:
         print(err, "\n (can't access to devices?) Passing for now...")
@@ -209,20 +112,22 @@ def main():
     #for hostname, ip in scrapped.items():
     #    test_devices.append((hostname, ip))
 
+    creds = get_snmp_v3_creds(SNMP_USR, SNMP_AUTH_PWD, SNMP_PRIV_PWD)
+
     while True:
 
         scrapped: List[Dict[str, str]] = get_all_nodes()
         devices: List[Tuple[str, str]] = []
         for device in scrapped:
-            devices.append((device["device_name"], None))
+            if 'iou' in device["device_name"]:
+                devices.append((device["device_name"], None))
 
         if devices:
             loop = asyncio.get_event_loop()
             loop.run_until_complete(
                 asyncio.wait(
                     [
-                        #get_bulk_auto(device, NEEDED_MIBS.values(), CREDS, IFACES_TABLE_TO_COUNT) for device in test_devices
-                        get_bulk_auto(hostname, NEEDED_MIBS.values(), CREDS, IFACES_TABLE_TO_COUNT, target_ip=ip) for hostname, ip in devices
+                        get_stats_and_dump(hostname, NEEDED_MIBS.values(), creds, IFACES_TABLE_TO_COUNT, target_ip=ip) for hostname, ip in devices
                     ]
                 )
             )
