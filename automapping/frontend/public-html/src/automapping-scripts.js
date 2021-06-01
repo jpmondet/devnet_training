@@ -119,6 +119,47 @@ function draw_device_graphs_to_div(deviceid, data, targetdiv){
 
 function draw_graph_from_data_to_div(InOctetsData,OutOctetsData,TimeStampStrings,iDivGraph){
 
+    var selectorOptions = {
+      buttons: [
+      {
+          step: 'day',
+          stepmode: 'todate',
+          count: 1,
+          label: '1d'
+      }, {
+          step: 'day',
+          stepmode: 'todate',
+          count: 3,
+          label: '3d'
+      }, {
+          step: 'day',
+          stepmode: 'todate',
+          count: 7,
+          label: '1w'
+      }, {
+          step: 'month',
+          stepmode: 'todate',
+          count: 1,
+          label: '1m'
+      }, {
+          step: 'month',
+          stepmode: 'todate',
+          count: 3,
+          label: '3m'
+      }, {
+          step: 'month',
+          stepmode: 'todate',
+          count: 6,
+          label: '6m'
+      }, {
+          step: 'year',
+          stepmode: 'todate',
+          count: 1,
+          label: '1y'
+      }, {
+          step: 'all',
+      }],
+    };
 
     traceOut = {
       type: 'scatter',
@@ -159,7 +200,9 @@ function draw_graph_from_data_to_div(InOctetsData,OutOctetsData,TimeStampStrings
         title: 'Time',
         showgrid: true,
         zeroline: true,
-        showline: true
+        showline: true,
+        rangeselector: selectorOptions,
+        rangeslider: {}
       },
       yaxis: {
         title: 'bps',
