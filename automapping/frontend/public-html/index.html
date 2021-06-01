@@ -61,13 +61,13 @@
                         </td>
                         <td style="width: 30%; padding-left: 15px; padding-right: 15px;font-size: 15px;">
                         <div class="slidecontainer" id="slidecontainer">
-                            <input type="range" min="100" max="3000" class="slider" id="scale_slider"><br>
+                            <input type="range" min="100" max="6000" value="6000" class="slider" id="scale_slider"><br>
                             <div  align="middle">Scale range:<br><span id="scale_indicator"></span></div>
                         </div>
                     </td>
                     <td style="width: 30%; padding-left: 15px; padding-right: 15px;font-size: 15px;">
                         <div class="slidecontainer" id="slidecontainer">
-                            <input type="range" min="1" max="200" value="50" class="slider" id="force_slider"><br>
+                            <input type="range" min="1" max="200" value="100" class="slider" id="force_slider"><br>
                             <div  align="middle">Vertical force:<br><span id="force_indicator"></span></div>
                         </div>
                     </td>
@@ -504,7 +504,7 @@ function slider_input() {
 // ###########  FORCE Slider controls ##########
 var force_slider = document.getElementById("force_slider");
 var force_output = document.getElementById("force_indicator");
-force_output.value = 50
+force_output.value = 100
 //console.log("Force_output.value:" + force_output.value)
 force_output.innerHTML = force_output.value;
 
