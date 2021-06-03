@@ -139,7 +139,7 @@ def get_graph():
         device = link["device_name"]
         iface = link["iface_name"]
         neigh = link["neighbor_name"]
-        neigh_iface = link["neighbor_interface"]
+        neigh_iface = link["neighbor_iface"]
         if not formatted_links.get(device + neigh) and not formatted_links.get(neigh + device):
             highest_utilization = db_highest_utilization(device, iface)
             speed = get_speed_iface(device, iface)
@@ -265,7 +265,7 @@ def neighborships(
         device1: str = link["device_name"]
         device2: str = link["neighbor_name"]
         iface1: str = link["iface_name"]
-        iface2: str = link["neighbor_interface"]
+        iface2: str = link["neighbor_iface"]
         # The device queried can be seen as "device_name" or as "neighbor_name" depending
         # on the point of view
         if q != link["device_name"]:
