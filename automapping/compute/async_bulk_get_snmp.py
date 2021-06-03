@@ -27,6 +27,9 @@ def dump_results_to_db(device_name, ifaces_infos) -> None:
     stats_list: List[[Dict[str, str], Dict[str,str]]] = []
     for iface in ifaces_infos:
         _, ifname = next(search(iface, f"{NEEDED_MIBS['iface_name']}*", yielded=True))
+        ifname = ifname.lower()
+        if ifname.startswith('se') or ifname.startswith('nu') or ifname.startswith('lo') or ifname.startswith('mgm') or ifname.startswith('mana'):
+            continue
         _, mtu = next(search(iface, f"{NEEDED_MIBS['mtu']}*", yielded=True))
         _, mac = next(search(iface, f"{NEEDED_MIBS['mac']}*", yielded=True))
         _, speed = next(search(iface, f"{NEEDED_MIBS['speed']}*", yielded=True))
@@ -34,13 +37,8 @@ def dump_results_to_db(device_name, ifaces_infos) -> None:
         _, in_err = next(search(iface, f"{NEEDED_MIBS['in_err']}*", yielded=True))
         _, out_disc = next(search(iface, f"{NEEDED_MIBS['out_disc']}*", yielded=True))
         _, out_err = next(search(iface, f"{NEEDED_MIBS['out_err']}*", yielded=True))
-        if ifname.startswith('Se') or ifname.startswith('Nu'):
-            in_octets = 0
-            in_ucast_pkts = 0
-            speed = 10
-        else: 
-            _, in_octets = next(search(iface, f"{NEEDED_MIBS['in_octets']}*", yielded=True))
-            _, in_ucast_pkts = next(search(iface, f"{NEEDED_MIBS['in_ucast_pkts']}*", yielded=True))
+        _, in_octets = next(search(iface, f"{NEEDED_MIBS['in_octets']}*", yielded=True))
+        _, in_ucast_pkts = next(search(iface, f"{NEEDED_MIBS['in_ucast_pkts']}*", yielded=True))
         _, in_mcast_pkts = next(search(iface, f"{NEEDED_MIBS['in_mcast_pkts']}*", yielded=True))
         _, in_bcast_pkts = next(search(iface, f"{NEEDED_MIBS['in_bcast_pkts']}*", yielded=True))
         _, out_octets = next(search(iface, f"{NEEDED_MIBS['out_octets']}*", yielded=True))
