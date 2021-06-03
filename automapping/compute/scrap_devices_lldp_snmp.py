@@ -10,6 +10,7 @@ from pymongo.errors import InvalidOperation
 from pysnmp.error import PySnmpError
 from dpath.util import search
 from storage.db_layer import (
+    prep_db_if_not_exist,
     bulk_update_collection,
     NODES_COLLECTION,
     LINKS_COLLECTION,
@@ -57,7 +58,7 @@ def dump_results_to_db(device_name, lldp_infos) -> None:
             "device_name": dev_name,
             "iface_name": dev_iface,
             "neighbor_name": neigh_name,
-            "neighbor_interface": neigh_iface,
+            "neighbor_iface": neigh_iface,
         }
 
         links_list.append((query_link, query_link))
@@ -66,7 +67,7 @@ def dump_results_to_db(device_name, lldp_infos) -> None:
             "device_name": neigh_name,
             "iface_name": neigh_iface,
             "neighbor_name": dev_name,
-            "neighbor_interface": dev_iface,
+            "neighbor_iface": dev_iface,
         }
         links_list.append((query_neigh_link, query_neigh_link))
 
@@ -90,6 +91,8 @@ def main():
 
     creds = get_snmp_v3_creds(SNMP_USR, SNMP_AUTH_PWD, SNMP_PRIV_PWD)
 
+    prep_db_if_not_exist()
+
     while True:
 
         scrapped: List[Dict[str, str]] = get_all_nodes()
@@ -100,7 +103,7 @@ def main():
                 devices.append((device["device_name"], None))
 
         if not devices:
-            # Add a initial node
+            # Add an init node (should be an ENV var)
             devices.append(("sw1.iou", "192.168.77.1"))
 
         print(devices)

@@ -81,7 +81,7 @@ def dump_results_to_db() -> None:
                     "device_name": dev_name,
                     "iface_name": dev_iface,
                     "neighbor_name": neigh_name,
-                    "neighbor_interface": neigh_iface,
+                    "neighbor_iface": neigh_iface,
                 }
             ))
             links_list.append((query_neigh,
@@ -89,7 +89,7 @@ def dump_results_to_db() -> None:
                     "device_name": neigh_name,
                     "iface_name": neigh_iface,
                     "neighbor_name": dev_name,
-                    "neighbor_interface": dev_iface,
+                    "neighbor_iface": dev_iface,
                 }
             ))
 

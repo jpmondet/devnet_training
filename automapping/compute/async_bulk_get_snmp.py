@@ -10,6 +10,7 @@ from pymongo.errors import InvalidOperation
 from pysnmp.error import PySnmpError
 from dpath.util import search
 from storage.db_layer import (
+    prep_db_if_not_exist,
     bulk_update_collection,
     add_iface_stats,
     get_all_nodes,
@@ -98,20 +99,9 @@ async def get_stats_and_dump(target_name, oids, credentials, count_oid, target_i
 
 def main():
 
-    #test_devices = ['172.17.0.2', '172.17.0.2', '172.17.0.2']
-    #test_devices = ['n9k.local.lab']
-    #test_devices = ['192.168.77.1']
-
-    #scrapped: Dict[str, str] = {}
-    #with open("scrapped_devices") as sdf:
-    #    scrapped = literal_eval(sdf.read())
-
-
-    #test_devices: List[Tuple[str, str]] = []
-    #for hostname, ip in scrapped.items():
-    #    test_devices.append((hostname, ip))
-
     creds = get_snmp_v3_creds(SNMP_USR, SNMP_AUTH_PWD, SNMP_PRIV_PWD)
+
+    prep_db_if_not_exist()
 
     while True:
 
