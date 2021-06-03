@@ -155,9 +155,12 @@ def get_graph():
         if not formatted_links.get(device + neigh) and not formatted_links.get(neigh + device):
             highest_utilization = get_highest_utilization(device, iface)
             speed = get_speed_iface(device, iface)
+            logger.error(f"Utilization & speed : {highest_utilization}, {speed}")
             speed = speed * 1000000 #Convert speed to bits
             highest_utilization = highest_utilization * 8 #convert to bits
+            logger.error(f"Utilization & speed in bits: {highest_utilization}, {speed}")
             percent_highest = highest_utilization / speed * 100
+            logger.error(f"Utilization percent {percent_highest}")
             f_link = {
                 "highest_utilization": percent_highest,
                 "source": device,

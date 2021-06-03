@@ -14,6 +14,7 @@ from storage.db_layer import (
     bulk_update_collection,
     add_iface_stats,
     get_all_nodes,
+    get_latest_utilization,
     STATS_COLLECTION,
     UTILIZATION_COLLECTION
 )
@@ -77,7 +78,8 @@ def dump_results_to_db(device_name, ifaces_infos) -> None:
         lowest = int(iface_infos_dict["out_bytes"])
         if lowest > highest:
             highest = lowest
-        utilization = {"device_name": device_name, "iface_name": iface_name, "last_utilization": highest}
+        previous_utilization = get_latest_utilization(device_name, iface_name)
+        utilization = {"device_name": device_name, "iface_name": iface_name, "prev_utilization": previous_utilization, "last_utilization": highest}
         utilization_list.append((query, utilization))
 
     try:
