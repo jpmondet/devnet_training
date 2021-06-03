@@ -270,7 +270,7 @@ def get_highest_utilization(device_name: str, iface_name: str):
     utilization_line = UTILIZATION_COLLECTION.find_one({ "device_name": device_name, "iface_name": iface_name })
     try:
         return utilization_line["last_utilization"]
-    except KeyError:
+    except (KeyError, TypeError):
         return 0
 
 

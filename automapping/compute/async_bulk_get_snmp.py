@@ -29,6 +29,7 @@ def dump_results_to_db(device_name, ifaces_infos) -> None:
         _, ifname = next(search(iface, f"{NEEDED_MIBS['iface_name']}*", yielded=True))
         ifname = ifname.lower()
         if ifname.startswith('se') or ifname.startswith('nu') or ifname.startswith('lo') or ifname.startswith('mgm') or ifname.startswith('mana'):
+            # TODO: Mgmt ifaces could actually be interesting... Need to think about this
             continue
         _, mtu = next(search(iface, f"{NEEDED_MIBS['mtu']}*", yielded=True))
         _, mac = next(search(iface, f"{NEEDED_MIBS['mac']}*", yielded=True))
