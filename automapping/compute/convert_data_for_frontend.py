@@ -12,14 +12,16 @@
         )
 """
 
+import logging
 from typing import Dict, List, Any, Optional
 from datetime import datetime
-from time import strftime, localtime
+from time import strftime, localtime, time
 from secrets import compare_digest
 
 from fastapi import Depends, FastAPI, HTTPException, status, Query
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.logger import logger
 
 from storage.db_layer import (
     get_stats_devices,
@@ -54,6 +56,11 @@ API_PASS: str = "pass"
 
 security = HTTPBasic()  # TODO: Needs better security
 
+CACHE: Dict[str, Any] = {}
+CACHED_TIME: int = 60
+TIME: int = int(time())
+TIMEOUT: bool = True
+
 def check_credentials(credentials: HTTPBasicCredentials = Depends(security)):
     correct_username = compare_digest(credentials.username, API_USER)
     correct_password = compare_digest(credentials.password, API_PASS)
@@ -65,6 +72,24 @@ def check_credentials(credentials: HTTPBasicCredentials = Depends(security)):
         )
     return credentials
 
+def get_from_db_or_cache(element: str, func, query=None):
+    global TIMEOUT
+    if not CACHE.get(element) or TIMEOUT:
+        logger.error(f"Oops, {element} not in cache, calling db")
+        if query:
+            CACHE[element] = func(query)
+        else:
+            CACHE[element] = func()
+        TIMEOUT = False
+
+    return CACHE[element]
+
+def background_time_update():
+    global TIMEOUT, TIME
+    now: int = int(time())
+    if now - TIME > CACHED_TIME:
+        TIMEOUT = True
+        TIME = now
 
 @app.get("/graph")
 # def get_graph(credentials=Depends(check_credentials)):
@@ -77,17 +102,11 @@ def get_graph():
                         "source_interfaces": [
                             "Ethernet0/0"
                         ],
-                        //"source_interfaces_indes": [
-                        //    1
-                        //],
                         "speed": "1",
                         "target": "deviceName-2",
                         "target_interfaces": [
                             "Ethernet0/0"
                         ],
-                        //"target_interfaces_indes": [
-                        //    1
-                        //]
                     },
                     {}],
                 "nodes": [
@@ -104,8 +123,11 @@ def get_graph():
         However, "highest_utilization" must be updated each time the API is called
          with fresh "stats" values
     """
+    background_time_update()
+    logger.error(f"Caching timeout : {TIMEOUT}")
 
-    nodes: List[Dict[str, Any]] = get_all_nodes()
+    nodes: List[Dict[str, Any]] = get_from_db_or_cache('nodes', get_all_nodes)
+
     for node in nodes:
         node["group"] = 1 if "sw" in node["device_name"] else 2 
         if node["device_name"].startswith('fake'):
@@ -115,9 +137,14 @@ def get_graph():
 
         node["id"] = node["device_name"]
         node["image"] = "default.png"
-        del node["_id"]  # removing mongodb objectId
+        try:
+            del node["_id"]  # removing mongodb objectId
+        except KeyError:
+            pass
+
+    links: Dict[str, Any] = get_from_db_or_cache('links', get_all_links)
     sorted_links: List[Dict[str, Any]] = sorted(
-        get_all_links(), key=lambda d: (d["device_name"], d["neighbor_name"])
+        links, key=lambda d: (d["device_name"], d["neighbor_name"])
     )
     formatted_links: Dict[str, Any] = {}
     for link in sorted_links:
@@ -169,7 +196,8 @@ def stats(q: List[str] = Query(None)):
                     ]
                 }
     """
-    # Interfaces names often have / in names...
+    background_time_update()
+
     if isinstance(q, list):
         # Validate incoming query
         for device in q:
@@ -243,6 +271,8 @@ def neighborships(
                     "deviceName2" :[],
         }
     """
+    background_time_update()
+
     neighs: List[Dict[str, str]] = []
     for link in get_links_device(q):
         device1: str = link["device_name"]
@@ -263,8 +293,14 @@ def neighborships(
 
 def main() -> None:
     # Used only for quick tests
-    get_graph()
+    print("Nothing for now!")
 
 
-if __name__ == "__main__":
+gunicorn_logger = logging.getLogger('gunicorn.info')
+logger.handlers = gunicorn_logger.handlers
+if __name__ != "main":
+    logger.setLevel(gunicorn_logger.level)
+else:
+    logger.setLevel(logging.DEBUG)
     main()
+
