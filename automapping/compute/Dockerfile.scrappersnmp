@@ -1,0 +1,11 @@
+FROM python:3.8.10-slim-buster
+
+COPY . /app
+
+WORKDIR /app
+
+RUN pip uninstall -y bson \
+    && pip uninstall -y pymongo \
+    && pip install -r requirements.txt
+
+CMD ["python", "scrap_devices_lldp_snmp.py"]

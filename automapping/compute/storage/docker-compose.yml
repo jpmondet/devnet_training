@@ -17,10 +17,16 @@ services:
       dockerfile: Dockerfile.api
     ports: 
     - 8000:80
-  topo_scrapper:
+  #topo_scrapper:
+  #  build:
+  #    context: /home/christ/Documents/git/devnet_training/automapping/compute/
+  #    dockerfile: Dockerfile.scrapper
+  topo_scrapper_snmp:
     build:
       context: /home/christ/Documents/git/devnet_training/automapping/compute/
-      dockerfile: Dockerfile.scrapper
+      dockerfile: Dockerfile.scrappersnmp
+    env_file:
+    - /home/christ/Documents/git/devnet_training/automapping/.snmp
   #stats_crawler:
   #  build:
   #    context: /home/christ/Documents/git/devnet_training/automapping/compute/
