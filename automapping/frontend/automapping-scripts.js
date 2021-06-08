@@ -36,20 +36,17 @@ function OnClickLinkDetails(source_name, target_name, source_interfaces, target_
     cleanDivWithID("infobox")
     cleanDivWithID("infobox_header")
 
-    printToDivWithID("infobox_header",source_name.id + " - " + target_name.id + "<br>")
+    printToDivWithID("infobox_header", source_name.id + " - " + target_name.id + "<br>")
 
     targetdiv = document.getElementById("infobox")
 
-    //var statsUrl = new URL(apiUrl + "/stats/?q=" + source_name.id + "&q=" + target_name.id);
     fetch(apiUrl + "/stats/?q=" + source_name.id + "&q=" + target_name.id)
-    .then(
-      function(response) {
+    .then(function(response) {
         if (response.status !== 200) {
-          console.log('Looks like there was a problem. Status Code: ' +
-            response.status);
-          return;
+          throw new Error('Looks like there was a problem. Status Code: ' + response.status);
         }
-        response.json().then(function(data) {
+        return response.json();
+    }).then(function(data){
           for (var iface of source_interfaces){
 
               var interface = data[source_name.id][iface];
@@ -68,9 +65,7 @@ function OnClickLinkDetails(source_name, target_name, source_interfaces, target_
               draw_device_interface_graphs_to_div(interface, target_name.id, targetdiv)
           }
 
-        });
-      }
-    )
+    })
     .catch(function(err) {
       console.log('Fetch Error :-S', err);
     });
@@ -562,7 +557,7 @@ force_slider.oninput = function() {
 }
 
 // ##### GRAPH POPULATION #######
-var color = d3.scaleOrdinal(d3.schemeCategory20);
+var color = d3.scaleOrdinal(d3.schemeCategory10);
 
 var simulation = d3.forceSimulation()
     .force("link", d3.forceLink().id(function(d) { return d.id }).distance(100).strength(0.001))
@@ -572,9 +567,9 @@ var simulation = d3.forceSimulation()
     .force("center", d3.forceCenter(width * 2/3, height / 2))
     .force("collision", d3.forceCollide().radius(25));
 
-// ######################################
-// # Read graph.json and draw SVG graph #
-// ######################################
+// #########################################
+// # Get graph from api and draw SVG graph #
+// #########################################
 function percentage_to_utilization_color(percentage){
     //console.log(percentage)
     if (percentage >= 75){
@@ -595,116 +590,127 @@ function percentage_to_utilization_color(percentage){
     }
 }
 
-d3.json(apiUrl + "/graph", function(error, graph) {
-  if (error) throw error;
+d3.json(apiUrl + "/graph")
+  .then(function(graph) {
 
-  var link = svg.append("g")
-    .attr("id","links-g")
-    .selectAll("line")
-    .data(graph.links)
-    .enter()
-            .append("a")
-            .attr("target", '_blank')
-            .attr("xlink:href", function(d) { /*console.log(d);*/ return (window.location.href + '?node_a=' + d.source + "&node_b=" + d.target) })
-            .append("line")
-            .attr("stroke", function(d) { return percentage_to_utilization_color(d.highest_utilization) })   // # COLOR
-            .attr("stroke-width", function(d) { return Math.sqrt(parseInt(d.speed) / 1000000) })  // # WIDTH
-            .attr("source", function(d) { d.source })
-            .attr("target", function(d) { d.target });
+    var link = svg.append("g")
+      .attr("id","links-g")
+      .selectAll("line")
+      .data(graph.links)
+      .enter()
+        .append("a")
+        .attr("target", '_blank')
+        .attr("xlink:href", function(d) { /*console.log(d);*/ return (window.location.href + '?node_a=' + d.source + "&node_b=" + d.target) })
+        .append("line")
+        .attr("stroke", function(d) { return percentage_to_utilization_color(d.highest_utilization) })   // # COLOR
+        .attr("stroke-width", function(d) { return Math.sqrt(parseInt(d.speed) / 1000000) })  // # WIDTH
+        .attr("source", function(d) { d.source })
+        .attr("target", function(d) { d.target }
+    );
 
-  link.on("click", function(d,i){
-        d3.event.preventDefault();
-        d3.event.stopPropagation();
-        OnClickLinkDetails(d.source,d.target,d.source_interfaces,d.target_interfaces);
-        resize_svg_on_window_resize()
-      }
-  );
+    link.on("click", function(event, d){
+      //d3.event.preventDefault();
+      //d3.event.stopPropagation();
+      event.preventDefault();
+      event.stopPropagation();
+      OnClickLinkDetails(d.source,d.target,d.source_interfaces,d.target_interfaces);
+      resize_svg_on_window_resize()
+    });
 
-  var node = svg.append("g")
-    .attr("class", "nodes")
-    .attr("id","nodes-g")
-    .attr("cursor", "grab")
-    .selectAll("a")
-    .data(graph.nodes)
-    .enter().append("a")
-      .attr("target", '_blank')
-      .attr("xlink:href",  function(d) { return (window.location.href + '?device=' + d.id) });
+    var node = svg.append("g")
+      .attr("class", "nodes")
+      .attr("id","nodes-g")
+      .attr("cursor", "grab")
+      .selectAll("a")
+      .data(graph.nodes)
+      .enter().append("a")
+        .attr("target", '_blank')
+        .attr("xlink:href",  function(d) { return (window.location.href + '?device=' + d.id)
+    });
 
-  node.on("click", function(d,i){
-        d3.event.preventDefault();
-        d3.event.stopPropagation();
-        OnClickDetails(d.id);
-        resize_svg_on_window_resize()
-      }
-  );
+    node.on("click", function(event, d){
+      event.preventDefault();
+      event.stopPropagation();
+      OnClickDetails(d.id);
+      resize_svg_on_window_resize()
+    });
 
-  node.call(d3.drag()
-          .on("start", dragstarted)
-          .on("drag", dragged)
-          .on("end", dragended));
+    node.call(d3.drag()
+      .on("start", dragstarted)
+      .on("drag", dragged)
+      .on("end", dragended)
+    );
 
-  svg.call(d3.zoom()
+    svg.call(d3.zoom()
       .extent([[0, 0], [width, height]])
       .scaleExtent([1, 8])
-      .on("zoom", zoomed));
+      .on("zoom", zoomed)
+    );
 
-  node.append("image")
+    node.append("image")
       .attr("xlink:href", function(d) { return ("img/" + d.image); })
       .attr("width", 32)
       .attr("height", 32)
       .attr("x", - 16)
       .attr("y", - 16)
-      .attr("fill", function(d) { /*console.log(d.group) ; */ return color(d.group) });
+      .attr("fill", function(d) { /*console.log(d.group) ; */ return color(d.group)
+    });
 
-  node.append("text")
+    node.append("text")
       .attr("font-size", "1em")
       .style("fill", "#ffffff")
       .attr("dx", 12)
       .attr("dy", ".35em")
       .attr("x", +8)
-      .text(function(d) { return d.id });
+      .text(function(d) { return d.id }
+    );
 
-  node.append("title")
-      .text(function(d) { return d.id; });
+    node.append("title")
+      .text(function(d) { return d.id; }
+    );
 
-  simulation
+    simulation
       .nodes(graph.nodes)
       .on("tick", ticked);
 
-  simulation.force("link")
+    simulation.force("link")
       .links(graph.links);
 
-  function ticked() {
-    link
+    function ticked() {
+      link
         .attr("x1", function(d) { return d.source.x; })
         .attr("y1", function(d) { return d.source.y; })
         .attr("x2", function(d) { return d.target.x; })
         .attr("y2", function(d) { return d.target.y; });
 
-    node
+      node
         .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"});
-  }
+    }
+})
+.catch(function(error){
+  throw error;
 });
 
-function dragstarted(d) {
-  if (!d3.event.active) simulation.alphaTarget(0.3).restart();
+
+function dragstarted(event, d) {
+  if (!event.active) simulation.alphaTarget(0.3).restart();
   d.fx = d.x;
   d.fy = d.y;
 }
 
-function dragged(d) {
-  d.fx = d3.event.x;
-  d.fy = d3.event.y;
+function dragged(event, d) {
+  d.fx = event.x;
+  d.fy = event.y;
 }
 
-function dragended(d) {
-  if (!d3.event.active) simulation.alphaTarget(0);
+function dragended(event, d) {
+  if (!event.active) simulation.alphaTarget(0);
   d.fx = null;
   d.fy = null;
 }
 
-function zoomed() {
-    svg.attr("transform", d3.event.transform);
+function zoomed(event) {
+  svg.attr("transform", event.transform);
 }
 
 // ### LAST IN SCRIPT UPDATING SLIDER POSITION
