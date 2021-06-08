@@ -129,14 +129,19 @@ def get_graph():
     nodes: List[Dict[str, Any]] = get_from_db_or_cache('nodes', get_all_nodes)
 
     for node in nodes:
-        node["group"] = 1 if "sw" in node["device_name"] else 2 
+        if "sw" in node["device_name"]:
+            node["group"] = 1
+            node["image"] = "switch.png"
+        else:
+            node["group"] = 2
+            node["image"] = "router.png"
         if node["device_name"].startswith('fake'):
             node['group'] = 3
         elif node["device_name"].startswith('down_fake'):
             node['group'] = 5
 
         node["id"] = node["device_name"]
-        node["image"] = "default.png"
+
         try:
             del node["_id"]  # removing mongodb objectId
         except KeyError:
