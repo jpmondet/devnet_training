@@ -90,17 +90,17 @@ def add_lots_of_links():
         for j in range(10):
             # Connects rtr.iou devices with first 10 'fake_devices'
             db.links.insert_one({'device_name': f"rtr{str(i+1)}.iou", 
-            'iface_name': f'100/{str(j)}', 'neighbor_interface': '0/0', 'neighbor_name': f"fake_device{str(j)}"})
+            'iface_name': f'100/{str(j)}', 'neighbor_iface': '0/0', 'neighbor_name': f"fake_device{str(j)}"})
             db.links.insert_one({'device_name': f"fake_device{str(j)}",
-            'iface_name': '0/0', 'neighbor_interface': f'100/{str(j)}', 'neighbor_name': f"rtr{str(i+1)}.iou"})
+            'iface_name': '0/0', 'neighbor_iface': f'100/{str(j)}', 'neighbor_name': f"rtr{str(i+1)}.iou"})
     for i in range(10):
         for j in range(10):
             # Connects first 10 'fake_devices' with 10 more down_fake_devices each
             down_device = str((i+1) * 10 + j)
             db.links.insert_one({'device_name': f"fake_device{str(i)}",
-            'iface_name': f'1/{down_device}', 'neighbor_interface': '0/0', 'neighbor_name': f"down_fake_device{down_device}"})
+            'iface_name': f'1/{down_device}', 'neighbor_iface': '0/0', 'neighbor_name': f"down_fake_device{down_device}"})
             db.links.insert_one({'device_name': f"down_fake_device{down_device}",
-            'iface_name': '0/0', 'neighbor_interface': f'1/{down_device}', 'neighbor_name': f"fake_device{str(i)}"})
+            'iface_name': '0/0', 'neighbor_iface': f'1/{down_device}', 'neighbor_name': f"fake_device{str(i)}"})
     
 def add_lots_of_utilizations():
 
