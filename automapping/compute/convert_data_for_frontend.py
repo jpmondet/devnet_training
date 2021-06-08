@@ -57,7 +57,7 @@ API_PASS: str = "pass"
 security = HTTPBasic()  # TODO: Needs better security
 
 CACHE: Dict[str, Any] = {}
-CACHED_TIME: int = 60
+CACHED_TIME: int = 300
 TIME: int = int(time())
 TIMEOUT: bool = True
 
