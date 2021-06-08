@@ -81,22 +81,22 @@ function OnClickLinkDetails(source_name, target_name, source_interfaces, target_
 // ###################################
 
 // This draws a single specific interface to div
-function draw_device_interface_graphs_to_div(interface,deviceid, targetdiv){
+function draw_device_interface_graphs_to_div(interfaceName, deviceid, targetdiv){
 
         var iDiv = document.createElement('div');
-        iDiv.id = deviceid + "_" + interface['ifDescr'] + "_graph_header";
+        iDiv.id = deviceid + "_" + interfaceName['ifDescr'] + "_graph_header";
         iDiv.align = 'left';
-        iDiv.innerHTML = "<br>" + deviceid + " - " + interface['ifDescr'];
+        iDiv.innerHTML = "<br>" + deviceid + " - " + interfaceName['ifDescr'];
         targetdiv.appendChild(iDiv);
 
         var iDivGraph = document.createElement('div');
-        iDivGraph.id = deviceid + "_" + interface['ifDescr'] + "_graph";
+        iDivGraph.id = deviceid + "_" + interfaceName['ifDescr'] + "_graph";
         targetdiv.appendChild(iDivGraph);
         var TimeStampStrings = []
         var InOctetsData = []
         var OutOctetsData = []
 
-        for (var stats of interface['stats']){
+        for (var stats of interfaceName['stats']){
             TimeStampStrings.push(stats['time'])
             InOctetsData.push(stats['InSpeed'])
             OutOctetsData.push(stats['OutSpeed'])
