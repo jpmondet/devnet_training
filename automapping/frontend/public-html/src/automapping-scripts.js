@@ -5,38 +5,19 @@ window.onload = function() {
 };
 
 if ('serviceWorker' in navigator && 'caches' in window) {
-  navigator.serviceWorker.register('/service-worker.js').then(
-      // Clean expired tiles from the cache at startup
-      () => navigator.serviceWorker.controller.postMessage(JSON.stringify({
-          action: 'PURGE_EXPIRED_TILES',
-      })),
+  navigator.serviceWorker.register('./service-worker.js', {scope: './'} ).then(
+      (reg) => {
+        // registration worked
+        console.log('Registration succeeded. Scope is ' + reg.scope);
+        //// Clean expired tiles from the cache at startup
+        reg.active.postMessage(JSON.stringify({action: 'PURGE_EXPIRED_TILES'}));
+      }
   ).catch((error) => {
       console.log(`Registration failed with ${error}.`);
   });
 }
 
 var apiUrl = "http://127.0.0.1:8000"
-
-//function getFromApi(link, callback) {
-//    var req = new XMLHttpRequest();
-//    req.overrideMimeType("application/json");
-//    req.open("GET", link, true);
-//    req.onreadystatechange = function() {
-//        if (req.readyState === 4 && req.status == "200") {
-//            callback(req.responseText);
-//        }
-//    }
-//    req.send(null);
-//}
-
-function getFromApi(link, callback) { // Weirdly it doesn't work correctly
-  const getData = async () => {
-    const response = await fetch(link);
-    const returnedJson = await response.json(); //extract JSON from the http response
-    callback(returnedJson)
-    return returnedJson
-  }
-}
 
 // ####################################
 // # replaces content of specified DIV
@@ -59,35 +40,40 @@ function OnClickLinkDetails(source_name, target_name, source_interfaces, target_
 
     targetdiv = document.getElementById("infobox")
 
-    getFromApi(apiUrl + "/stats/?q=" + source_name.id + "&q=" + target_name.id, function(text){
-      var data = JSON.parse(text);
-      console.log(text);
-      console.log(data);
+    //var statsUrl = new URL(apiUrl + "/stats/?q=" + source_name.id + "&q=" + target_name.id);
+    fetch(apiUrl + "/stats/?q=" + source_name.id + "&q=" + target_name.id)
+    .then(
+      function(response) {
+        if (response.status !== 200) {
+          console.log('Looks like there was a problem. Status Code: ' +
+            response.status);
+          return;
+        }
+        response.json().then(function(data) {
+          for (var iface of source_interfaces){
 
-      //# SIMPLIFIED GRAPH PRINTING
-      for (var iface of source_interfaces){
+              var interface = data[source_name.id][iface];
+              var iDivGraph = document.createElement('div');
+              iDivGraph.id = source_name.id + "_" + interface['ifDescr'] + "_graph";
+              targetdiv.appendChild(iDivGraph);
 
-          var interface = data[source_name.id][iface];
-          var iDivGraph = document.createElement('div');
-          iDivGraph.id = source_name.id + "_" + interface['ifDescr'] + "_graph";
-          targetdiv.appendChild(iDivGraph);
+              draw_device_interface_graphs_to_div(interface,source_name.id, targetdiv)
+          }
+          for (var iface of target_interfaces){
+              var interface = data[target_name.id][iface];
+              var iDivGraph = document.createElement('div');
+              iDivGraph.id = target_name.id + "_" + interface['ifDescr'] + "_graph";
+              targetdiv.appendChild(iDivGraph);
 
-          draw_device_interface_graphs_to_div(interface,source_name.id, targetdiv)
+              draw_device_interface_graphs_to_div(interface, target_name.id, targetdiv)
+          }
+
+        });
       }
-
-      //# SIMPLIFIED GRAPH PRINTING
-      for (var iface of target_interfaces){
-          var interface = data[target_name.id][iface];
-          var iDivGraph = document.createElement('div');
-          iDivGraph.id = target_name.id + "_" + interface['ifDescr'] + "_graph";
-          targetdiv.appendChild(iDivGraph);
-
-          draw_device_interface_graphs_to_div(interface, target_name.id, targetdiv)
-      }
-
+    )
+    .catch(function(err) {
+      console.log('Fetch Error :-S', err);
     });
-
-
 }
 
 // ###################################
@@ -197,6 +183,10 @@ function draw_graph_from_data_to_div(InOctetsData,OutOctetsData,TimeStampStrings
       }
     };
 
+    const today = new Date()
+    const yesterday = new Date(today)
+    yesterday.setDate(yesterday.getDate() - 1)
+
     var layout = {
       margin: {
         autoexpand: true,
@@ -213,7 +203,10 @@ function draw_graph_from_data_to_div(InOctetsData,OutOctetsData,TimeStampStrings
         zeroline: true,
         showline: true,
         rangeselector: selectorOptions,
-        rangeslider: {}
+        rangeslider: {},
+        autorange: false,
+        range: [yesterday, today],
+        type: "date"
       },
       yaxis: {
         title: 'bps',
@@ -262,35 +255,59 @@ function OnViewChange(deviceid, view = "traffic"){
     // # CREATING GRAPHS      #
     // #############################
     if (view == "traffic"){
-        getFromApi(apiUrl + "/stats/?q=" + deviceid, function(text){
-            var data = JSON.parse(text);
-            for (var iface in data[deviceid]) {
-              var interface = data[deviceid][iface]
-              var targetdiv = document.getElementById("infobox")
-              var iDivGraph = document.createElement('div');
-              iDivGraph.id = deviceid + "_" + interface['ifDescr'] + "_graph";
-              targetdiv.appendChild(iDivGraph);
-              draw_device_interface_graphs_to_div(interface, deviceid, iDivGraph)
+        fetch(apiUrl + "/stats/?q=" + deviceid)
+        .then(
+          function(response) {
+            if (response.status !== 200) {
+              console.log('Looks like there was a problem. Status Code: ' +
+                response.status);
+              return;
             }
+            response.json().then(function(data) {
+              for (var iface in data[deviceid]) {
+                var interface = data[deviceid][iface]
+                var targetdiv = document.getElementById("infobox")
+                var iDivGraph = document.createElement('div');
+                iDivGraph.id = deviceid + "_" + interface['ifDescr'] + "_graph";
+                targetdiv.appendChild(iDivGraph);
+                draw_device_interface_graphs_to_div(interface, deviceid, iDivGraph)
+              }
+            });
+          }
+        )
+        .catch(function(err) {
+          console.log('Fetch Error :-S', err);
         });
     }
     // #############################
     // # READING NEIGHBORS VIEW    #
     // #############################
     else if (view == "neighbors"){
-        getFromApi(apiUrl + "/neighborships/?q=" + deviceid, function(text){
-          var data = JSON.parse(text);
-          if (data.length !== 0) { 
-              printToDivWithID("infobox",tableFromNeighbor(data));
+        fetch(apiUrl + "/neighborships/?q=" + deviceid)
+        .then(
+          function(response) {
+            if (response.status !== 200) {
+              console.log('Looks like there was a problem. Status Code: ' +
+                response.status);
+              return;
+            }
+            response.json().then(function(data) {
+              if (data.length !== 0) { 
+                  printToDivWithID("infobox",tableFromNeighbor(data));
+              }
+              else {
+                warning_text = "<h4>The selected device id: ";
+                warning_text+= deviceid;
+                warning_text+= " is not in database!</h4>";
+                warning_text+= "This is most probably as you clicked on edge node ";
+                warning_text+= "that is not SNMP data gathered, try clicking on its neighbors.";
+                printToDivWithID("infobox",warning_text);
+              }
+            });
           }
-          else {
-            warning_text = "<h4>The selected device id: ";
-            warning_text+= deviceid;
-            warning_text+= " is not in database!</h4>";
-            warning_text+= "This is most probably as you clicked on edge node ";
-            warning_text+= "that is not SNMP data gathered, try clicking on its neighbors.";
-            printToDivWithID("infobox",warning_text);
-          }
+        )
+        .catch(function(err) {
+          console.log('Fetch Error :-S', err);
         });
     };
 }
@@ -559,7 +576,7 @@ var simulation = d3.forceSimulation()
 // # Read graph.json and draw SVG graph #
 // ######################################
 function percentage_to_utilization_color(percentage){
-    console.log(percentage)
+    //console.log(percentage)
     if (percentage >= 75){
         //console.log("#FF0000")
         return "#FF0000"
