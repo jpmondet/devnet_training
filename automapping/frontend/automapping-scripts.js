@@ -5,7 +5,7 @@ window.onload = function() {
 };
 
 if ('serviceWorker' in navigator && 'caches' in window) {
-  navigator.serviceWorker.register('./service-worker.js', {scope: './'} ).then(
+  navigator.serviceWorker.register('./service-worker.min.js', {scope: './'} ).then(
       (reg) => {
         // registration worked
         console.log('Registration succeeded. Scope is ' + reg.scope);
