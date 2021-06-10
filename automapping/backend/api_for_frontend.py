@@ -23,7 +23,7 @@ from fastapi.security import HTTPBasic, HTTPBasicCredentials
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.logger import logger
 
-from storage.db_layer import (
+from db_layer import (
     get_stats_devices,
     get_all_nodes,
     get_all_links,

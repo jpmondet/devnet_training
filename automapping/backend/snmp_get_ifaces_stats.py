@@ -9,7 +9,7 @@ from typing import List, Dict, Any, Tuple
 from pymongo.errors import InvalidOperation
 from pysnmp.error import PySnmpError
 from dpath.util import search
-from storage.db_layer import (
+from db_layer import (
     prep_db_if_not_exist,
     bulk_update_collection,
     add_iface_stats,
