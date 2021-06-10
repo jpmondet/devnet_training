@@ -1,0 +1,52 @@
+variables:
+  #TODO: leverage gitlab variables?
+  SNMP_USR: 
+  SNMP_AUTH_PWD: 
+  SNMP_PRIV_PWD: 
+  MONGODB_PWD:
+
+tests:
+  stage: tests
+  #TODO
+
+build_api:
+  stage: build
+  image: docker:19.03.13-dind
+  variables:
+    service_to_build: api
+  script:
+    - docker build -f backend/Dockerfile.${service_to_build} backend/ -t automapping_${service_to_build}:${CI_COMMIT_BRANCH}
+
+build_toposcrapper:
+  stage: build
+  image: docker:19.03.13-dind
+  variables:
+    service_to_build: toposcrapper
+  script:
+    - docker build -f backend/Dockerfile.${service_to_build} backend/ -t automapping_${service_to_build}:${CI_COMMIT_BRANCH}
+
+build_statscrapper:
+  stage: build
+  image: docker:19.03.13-dind
+  variables:
+    service_to_build: statscrapper
+  script:
+    - docker build -f backend/Dockerfile.${service_to_build} backend/ -t automapping_${service_to_build}:${CI_COMMIT_BRANCH}
+
+build_frontend:
+  stage: build
+  image: docker:19.03.13-dind
+  variables:
+    service_to_build: frontend
+  script:
+    - docker build -f ${service_to_build}/Dockerfile ${service_to_build}/ -t automapping_${service_to_build}:${CI_COMMIT_BRANCH}
+
+production:
+  stage: production
+  script:
+    - #TODO : k8s
+  environment:
+    name: production
+    url: https://$CI_PROJECT_PATH_SLUG.$KUBE_INGRESS_BASE_DOMAIN
+  only:
+    - master
