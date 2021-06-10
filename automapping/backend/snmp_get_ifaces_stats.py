@@ -6,9 +6,9 @@ from itertools import groupby
 from binascii import hexlify
 from time import time, sleep
 from typing import List, Dict, Any, Tuple
-from pymongo.errors import InvalidOperation
-from pysnmp.error import PySnmpError
-from dpath.util import search
+from pymongo.errors import InvalidOperation # type: ignore
+from pysnmp.error import PySnmpError # type: ignore
+from dpath.util import search # type: ignore
 from db_layer import (
     prep_db_if_not_exist,
     bulk_update_collection,
@@ -26,7 +26,7 @@ SNMP_PRIV_PWD = getenv("SNMP_PRIV_PWD")
 
 def dump_results_to_db(device_name, ifaces_infos) -> None:
     utilization_list: List[Tuple[Dict[str, str], Dict[str,str]]] = []
-    stats_list: List[[Dict[str, str], Dict[str,str]]] = []
+    stats_list: List[Dict[str, str]] = []
     for iface in ifaces_infos:
         _, ifname = next(search(iface, f"{NEEDED_MIBS['iface_name']}*", yielded=True))
         ifname = ifname.lower()
