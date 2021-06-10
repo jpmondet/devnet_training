@@ -7,8 +7,8 @@ from re import compile as rcompile, IGNORECASE as rIGNORECASE
 from typing import List, Dict, Any
 #from bson.json_util import dumps as bdumps, loads as bloads
 
-from pymongo import MongoClient, UpdateMany, ASCENDING as MDBASCENDING
-from pymongo.errors import BulkWriteError, DuplicateKeyError as MDDPK
+from pymongo import MongoClient, UpdateMany, ASCENDING as MDBASCENDING # type: ignore
+from pymongo.errors import BulkWriteError, DuplicateKeyError as MDDPK # type: ignore
 
 DB_STRING: str="mongodb://mongodb:27017/"
 #DB_STRING: str="mongodb://127.0.0.1:27017/"
@@ -113,8 +113,9 @@ def get_speed_iface(device_name: str, iface_name: str):
     speed: int = 1
     try:
         speed = list(STATS_COLLECTION.find({ "device_name": device_name, "iface_name": iface_name }))[-1]["speed"]
-    except KeyError:
-        return 1
+    except (KeyError, IndexError) as err:
+        print("oops? " + str(err))
+        return 10
     return speed
 
 def get_latest_utilization(device_name: str, iface_name: str):
@@ -160,7 +161,7 @@ def add_iface_stats_at_time(device_name: str, iface_name: str, timestamp: int, s
     stats_line.update(stats)
     STATS_COLLECTION.insert_one(stats_line)
 
-def add_iface_stats(stats: Dict[str, Any]) -> None:
+def add_iface_stats(stats: List[Dict[str, Any]]) -> None:
     STATS_COLLECTION.insert_many(stats)
 
 def bulk_update_collection(mongodb_collection, list_tuple_key_query) -> None:
