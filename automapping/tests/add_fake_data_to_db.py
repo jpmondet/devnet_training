@@ -26,16 +26,9 @@ def add_lots_of_nodes(number_nodes: int, fabric_stages: int):
             except DuplicateKeyError:
                 db.nodes.update_many({"device_name": f"fake_device_stage{str(stage+1)}_{str(stage_node+1)}"}, {"$set": {"device_name": f"fake_device_stage{str(stage+1)}_{str(stage_node+1)}", "group": stage+1, "image": "router.png"} } )
 
-def add_nodes_not_generic():
-    for i in range(10):
-        db.nodes.insert_one({"device_name": f"fake_device{str(i)}"})
-        for j in range(10):
-            down_device = str((i+1) * 10 + j)
-            db.nodes.insert_one({"device_name": f"down_fake_device{down_device}"})
-
 def add_iface_utilization(device_name: str, iface_name: str):
     db.utilization.insert_one({'device_name': f"{device_name}", 
-        'iface_name': f'{iface_name}', 'last_utilization': randint(0,1250000)})
+        'iface_name': f'{iface_name}', 'prev_utilization': randint(0,1250000), 'last_utilization': randint(0,1250000)})
 
 def add_iface_stats(device_name: str, iface_name: str):
     db.stats.insert_one({'device_name': f"{device_name}", 
@@ -46,7 +39,7 @@ def add_iface_stats(device_name: str, iface_name: str):
         'out_bytes': randint(0,1250000), 'out_ucast_pkts': 0, 'out_mcast_pkts': 0, 'out_bcast_pkts': 0}
         )
 
-def add_lots_of_links(number_nodes: int, fabric_stages: int):
+def add_lots_of_links(number_nodes: int, fabric_stages: int, stats_only: bool = False):
 
     nodes_per_stages: int = int(number_nodes / fabric_stages)
 
@@ -57,20 +50,21 @@ def add_lots_of_links(number_nodes: int, fabric_stages: int):
         for up_node in range(nodes_per_stages):
 
             up_device: str = f"fake_device_stage{str(stage)}_{str(up_node+1)}"
+            up_iface: str = f'0/{str(up_node+1)}'
 
             for down_node in range(nodes_per_stages):
 
                 down_device: str = f"fake_device_stage{str(stage+1)}_{str(down_node+1)}"
-
                 down_iface: str = f'1/{str(down_node+1)}'
-                up_iface: str = f'0/{str(up_node+1)}'
 
-                db.links.insert_one({'device_name': f"{up_device}",
-                'iface_name': f'{down_iface}', 'neighbor_iface': f'{up_iface}', 'neighbor_name': f"{down_device}"})
+                if not stats_only:
+                    db.links.insert_one({'device_name': f"{up_device}",
+                    'iface_name': f'{down_iface}', 'neighbor_iface': f'{up_iface}', 'neighbor_name': f"{down_device}"})
 
-                db.links.insert_one({'device_name': f"{down_device}",
-                'iface_name': f'{up_iface}', 'neighbor_iface': f'{down_iface}', 'neighbor_name': f"{up_device}"})
+                    db.links.insert_one({'device_name': f"{down_device}",
+                    'iface_name': f'{up_iface}', 'neighbor_iface': f'{down_iface}', 'neighbor_name': f"{up_device}"})
 
+                print(up_device, down_iface, down_device, up_iface)
                 add_iface_stats(up_device, down_iface)
                 add_iface_utilization(up_device, down_iface)
 
@@ -104,14 +98,14 @@ def add_utilizations_not_generic():
             db.utilization.insert_one({'device_name': f"rtr{str(i+1)}.iou", 
                 'iface_name': f'100/{str(j)}', 'last_utilization': randint(0,1250000)})
             db.utilization.insert_one({'device_name': f"fake_device{str(j)}", 
-                'iface_name': f'0/0', 'last_utilization': randint(0,1250000)})
+                'iface_name': f'0/0', 'prev_utilization': randint(0,1250000),'last_utilization': randint(0,1250000)})
     for i in range(10):
         for j in range(10):
             down_device = str((i+1) * 10 + j)
             db.utilization.insert_one({'device_name': f"fake_device{str(i)}",
                 'iface_name': f'1/{down_device}', 'last_utilization': randint(0,1250000)})
             db.utilization.insert_one({'device_name': f"down_fake_device{down_device}", 
-                'iface_name': f'0/0', 'last_utilization': randint(0,1250000)})
+                'iface_name': f'0/0', 'prev_utilization': randint(0,1250000), 'last_utilization': randint(0,1250000)})
 
 def add_lots_of_stats(number_nodes: int, fabric_stages: int):
     pass
@@ -151,12 +145,13 @@ def add_stats_not_generic():
                 'out_bytes': randint(0,1250000), 'out_ucast_pkts': 0, 'out_mcast_pkts': 0, 'out_bcast_pkts': 0}
                 )
 
-def add_fake_datas(nb_nodes: int, fabric_stages: int):
+def add_fake_datas(nb_nodes: int, fabric_stages: int, add_stats_only: bool = False):
 
     fabric_stages = 1 if fabric_stages == 1 else int(fabric_stages / 2 + 1)
 
-    add_lots_of_nodes(nb_nodes, fabric_stages)
-    add_lots_of_links(nb_nodes, fabric_stages)
+    if not add_stats_only:
+        add_lots_of_nodes(nb_nodes, fabric_stages)
+    add_lots_of_links(nb_nodes, fabric_stages, add_stats_only)
 
 def main():
     parser = ArgumentParser(
@@ -200,15 +195,16 @@ def main():
         db.utilization.delete_many({})
         sexit(0)
 
-    if args.add_stats_only:
-        add_lots_of_stats(args.number_nodes, args.fabric_stages)
-        sexit(0)
-    
     if args.fabric_stages % 2 == 0 or args.fabric_stages < 0:
         print("Fabric stages can only by an odd number > 0")
         sexit(1)
 
+    if args.add_stats_only:
+        add_fake_datas(args.number_nodes, args.fabric_stages, True)
+        sexit(0)
+    
     add_fake_datas(args.number_nodes, args.fabric_stages)
+
     for res in db.nodes.find():
        print(res)
 
