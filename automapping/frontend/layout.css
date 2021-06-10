@@ -88,7 +88,7 @@ body {
     font-size: xx-large;
 	font-style: italic;
 	float: left;
-	width: 600px;
+	width:auto; 
 	margin-left: -100%;
 	position: relative;
 	background: #000000;
