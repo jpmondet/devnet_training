@@ -129,16 +129,14 @@ def get_graph():
     nodes: List[Dict[str, Any]] = get_from_db_or_cache('nodes', get_all_nodes)
 
     for node in nodes:
-        if "sw" in node["device_name"]:
-            node["group"] = 1
-            node["image"] = "switch.png"
-        else:
-            node["group"] = 2
-            node["image"] = "router.png"
-        if node["device_name"].startswith('fake'):
-            node['group'] = 3
-        elif node["device_name"].startswith('down_fake'):
-            node['group'] = 5
+        if not node.get('group') or not node.get('image'):
+            # Test nodes
+            if "sw" in node["device_name"]:
+                node["group"] = 1
+                node["image"] = "switch.png"
+            else:
+                node["group"] = 2
+                node["image"] = "router.png"
 
         node["id"] = node["device_name"]
 
@@ -211,10 +209,10 @@ def stats(q: List[str] = Query(None)):
         for device in q:
             if not isinstance(device, str):
                 raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST)
-            if len(device) != 7 and len(device) != 8:
-                raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST)
-            if "iou" not in device:
-                raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST)
+            #if len(device) != 7 and len(device) != 8:
+            #    raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST)
+            #if "iou" not in device:
+            #    raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST)
 
         stats_by_device: Dict[str, Any] = {}
         sorted_stats = sorted(
@@ -247,7 +245,7 @@ def stats(q: List[str] = Query(None)):
                 # Must calculate speed. Not just adding in_bytes or it will only increase.
                 # Assuming it's ordered for now
                 prev_date = stats_by_device[dname][ifname]["stats"][-1]["time"]
-                prev_timestamp: int = datetime.strptime(prev_date, "%y-%m-%d %H:%M:%S").timestamp()
+                prev_timestamp: int = int(datetime.strptime(prev_date, "%y-%m-%d %H:%M:%S").timestamp())
                 prev_inbits: int = stats_by_device[dname][ifname]["stats"][-1]["InSpeed"]
                 prev_outbits: int = stats_by_device[dname][ifname]["stats"][-1]["OutSpeed"]
 
@@ -267,7 +265,7 @@ def stats(q: List[str] = Query(None)):
 @app.get("/neighborships/")
 # Leveraging query string validation built in FastApi to avoid having multiple IFs
 def neighborships(
-    q: str = Query(..., min_length=7, max_length=8)#, regex="^[a-z]{2,3}[0-9]{1}.iou$")
+    q: str = Query(..., min_length=7, max_length=25)#, regex="^[a-z]{2,3}[0-9]{1}.iou$")
 ):
     """
         {
