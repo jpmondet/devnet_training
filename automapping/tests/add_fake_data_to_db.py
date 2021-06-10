@@ -5,7 +5,8 @@ import re
 from random import randint
 from time import time
 from argparse import ArgumentParser
-from pymongo import MongoClient, ASCENDING, UpdateMany
+from pymongo import MongoClient, ASCENDING, UpdateMany # type: ignore
+from pymongo.errors import DuplicateKeyError # type: ignore
 
 # https://pymongo.readthedocs.io/en/stable/tutorial.html
 
@@ -20,7 +21,10 @@ def add_lots_of_nodes(number_nodes: int, fabric_stages: int):
 
     for stage in range(fabric_stages):
         for stage_node in range(nodes_per_stages):
-            db.nodes.insert_one({"device_name": f"fake_device_stage{str(stage+1)}_{str(stage_node+1)}"})
+            try:
+                db.nodes.insert_one({"device_name": f"fake_device_stage{str(stage+1)}_{str(stage_node+1)}", "group": stage+1, "image": "router.png"})
+            except DuplicateKeyError:
+                db.nodes.update_many({"device_name": f"fake_device_stage{str(stage+1)}_{str(stage_node+1)}"}, {"$set": {"device_name": f"fake_device_stage{str(stage+1)}_{str(stage_node+1)}", "group": stage+1, "image": "router.png"} } )
 
 def add_nodes_not_generic():
     for i in range(10):
@@ -149,7 +153,7 @@ def add_stats_not_generic():
 
 def add_fake_datas(nb_nodes: int, fabric_stages: int):
 
-    fabric_stages = 1 if fabric_stages == 1 else fabric_stages / 2 + 1
+    fabric_stages = 1 if fabric_stages == 1 else int(fabric_stages / 2 + 1)
 
     add_lots_of_nodes(nb_nodes, fabric_stages)
     add_lots_of_links(nb_nodes, fabric_stages)
