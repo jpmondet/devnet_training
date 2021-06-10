@@ -3,4 +3,4 @@ black
 mypy
 bandit
 scalene
--r requirements.txt
+-r backend/requirements.txt

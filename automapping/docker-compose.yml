@@ -7,40 +7,31 @@ services:
     - PUID=1000
     - PGID=1000
     volumes:
-    - /home/christ/Documents/git/devnet_training/automapping/storage/db:/data/db
+    - ${REPO_PATH}/storage/db:/data/db
     ports:
     - 27017:27017
     restart: unless-stopped
   api:
     build:
-      context: /home/christ/Documents/git/devnet_training/automapping/compute/
+      context: ${REPO_PATH}/backend/
       dockerfile: Dockerfile.api
     ports: 
     - 8000:80
-  #topo_scrapper:
-  #  build:
-  #    context: /home/christ/Documents/git/devnet_training/automapping/compute/
-  #    dockerfile: Dockerfile.scrapper
   topo_scrapper_snmp:
     build:
-      context: /home/christ/Documents/git/devnet_training/automapping/compute/
-      dockerfile: Dockerfile.scrappersnmp
+      context: ${REPO_PATH}/backend/
+      dockerfile: Dockerfile.toposcrapper
     env_file:
-    - /home/christ/Documents/git/devnet_training/automapping/.snmp
-  #stats_crawler:
-  #  build:
-  #    context: /home/christ/Documents/git/devnet_training/automapping/compute/
-  #    dockerfile: Dockerfile.stats
+    - ${REPO_PATH}/.snmp
   stats_crawler_snmp:
     build:
-      context: /home/christ/Documents/git/devnet_training/automapping/compute/
-      dockerfile: Dockerfile.statsnmp
+      context: ${REPO_PATH}/backend/
+      dockerfile: Dockerfile.statscrapper
     env_file:
-    - /home/christ/Documents/git/devnet_training/automapping/.snmp
+    - ${REPO_PATH}/.snmp
   apache:  
     image: "httpd:2.4"
     volumes:
-    - /home/christ/Documents/git/devnet_training/automapping/frontend/public-html/:/usr/local/apache2/htdocs/
-    - /home/christ/Documents/git/devnet_training/automapping/frontend/my-httpd.conf:/usr/local/apache2/conf/httpd.conf
+    - ${REPO_PATH}/frontend/public-html/:/usr/local/apache2/htdocs/
     ports: 
     - 8080:80
