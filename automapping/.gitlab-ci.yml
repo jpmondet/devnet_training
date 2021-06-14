@@ -1,13 +1,18 @@
 variables:
   #TODO: leverage gitlab variables?
-  SNMP_USR: 
-  SNMP_AUTH_PWD: 
-  SNMP_PRIV_PWD: 
-  MONGODB_PWD:
+  #SNMP_USR: 
+  #SNMP_AUTH_PWD: 
+  #SNMP_PRIV_PWD: 
+  #MONGODB_PWD:
+  CI_COMMIT_BRANCH: master
 
 tests:
   stage: tests
+  image: alpine
   #TODO
+  script:
+    - ls -alh
+    - echo "hello"
 
 build_api:
   stage: build
@@ -15,6 +20,7 @@ build_api:
   variables:
     service_to_build: api
   script:
+    - ls -alh
     - docker build -f backend/Dockerfile.${service_to_build} backend/ -t automapping_${service_to_build}:${CI_COMMIT_BRANCH}
 
 build_toposcrapper:
