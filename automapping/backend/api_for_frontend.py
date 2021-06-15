@@ -288,6 +288,9 @@ def neighborships(
     """
     background_time_update()
 
+    if not isinstance(q, str):
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST)
+
     neighs: List[Dict[str, str]] = []
     for link in get_links_device(q):
         device1: str = link["device_name"]
