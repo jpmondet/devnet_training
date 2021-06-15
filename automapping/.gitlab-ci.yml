@@ -6,13 +6,34 @@ variables:
   #MONGODB_PWD:
   CI_COMMIT_BRANCH: master
 
-tests:
+black:
   stage: tests
-  image: alpine
-  #TODO
+  image: python:3.8.10-slim-buster
   script:
-    - ls -alh
-    - echo "hello"
+    - pip install -r requirements-dev.txt
+    - black -l 100 -t py38 --check backend/ tests/
+
+pylint:
+  stage: tests
+  image: python:3.8.10-slim-buster
+  script:
+    - pip install -r requirements-dev.txt
+    - pylint backend/ tests/
+
+pytest:
+  stage: tests
+  image: python:3.8.10-slim-buster
+  services:
+    - name: mongo:4.4.3-bionic
+      alias: mongodb
+  script:
+    - pip install -r requirements-dev.txt
+    - python tests/add_fake_data_to_db.py -n 12 -s 5
+    - pytest tests/ --junitxml=report.xml
+  artifacts:
+    when: always
+    reports:
+      junit: report.xml
 
 build_api:
   stage: build
