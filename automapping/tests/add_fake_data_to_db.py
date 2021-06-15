@@ -1,6 +1,7 @@
 # /usr/bin/env python3
 
 from sys import exit as sexit
+from os import getenv
 import re
 from random import randint
 from time import time
@@ -10,10 +11,12 @@ from pymongo.errors import DuplicateKeyError # type: ignore
 
 # https://pymongo.readthedocs.io/en/stable/tutorial.html
 
-#TEST_DB = "mongodb://localhost:27017/"
-TEST_DB = "mongodb://mongodb:27017/"
+DB_STRING = getenv("DB_STRING")
+if not DB_STRING:
+    DB_STRING = "mongodb://localhost:27017/"
+    #DB_STRING = "mongodb://mongodb:27017/"
 
-client = MongoClient(TEST_DB)
+client = MongoClient(DB_STRING)
 db = client.automapping
 
 def add_lots_of_nodes(number_nodes: int, fabric_stages: int):
@@ -27,20 +30,22 @@ def add_lots_of_nodes(number_nodes: int, fabric_stages: int):
             except DuplicateKeyError:
                 db.nodes.update_many({"device_name": f"fake_device_stage{str(stage+1)}_{str(stage_node+1)}"}, {"$set": {"device_name": f"fake_device_stage{str(stage+1)}_{str(stage_node+1)}", "group": stage+1, "image": "router.png"} } )
 
-def add_iface_utilization(device_name: str, iface_name: str):
+def add_iface_utilization(device_name: str, iface_name: str, node_number: int):
     db.utilization.insert_one({'device_name': f"{device_name}", 
-        'iface_name': f'{iface_name}', 'prev_utilization': randint(0,1250000), 'last_utilization': randint(0,1250000)})
+        'iface_name': f'{iface_name}', 'prev_utilization': node_number, 'last_utilization': 1250000 - node_number})
 
-def add_iface_stats(device_name: str, iface_name: str):
+def add_iface_stats(device_name: str, iface_name: str, node_number: int):
     db.stats.insert_one({'device_name': f"{device_name}", 
         'iface_name': f'{iface_name}', 'timestamp': int(time()),
         'mtu': 1500, 'mac': '', 'speed': 10, 'in_discards': 0, 
-        'in_errors': 0, 'out_discards': 0, 'out_errors': 0, 'in_bytes': randint(0,1250000),
+        'in_errors': 0, 'out_discards': 0, 'out_errors': 0, 'in_bytes': 1250000 - node_number,
         'in_ucast_pkts': 0, 'in_mcast_pkts': 0, 'in_bcast_pkts': 0,
-        'out_bytes': randint(0,1250000), 'out_ucast_pkts': 0, 'out_mcast_pkts': 0, 'out_bcast_pkts': 0}
+        'out_bytes': 1250000 - node_number, 'out_ucast_pkts': 0, 'out_mcast_pkts': 0, 'out_bcast_pkts': 0}
         )
 
 def add_lots_of_links(number_nodes: int, fabric_stages: int, stats_only: bool = False):
+
+    node_number: int = 0
 
     nodes_per_stages: int = int(number_nodes / fabric_stages)
 
@@ -66,11 +71,12 @@ def add_lots_of_links(number_nodes: int, fabric_stages: int, stats_only: bool = 
                     'iface_name': f'{up_iface}', 'neighbor_iface': f'{down_iface}', 'neighbor_name': f"{up_device}"})
 
                 print(up_device, down_iface, down_device, up_iface)
-                add_iface_stats(up_device, down_iface)
-                add_iface_utilization(up_device, down_iface)
+                add_iface_stats(up_device, down_iface, node_number)
+                add_iface_utilization(up_device, down_iface, node_number)
 
-                add_iface_stats(down_device, up_iface)
-                add_iface_utilization(down_device, up_iface)
+                add_iface_stats(down_device, up_iface, node_number)
+                add_iface_utilization(down_device, up_iface, node_number)
+                node_number += 10000
 
 
 def add_links_not_generic():
