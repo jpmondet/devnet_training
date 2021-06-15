@@ -29,8 +29,7 @@ pytest:
       alias: mongodb
   script:
     - pip install -r requirements-dev.txt
-    - python tests/add_fake_data_to_db.py -n 12 -s 5
-    - pytest tests/ --junitxml=report.xml
+    - pytest --cov=backend -s tests/ --junitxml=report.xml
   artifacts:
     when: always
     reports:
