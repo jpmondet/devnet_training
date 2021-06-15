@@ -44,10 +44,10 @@ def prep_db_if_not_exist():
 
     # We ensure that entries will be unique
     # (this is a mongodb feature)
-    NODES_COLLECTION.create_index({"device_name": 1}, unique=True)
-    LINKS_COLLECTION.create_index({"device_name": 1, "iface_name": 1, "neighbor_name": 1, "neighbor_iface": 1}, unique=True)
-    STATS_COLLECTION.create_index({"device_name": 1, "iface_name": 1, "timestamp": 1}, unique=True)
-    UTILIZATION_COLLECTION.create_index({"device_name": 1, "iface_name": 1}, unique=True)
+    NODES_COLLECTION.create_index([("device_name", 1)], unique=True)
+    LINKS_COLLECTION.create_index([("device_name", 1), ("iface_name", 1), ("neighbor_name", 1), ("neighbor_iface", 1)], unique=True)
+    STATS_COLLECTION.create_index([("device_name", 1), ("iface_name", 1), ("timestamp", 1)], unique=True)
+    UTILIZATION_COLLECTION.create_index([("device_name", 1), ("iface_name", 1)], unique=True)
 
 def get_entire_collection(mongodb_collection) -> List[Dict[str, Any]]:
     return list(mongodb_collection.find({}))
