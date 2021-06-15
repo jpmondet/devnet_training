@@ -10,7 +10,8 @@ from pymongo.errors import DuplicateKeyError # type: ignore
 
 # https://pymongo.readthedocs.io/en/stable/tutorial.html
 
-TEST_DB = "mongodb://localhost:27017/"
+#TEST_DB = "mongodb://localhost:27017/"
+TEST_DB = "mongodb://mongodb:27017/"
 
 client = MongoClient(TEST_DB)
 db = client.automapping
