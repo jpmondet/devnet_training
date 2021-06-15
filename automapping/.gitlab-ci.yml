@@ -5,6 +5,7 @@ variables:
   #SNMP_PRIV_PWD: 
   #MONGODB_PWD:
   CI_COMMIT_BRANCH: master
+  DB_STRING: "mongodb://mongodb:27017/"
 
 black:
   stage: tests

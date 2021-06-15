@@ -3,15 +3,18 @@ that can be (and should be) abstracted """
 
 #! /usr/bin/env python3
 
+from os import getenv
 from re import compile as rcompile, IGNORECASE as rIGNORECASE
-from typing import List, Dict, Any
+from typing import List, Dict, Any, Optional
 #from bson.json_util import dumps as bdumps, loads as bloads
 
 from pymongo import MongoClient, UpdateMany, ASCENDING as MDBASCENDING # type: ignore
 from pymongo.errors import BulkWriteError, DuplicateKeyError as MDDPK # type: ignore
 
-DB_STRING: str="mongodb://mongodb:27017/"
-#DB_STRING: str="mongodb://127.0.0.1:27017/"
+DB_STRING: Optional[str] = getenv("DB_STRING")
+if not DB_STRING:
+    #DB_STRING = "mongodb://mongodb:27017/"
+    DB_STRING = "mongodb://127.0.0.1:27017/"
 
 DB_CLIENT: MongoClient = MongoClient(DB_STRING)
 DB = DB_CLIENT.automapping
