@@ -61,6 +61,7 @@ CACHED_TIME: int = 300
 TIME: int = int(time())
 TIMEOUT: bool = True
 
+
 def check_credentials(credentials: HTTPBasicCredentials = Depends(security)):
     correct_username = compare_digest(credentials.username, API_USER)
     correct_password = compare_digest(credentials.password, API_PASS)
@@ -71,6 +72,7 @@ def check_credentials(credentials: HTTPBasicCredentials = Depends(security)):
             headers={"WWW-Authenticate": "Basic"},
         )
     return credentials
+
 
 def get_from_db_or_cache(element: str, func, query=None):
     global TIMEOUT
@@ -84,6 +86,7 @@ def get_from_db_or_cache(element: str, func, query=None):
 
     return CACHE[element]
 
+
 def background_time_update():
     global TIMEOUT, TIME
     now: int = int(time())
@@ -91,45 +94,46 @@ def background_time_update():
         TIMEOUT = True
         TIME = now
 
+
 @app.get("/graph")
 # def get_graph(credentials=Depends(check_credentials)):
 def get_graph():
     """
-                "links": [
+            "links": [
+                {
+                    "highest_utilization": 0,
+                    "source": "deviceName",
+                    "source_interfaces": [
+                        "Ethernet0/0"
+                    ],
+                    "speed": "1",
+                    "target": "deviceName-2",
+                    "target_interfaces": [
+                        "Ethernet0/0"
+                    ],
+                },
+                {}],
+            "nodes": [
                     {
-                        "highest_utilization": 0,
-                        "source": "deviceName",
-                        "source_interfaces": [
-                            "Ethernet0/0"
-                        ],
-                        "speed": "1",
-                        "target": "deviceName-2",
-                        "target_interfaces": [
-                            "Ethernet0/0"
-                        ],
+                        group: 1,
+                        id: "deviceName",
+                        image: "default.png",
                     },
-                    {}],
-                "nodes": [
-                        {
-                            group: 1,
-                            id: "deviceName",
-                            image: "default.png",
-                        },
-                        {}]
-                }
+                    {}]
+            }
 
 
-        Graph shouldn't be updated very much
-        However, "highest_utilization" must be updated each time the API is called
-         with fresh "stats" values
+    Graph shouldn't be updated very much
+    However, "highest_utilization" must be updated each time the API is called
+     with fresh "stats" values
     """
     background_time_update()
-    #logger.error(f"Caching timeout : {TIMEOUT}")
+    # logger.error(f"Caching timeout : {TIMEOUT}")
 
-    nodes: List[Dict[str, Any]] = get_from_db_or_cache('nodes', get_all_nodes)
+    nodes: List[Dict[str, Any]] = get_from_db_or_cache("nodes", get_all_nodes)
 
     for node in nodes:
-        if not node.get('group') or not node.get('image'):
+        if not node.get("group") or not node.get("image"):
             # Test nodes
             if "sw" in node["device_name"]:
                 node["group"] = 1
@@ -145,7 +149,7 @@ def get_graph():
         except KeyError:
             pass
 
-    links: Dict[str, Any] = get_from_db_or_cache('links', get_all_links)
+    links: Dict[str, Any] = get_from_db_or_cache("links", get_all_links)
     sorted_links: List[Dict[str, Any]] = sorted(
         links, key=lambda d: (d["device_name"], d["neighbor_name"])
     )
@@ -158,12 +162,12 @@ def get_graph():
         if not formatted_links.get(device + neigh) and not formatted_links.get(neigh + device):
             highest_utilization = get_highest_utilization(device, iface)
             speed = get_speed_iface(device, iface)
-            #logger.error(f"Utilization & speed : {highest_utilization}, {speed}")
-            speed = speed * 1000000 #Convert speed to bits
-            highest_utilization = highest_utilization * 8 #convert to bits
-            #logger.error(f"Utilization & speed in bits: {highest_utilization}, {speed}")
+            # logger.error(f"Utilization & speed : {highest_utilization}, {speed}")
+            speed = speed * 1000000  # Convert speed to bits
+            highest_utilization = highest_utilization * 8  # convert to bits
+            # logger.error(f"Utilization & speed in bits: {highest_utilization}, {speed}")
             percent_highest = highest_utilization / speed * 100
-            #logger.error(f"Utilization percent {percent_highest}")
+            # logger.error(f"Utilization percent {percent_highest}")
             f_link = {
                 "highest_utilization": percent_highest,
                 "source": device,
@@ -185,22 +189,25 @@ def get_graph():
                 if iface not in formatted_links[neigh + device]["target_interfaces"]:
                     formatted_links[neigh + device]["target_interfaces"].append(iface)
 
+    # logger.error(formatted_links)
+
     return {"nodes": nodes, "links": list(formatted_links.values())}
+
 
 @app.get("/stats/")
 def stats(q: List[str] = Query(None)):
     """
-                {
-                    "ifDescr": "Ethernet0/0",
-                    "index": 1,
-                    "stats": [
-                        {
-                            "InSpeed": 0,
-                            "OutSpeed": 0,
-                            "time": "2020-12-24 23:59:59"
-                        },
-                    ]
-                }
+    {
+        "ifDescr": "Ethernet0/0",
+        "index": 1,
+        "stats": [
+            {
+                "InSpeed": 0,
+                "OutSpeed": 0,
+                "time": "2020-12-24 23:59:59"
+            },
+        ]
+    }
     """
     background_time_update()
 
@@ -209,9 +216,9 @@ def stats(q: List[str] = Query(None)):
         for device in q:
             if not isinstance(device, str):
                 raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST)
-            #if len(device) != 7 and len(device) != 8:
+            # if len(device) != 7 and len(device) != 8:
             #    raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST)
-            #if "iou" not in device:
+            # if "iou" not in device:
             #    raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST)
 
         stats_by_device: Dict[str, Any] = {}
@@ -245,7 +252,9 @@ def stats(q: List[str] = Query(None)):
                 # Must calculate speed. Not just adding in_bytes or it will only increase.
                 # Assuming it's ordered for now
                 prev_date = stats_by_device[dname][ifname]["stats"][-1]["time"]
-                prev_timestamp: int = int(datetime.strptime(prev_date, "%y-%m-%d %H:%M:%S").timestamp())
+                prev_timestamp: int = int(
+                    datetime.strptime(prev_date, "%y-%m-%d %H:%M:%S").timestamp()
+                )
                 prev_inbits: int = stats_by_device[dname][ifname]["stats"][-1]["InSpeed"]
                 prev_outbits: int = stats_by_device[dname][ifname]["stats"][-1]["OutSpeed"]
 
@@ -265,17 +274,17 @@ def stats(q: List[str] = Query(None)):
 @app.get("/neighborships/")
 # Leveraging query string validation built in FastApi to avoid having multiple IFs
 def neighborships(
-    q: str = Query(..., min_length=7, max_length=25)#, regex="^[a-z]{2,3}[0-9]{1}.iou$")
+    q: str = Query(..., min_length=7, max_length=25)  # , regex="^[a-z]{2,3}[0-9]{1}.iou$")
 ):
     """
-        {
-                        "deviceName":[
-                        "local_intf": "Ethernet0/0",
-                        "neighbor": "deviceName2",
-                        "neighbor_intf": "Ethernet0/0",
-                    ],
-                    "deviceName2" :[],
-        }
+    {
+                    "deviceName":[
+                    "local_intf": "Ethernet0/0",
+                    "neighbor": "deviceName2",
+                    "neighbor_intf": "Ethernet0/0",
+                ],
+                "deviceName2" :[],
+    }
     """
     background_time_update()
 
@@ -292,21 +301,25 @@ def neighborships(
             iface1, iface2 = iface2, iface1
 
         neighs.append(
-            {"local_intf": iface1, "neighbor": device2, "neighbor_intf": iface2,}
+            {
+                "local_intf": iface1,
+                "neighbor": device2,
+                "neighbor_intf": iface2,
+            }
         )
 
     return neighs
+
 
 def main() -> None:
     # Used only for quick tests
     print("Nothing for now!")
 
 
-gunicorn_logger = logging.getLogger('gunicorn.info')
+gunicorn_logger = logging.getLogger("gunicorn.info")
 logger.handlers = gunicorn_logger.handlers
 if __name__ != "main":
     logger.setLevel(gunicorn_logger.level)
 else:
     logger.setLevel(logging.DEBUG)
     main()
-
