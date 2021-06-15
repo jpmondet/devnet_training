@@ -54,7 +54,7 @@ app.add_middleware(
 API_USER: str = "user"
 API_PASS: str = "pass"
 
-security = HTTPBasic()  # TODO: Needs better security
+#security = HTTPBasic()  # TODO: Needs better security
 
 CACHE: Dict[str, Any] = {}
 CACHED_TIME: int = 300
@@ -62,16 +62,16 @@ TIME: int = int(time())
 TIMEOUT: bool = True
 
 
-def check_credentials(credentials: HTTPBasicCredentials = Depends(security)):
-    correct_username = compare_digest(credentials.username, API_USER)
-    correct_password = compare_digest(credentials.password, API_PASS)
-    if not (correct_username and correct_password):
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Incorrect email or password",
-            headers={"WWW-Authenticate": "Basic"},
-        )
-    return credentials
+#def check_credentials(credentials: HTTPBasicCredentials = Depends(security)):
+#    correct_username = compare_digest(credentials.username, API_USER)
+#    correct_password = compare_digest(credentials.password, API_PASS)
+#    if not (correct_username and correct_password):
+#        raise HTTPException(
+#            status_code=status.HTTP_401_UNAUTHORIZED,
+#            detail="Incorrect email or password",
+#            headers={"WWW-Authenticate": "Basic"},
+#        )
+#    return credentials
 
 
 def get_from_db_or_cache(element: str, func, query=None):
@@ -314,15 +314,6 @@ def neighborships(
     return neighs
 
 
-def main() -> None:
-    # Used only for quick tests
-    print("Nothing for now!")
-
-
 gunicorn_logger = logging.getLogger("gunicorn.info")
 logger.handlers = gunicorn_logger.handlers
-if __name__ != "main":
-    logger.setLevel(gunicorn_logger.level)
-else:
-    logger.setLevel(logging.DEBUG)
-    main()
+logger.setLevel(gunicorn_logger.level)
