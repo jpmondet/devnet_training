@@ -3,14 +3,16 @@
 import sys, os
 import json
 import pytest
-
+from fastapi.exceptions import HTTPException
+from add_fake_data_to_db import delete_all_collections_datas, add_fake_datas
 sys.path.append(os.path.realpath(os.path.dirname(__file__)+"/../backend/"))
 from api_for_frontend import get_graph, stats, neighborships
+from db_layer import prep_db_if_not_exist
 
-from fastapi.exceptions import HTTPException
 
-# Those tests must be launched against a DB 
-# This DB must be filled only with : `python tests/add_fake_data_to_db.py -n 12 -s 5`
+delete_all_collections_datas()
+prep_db_if_not_exist()
+add_fake_datas(12, 5)
 
 TEST_GRAPH_DATA = {}
 with open("tests/graph_datas.json") as graph_datas:

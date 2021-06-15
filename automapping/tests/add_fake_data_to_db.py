@@ -160,6 +160,12 @@ def add_fake_datas(nb_nodes: int, fabric_stages: int, add_stats_only: bool = Fal
         add_lots_of_nodes(nb_nodes, fabric_stages)
     add_lots_of_links(nb_nodes, fabric_stages, add_stats_only)
 
+def delete_all_collections_datas():
+    db.nodes.delete_many({})
+    db.links.delete_many({})
+    db.stats.delete_many({})
+    db.utilization.delete_many({})
+
 def main():
     parser = ArgumentParser(
         prog="db_filler", description="Fill db with fake datas",
@@ -196,10 +202,7 @@ def main():
     args = parser.parse_args()
 
     if args.rm_db:
-        db.nodes.delete_many({})
-        db.links.delete_many({})
-        db.stats.delete_many({})
-        db.utilization.delete_many({})
+        delete_all_collections_datas()
         sexit(0)
 
     if args.fabric_stages % 2 == 0 or args.fabric_stages < 0:
