@@ -57,7 +57,6 @@
 }
 
 div.infobox {
-    padding: 0px 0px 0px 15px;
     color:#ffffff;
     background: #000000;
 }
@@ -68,7 +67,6 @@ div.infobox_header {
 }
 
 table.infobox {
-  margin: 15px 0px 0px 0px;
   width: 600px;
   text-align: center;
   background: rgba(0, 0, 0, 0);
