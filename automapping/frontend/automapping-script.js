@@ -228,13 +228,14 @@ function viewChangeFunc(deviceid) {
     OnViewChange(deviceid,selectedValue);
 }
 
-function OnClickDetails(deviceid, view = "traffic"){
+function OnClickDetails(deviceid, view = "neighbors"){
     cleanDivWithID("infobox_header")
     printToDivWithID("infobox_header",deviceid);
     view_select_box = ""
     view_select_box += "<div>views: <select id=\"viewSelectBox\" onchange=\"viewChangeFunc(\'"+deviceid+"\');\">"
-    view_select_box += "<option value=\"traffic\">Traffic</option>"
     view_select_box += "<option value=\"neighbors\">Neighbors</option>"
+    view_select_box += "<option value=\"traffic\">Traffic</option>"
+    view_select_box += "<option value=\"clear\">Clear</option>"
     view_select_box += "</select></div><br>"
     printToDivWithID("infobox_header",view_select_box)
 
@@ -242,7 +243,7 @@ function OnClickDetails(deviceid, view = "traffic"){
     OnViewChange(deviceid)
 }
 
-function OnViewChange(deviceid, view = "traffic"){
+function OnViewChange(deviceid, view = "neighbors"){
     // # Initial cleanup
     cleanDivWithID("infobox")
 
@@ -304,6 +305,9 @@ function OnViewChange(deviceid, view = "traffic"){
         .catch(function(err) {
           console.log('Fetch Error :-S', err);
         });
+    } else if (view == "clear"){
+      cleanDivWithID("infobox");
+      //cleanDivWithID("infobox_header")
     };
 }
 
