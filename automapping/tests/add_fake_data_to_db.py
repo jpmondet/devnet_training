@@ -19,6 +19,28 @@ if not DB_STRING:
 client = MongoClient(DB_STRING)
 db = client.automapping
 
+
+def prep_db_if_not_exist():
+    """If db is empty, we create proper indexes."""
+
+    if (
+        list(db.nodes.find({}))
+        and list(db.links.find({}))
+        and list(db.stats.find({}))
+        and list(db.utilization.find({}))
+    ):
+        # Looks like everything is ready
+        return
+
+    print("Preping db since at least one collection is empty")
+
+    # We ensure that entries will be unique
+    # (this is a mongodb feature)
+    db.nodes.create_index([("device_name", 1)], unique=True)
+    db.links.create_index([("device_name", 1), ("iface_name", 1), ("neighbor_name", 1), ("neighbor_iface", 1)], unique=True)
+    db.stats.create_index([("device_name", 1), ("iface_name", 1), ("timestamp", 1)], unique=True)
+    db.utilization.create_index([("device_name", 1), ("iface_name", 1)], unique=True)
+
 def add_lots_of_nodes(number_nodes: int, fabric_stages: int):
 
     nodes_per_stages: int = int(number_nodes / fabric_stages)
@@ -31,16 +53,17 @@ def add_lots_of_nodes(number_nodes: int, fabric_stages: int):
                 db.nodes.update_many({"device_name": f"fake_device_stage{str(stage+1)}_{str(stage_node+1)}"}, {"$set": {"device_name": f"fake_device_stage{str(stage+1)}_{str(stage_node+1)}", "group": stage+1, "image": "router.png"} } )
 
 def add_iface_utilization(device_name: str, iface_name: str, node_number: int):
-    db.utilization.insert_one({'device_name': f"{device_name}", 
-        'iface_name': f'{iface_name}', 'prev_utilization': node_number, 'last_utilization': 1250000 - node_number})
+    db.utilization.update_one({'device_name': f"{device_name}",'iface_name': f'{iface_name}'},
+        {"$set": {'device_name': f"{device_name}", 
+        'iface_name': f'{iface_name}', 'prev_utilization': 0, 'last_utilization': node_number}})
 
 def add_iface_stats(device_name: str, iface_name: str, node_number: int):
     db.stats.insert_one({'device_name': f"{device_name}", 
         'iface_name': f'{iface_name}', 'timestamp': int(time()),
         'mtu': 1500, 'mac': '', 'speed': 10, 'in_discards': 0, 
-        'in_errors': 0, 'out_discards': 0, 'out_errors': 0, 'in_bytes': 1250000 - node_number,
+        'in_errors': 0, 'out_discards': 0, 'out_errors': 0, 'in_bytes': node_number,
         'in_ucast_pkts': 0, 'in_mcast_pkts': 0, 'in_bcast_pkts': 0,
-        'out_bytes': 1250000 - node_number, 'out_ucast_pkts': 0, 'out_mcast_pkts': 0, 'out_bcast_pkts': 0}
+        'out_bytes': node_number, 'out_ucast_pkts': 0, 'out_mcast_pkts': 0, 'out_bcast_pkts': 0}
         )
 
 def add_lots_of_links(number_nodes: int, fabric_stages: int, stats_only: bool = False):
@@ -49,9 +72,12 @@ def add_lots_of_links(number_nodes: int, fabric_stages: int, stats_only: bool = 
 
     nodes_per_stages: int = int(number_nodes / fabric_stages)
 
+    node_increment: int =  int(1250000/number_nodes)
+
     for stage in range(fabric_stages):
         if stage == 0:
             continue
+
 
         for up_node in range(nodes_per_stages):
 
@@ -70,13 +96,15 @@ def add_lots_of_links(number_nodes: int, fabric_stages: int, stats_only: bool = 
                     db.links.insert_one({'device_name': f"{down_device}",
                     'iface_name': f'{up_iface}', 'neighbor_iface': f'{down_iface}', 'neighbor_name': f"{up_device}"})
 
-                print(up_device, down_iface, down_device, up_iface)
+                print(up_device, down_iface, down_device, up_iface, node_number, number_nodes)
                 add_iface_stats(up_device, down_iface, node_number)
                 add_iface_utilization(up_device, down_iface, node_number)
 
                 add_iface_stats(down_device, up_iface, node_number)
                 add_iface_utilization(down_device, up_iface, node_number)
-                node_number += 10000
+
+            #node_number += randint(0, node_increment)
+            node_number += node_increment
 
 
 def add_links_not_generic():
@@ -212,6 +240,8 @@ def main():
     if args.add_stats_only:
         add_fake_datas(args.number_nodes, args.fabric_stages, True)
         sexit(0)
+    
+    prep_db_if_not_exist()
     
     add_fake_datas(args.number_nodes, args.fabric_stages)
 
