@@ -58,6 +58,32 @@ def get_all_nodes() -> List[Dict[str, Any]]:
 def get_all_links() -> List[Dict[str, Any]]:
     return get_entire_collection(LINKS_COLLECTION)
 
+def get_all_highest_utilizations() -> Dict[str, int]:
+    utilizations: Dict[str, int] = {}
+    for utilization in get_entire_collection(UTILIZATION_COLLECTION):
+        id_utilz = utilization['device_name'] + utilization['iface_name']
+        if utilizations.get(id_utilz):
+            continue
+        try:
+            highest_utilization = utilization["last_utilization"] - utilization["prev_utilization"]
+            if highest_utilization < 0:
+                highest_utilization = 0
+        except KeyError:
+            highest_utilization = 0
+        utilizations[id_utilz] = highest_utilization
+    
+    return utilizations
+
+def get_all_speeds() -> Dict[str, int]:
+    speeds: Dict[str, int] = {}
+    for stat in get_entire_collection(STATS_COLLECTION):
+        id_speed = stat['device_name'] + stat['iface_name']
+        if speeds.get(id_speed):
+            continue
+        speeds[id_speed] = stat["speed"]
+    
+    return speeds
+
 def get_links_device(device: str) -> List[Dict[str, Any]]:
     query: List[Dict[str, str]] = [{"device_name": device}, {"neighbor_name": device}]
     return LINKS_COLLECTION.find({"$or": query})
@@ -69,7 +95,9 @@ def get_stats_devices(devices: List[str]):
 def get_speed_iface(device_name: str, iface_name: str):
     speed: int = 1
     try:
-        speed = list(STATS_COLLECTION.find({ "device_name": device_name, "iface_name": iface_name }))[-1]["speed"]
+        #speed = list(STATS_COLLECTION.find({ "device_name": device_name, "iface_name": iface_name }))[-1]["speed"]
+        *_, laststat = STATS_COLLECTION.find({ "device_name": device_name, "iface_name": iface_name })
+        return laststat["speed"]
     except (KeyError, IndexError) as err:
         print("oops? " + str(err))
         return 10
