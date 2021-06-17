@@ -29,7 +29,7 @@ from db_layer import (
     get_all_links,
     get_links_device,
     get_all_highest_utilizations,
-    get_all_speeds
+    get_all_speeds,
 )
 
 app = FastAPI()
@@ -51,10 +51,10 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-#API_USER: str = "user"
-#API_PASS: str = "pass"
+# API_USER: str = "user"
+# API_PASS: str = "pass"
 
-#security = HTTPBasic()  # TODO: Needs better security
+# security = HTTPBasic()  # TODO: Needs better security
 
 CACHE: Dict[str, Any] = {}
 CACHED_TIME: int = 300
@@ -62,7 +62,7 @@ TIME: int = int(time())
 TIMEOUT: bool = True
 
 
-#def check_credentials(credentials: HTTPBasicCredentials = Depends(security)):
+# def check_credentials(credentials: HTTPBasicCredentials = Depends(security)):
 #    correct_username = compare_digest(credentials.username, API_USER)
 #    correct_password = compare_digest(credentials.password, API_PASS)
 #    if not (correct_username and correct_password):
@@ -92,11 +92,11 @@ def get_from_db_or_cache(element: str, func=None, query=None):
 def background_time_update():
     global TIMEOUT, TIME
     now: int = int(time())
-    logger.error(f'bgtimeupd: {now}, {TIME}, {TIMEOUT}')
+    logger.error(f"bgtimeupd: {now}, {TIME}, {TIMEOUT}")
     if now - TIME > CACHED_TIME:
         TIMEOUT = True
         TIME = now
-    logger.error(f'bgtimeupdEnd: {now}, {TIME}, {TIMEOUT}')
+    logger.error(f"bgtimeupdEnd: {now}, {TIME}, {TIMEOUT}")
 
 
 @app.get("/graph")
@@ -164,12 +164,12 @@ def get_graph():
         utilizations = get_from_db_or_cache("utilizations", get_all_highest_utilizations)
         speeds = get_from_db_or_cache("speeds", get_all_speeds)
 
-        logger.error(utilizations)
-        logger.error(speeds)
+        # logger.error(utilizations)
+        # logger.error(speeds)
 
         # start_format_timer = time()
 
-        logger.error(f'Nb links to format:{len(sorted_links)}')
+        logger.error(f"Nb links to format:{len(sorted_links)}")
         for link in sorted_links:
             device = link["device_name"]
             iface = link["iface_name"]
@@ -181,14 +181,13 @@ def get_graph():
 
             if not formatted_links.get(id_link) and not formatted_links.get(id_link_neigh):
 
-
                 speed = speeds[device + iface]
                 speed = speed * 1000000  # Convert speed to bits
 
                 highest_utilization = utilizations[device + iface]
                 highest_utilization = highest_utilization * 8  # convert to bits
                 percent_highest = highest_utilization / speed * 100
-                logger.error(f'{device}, {iface}, {speed}, {highest_utilization}, {percent_highest}')
+                # logger.error(f'{device}, {iface}, {speed}, {highest_utilization}, {percent_highest}')
 
                 f_link = {
                     "highest_utilization": percent_highest,
@@ -250,7 +249,7 @@ def stats(q: List[str] = Query(None)):
         stats_by_device: Dict[str, Any] = get_from_db_or_cache(f"stats_by_device_{q}")
 
         if not stats_by_device:
-            
+
             stats_by_device = {}
 
             sorted_stats = sorted(
@@ -332,13 +331,13 @@ def neighborships(
     neighs: List[Dict[str, str]] = get_from_db_or_cache(f"neighs_{q}")
 
     if not neighs:
-        
+
         # We use a dict to prevent duplicates
         # The end goal is to return only its values, not keys
         neighs_dict: Dict[str, Dict[str, str]] = {}
 
         for link in get_links_device(q):
-            
+
             device1: str = link["device_name"]
             device2: str = link["neighbor_name"]
             iface1: str = link["iface_name"]
@@ -350,7 +349,7 @@ def neighborships(
                 device1, device2 = device2, device1
                 iface1, iface2 = iface2, iface1
 
-            id_link = f'{device1}{device2}{iface1}{iface2}'
+            id_link = f"{device1}{device2}{iface1}{iface2}"
             if neighs_dict.get(id_link):
                 continue
 
@@ -359,7 +358,7 @@ def neighborships(
                 "neighbor": device2,
                 "neighbor_intf": iface2,
             }
-        
+
         neighs = list(neighs_dict.values())
         global CACHE
         CACHE[f"neighs_{q}"] = neighs
