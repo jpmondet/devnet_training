@@ -28,8 +28,8 @@ from db_layer import (
     get_all_nodes,
     get_all_links,
     get_links_device,
-    get_speed_iface,
-    get_highest_utilization,
+    get_all_highest_utilizations,
+    get_all_speeds
 )
 
 app = FastAPI()
@@ -51,8 +51,8 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-API_USER: str = "user"
-API_PASS: str = "pass"
+#API_USER: str = "user"
+#API_PASS: str = "pass"
 
 #security = HTTPBasic()  # TODO: Needs better security
 
@@ -74,9 +74,11 @@ TIMEOUT: bool = True
 #    return credentials
 
 
-def get_from_db_or_cache(element: str, func, query=None):
-    global TIMEOUT
+def get_from_db_or_cache(element: str, func=None, query=None):
+    global TIMEOUT, CACHE
     if not CACHE.get(element) or TIMEOUT:
+        if not func:
+            return None
         logger.error(f"Oops, {element} not in cache, calling db")
         if query:
             CACHE[element] = func(query)
@@ -90,9 +92,11 @@ def get_from_db_or_cache(element: str, func, query=None):
 def background_time_update():
     global TIMEOUT, TIME
     now: int = int(time())
+    logger.error(f'bgtimeupd: {now}, {TIME}, {TIMEOUT}')
     if now - TIME > CACHED_TIME:
         TIMEOUT = True
         TIME = now
+    logger.error(f'bgtimeupdEnd: {now}, {TIME}, {TIMEOUT}')
 
 
 @app.get("/graph")
@@ -149,47 +153,69 @@ def get_graph():
         except KeyError:
             pass
 
-    links: Dict[str, Any] = get_from_db_or_cache("links", get_all_links)
-    sorted_links: List[Dict[str, Any]] = sorted(
-        links, key=lambda d: (d["device_name"], d["neighbor_name"])
-    )
-    formatted_links: Dict[str, Any] = {}
-    for link in sorted_links:
-        device = link["device_name"]
-        iface = link["iface_name"]
-        neigh = link["neighbor_name"]
-        neigh_iface = link["neighbor_iface"]
-        if not formatted_links.get(device + neigh) and not formatted_links.get(neigh + device):
-            highest_utilization = get_highest_utilization(device, iface)
-            speed = get_speed_iface(device, iface)
-            # logger.error(f"Utilization & speed : {highest_utilization}, {speed}")
-            speed = speed * 1000000  # Convert speed to bits
-            highest_utilization = highest_utilization * 8  # convert to bits
-            # logger.error(f"Utilization & speed in bits: {highest_utilization}, {speed}")
-            percent_highest = highest_utilization / speed * 100
-            # logger.error(f"Utilization percent {percent_highest}")
-            f_link = {
-                "highest_utilization": percent_highest,
-                "source": device,
-                "source_interfaces": [iface],
-                "speed": speed,
-                "target": neigh,
-                "target_interfaces": [neigh_iface],
-            }
-            formatted_links[device + neigh] = f_link
-        else:
-            try:
-                if iface not in formatted_links[device + neigh]["source_interfaces"]:
-                    formatted_links[device + neigh]["source_interfaces"].append(iface)
-                if neigh_iface not in formatted_links[device + neigh]["target_interfaces"]:
-                    formatted_links[device + neigh]["target_interfaces"].append(neigh_iface)
-            except KeyError:
-                if neigh_iface not in formatted_links[neigh + device]["source_interfaces"]:
-                    formatted_links[neigh + device]["source_interfaces"].append(neigh_iface)
-                if iface not in formatted_links[neigh + device]["target_interfaces"]:
-                    formatted_links[neigh + device]["target_interfaces"].append(iface)
+    formatted_links: Dict[str, Any] = get_from_db_or_cache("formatted_links")
+    if not formatted_links:
+        links: Dict[str, Any] = get_from_db_or_cache("links", get_all_links)
+        sorted_links: List[Dict[str, Any]] = sorted(
+            links, key=lambda d: (d["device_name"], d["neighbor_name"])
+        )
+        formatted_links = {}
 
-    # logger.error(formatted_links)
+        utilizations = get_from_db_or_cache("utilizations", get_all_highest_utilizations)
+        speeds = get_from_db_or_cache("speeds", get_all_speeds)
+
+        logger.error(utilizations)
+        logger.error(speeds)
+
+        # start_format_timer = time()
+
+        logger.error(f'Nb links to format:{len(sorted_links)}')
+        for link in sorted_links:
+            device = link["device_name"]
+            iface = link["iface_name"]
+            neigh = link["neighbor_name"]
+            neigh_iface = link["neighbor_iface"]
+
+            id_link = device + neigh
+            id_link_neigh = neigh + device
+
+            if not formatted_links.get(id_link) and not formatted_links.get(id_link_neigh):
+
+
+                speed = speeds[device + iface]
+                speed = speed * 1000000  # Convert speed to bits
+
+                highest_utilization = utilizations[device + iface]
+                highest_utilization = highest_utilization * 8  # convert to bits
+                percent_highest = highest_utilization / speed * 100
+                logger.error(f'{device}, {iface}, {speed}, {highest_utilization}, {percent_highest}')
+
+                f_link = {
+                    "highest_utilization": percent_highest,
+                    "source": device,
+                    "source_interfaces": [iface],
+                    "speed": speed,
+                    "target": neigh,
+                    "target_interfaces": [neigh_iface],
+                }
+                formatted_links[id_link] = f_link
+            else:
+                try:
+                    if iface not in formatted_links[id_link]["source_interfaces"]:
+                        formatted_links[id_link]["source_interfaces"].append(iface)
+                    if neigh_iface not in formatted_links[id_link]["target_interfaces"]:
+                        formatted_links[id_link]["target_interfaces"].append(neigh_iface)
+                except KeyError:
+                    if neigh_iface not in formatted_links[id_link_neigh]["source_interfaces"]:
+                        formatted_links[id_link_neigh]["source_interfaces"].append(neigh_iface)
+                    if iface not in formatted_links[id_link_neigh]["target_interfaces"]:
+                        formatted_links[id_link_neigh]["target_interfaces"].append(iface)
+
+        # logger.error(formatted_links)
+        # logger.error(f'Format links End: {time() - start_format_timer}')
+
+        global CACHE
+        CACHE["formatted_links"] = formatted_links
 
     return {"nodes": nodes, "links": list(formatted_links.values())}
 
@@ -221,49 +247,61 @@ def stats(q: List[str] = Query(None)):
             # if "iou" not in device:
             #    raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST)
 
-        stats_by_device: Dict[str, Any] = {}
-        sorted_stats = sorted(
-            list(get_stats_devices(q)),
-            key=lambda d: (d["device_name"], d["iface_name"], d["timestamp"]),
-        )
-        for stat in sorted_stats:
-            dname = stat["device_name"]
-            # ifname = stat["iface_name"].replace("Ethernet", "Et")
-            ifname = stat["iface_name"]
-            dbtime = stat["timestamp"]
-            inttimestamp: int = int(dbtime)
-            time = strftime("%y-%m-%d %H:%M:%S", localtime(inttimestamp))
-            stat_formatted = {"InSpeed": 0, "OutSpeed": 0, "time": time}
-            inbits: int = int(stat["in_bytes"]) * 8
-            outbits: int = int(stat["out_bytes"]) * 8
-            # This iface wasn't in the struct.
-            # We add default infos (and speed to 0 since we don't know at how much speed it was before)
-            if not stats_by_device.get(dname):
-                stats_by_device[dname] = {
-                    ifname: {"ifDescr": ifname, "index": ifname, "stats": [stat_formatted]}
-                }
-            elif not stats_by_device[dname].get(ifname):
-                stats_by_device[dname][ifname] = {
-                    "ifDescr": ifname,
-                    "index": ifname,
-                    "stats": [stat_formatted],
-                }
-            else:
-                # Must calculate speed. Not just adding in_bytes or it will only increase.
-                # Assuming it's ordered for now
-                prev_date = stats_by_device[dname][ifname]["stats"][-1]["time"]
-                prev_timestamp: int = int(
-                    datetime.strptime(prev_date, "%y-%m-%d %H:%M:%S").timestamp()
-                )
-                prev_inbits: int = stats_by_device[dname][ifname]["stats"][-1]["InSpeed"]
-                prev_outbits: int = stats_by_device[dname][ifname]["stats"][-1]["OutSpeed"]
+        stats_by_device: Dict[str, Any] = get_from_db_or_cache(f"stats_by_device_{q}")
 
-                interval = inttimestamp - prev_timestamp
-                if interval:
-                    stat_formatted["InSpeed"] = int((inbits - prev_inbits) / interval)
-                    stat_formatted["OutSpeed"] = int((outbits - prev_outbits) / interval)
+        if not stats_by_device:
+            
+            stats_by_device = {}
 
-                stats_by_device[dname][ifname]["stats"].append(stat_formatted)
+            sorted_stats = sorted(
+                list(get_stats_devices(q)),
+                key=lambda d: (d["device_name"], d["iface_name"], d["timestamp"]),
+            )
+            for stat in sorted_stats:
+                dname = stat["device_name"]
+                # ifname = stat["iface_name"].replace("Ethernet", "Et")
+                ifname = stat["iface_name"]
+                dbtime = stat["timestamp"]
+                inttimestamp: int = int(dbtime)
+                time = strftime("%y-%m-%d %H:%M:%S", localtime(inttimestamp))
+                stat_formatted = {"InSpeed": 0, "OutSpeed": 0, "time": time}
+                inbits: int = int(stat["in_bytes"]) * 8
+                outbits: int = int(stat["out_bytes"]) * 8
+                # This iface wasn't in the struct.
+                # We add default infos (and speed to 0 since we don't know at how much speed it was before)
+                if not stats_by_device.get(dname):
+                    stats_by_device[dname] = {
+                        ifname: {"ifDescr": ifname, "index": ifname, "stats": [stat_formatted]}
+                    }
+                elif not stats_by_device[dname].get(ifname):
+                    stats_by_device[dname][ifname] = {
+                        "ifDescr": ifname,
+                        "index": ifname,
+                        "stats": [stat_formatted],
+                    }
+                else:
+                    # Must calculate speed. Not just adding in_bytes or it will only increase.
+                    # Assuming it's ordered for now
+                    prev_date = stats_by_device[dname][ifname]["stats"][-1]["time"]
+                    prev_timestamp: int = int(
+                        datetime.strptime(prev_date, "%y-%m-%d %H:%M:%S").timestamp()
+                    )
+                    prev_inbits: int = stats_by_device[dname][ifname]["stats"][-1]["InSpeed"]
+                    prev_outbits: int = stats_by_device[dname][ifname]["stats"][-1]["OutSpeed"]
+
+                    interval = inttimestamp - prev_timestamp
+                    if interval:
+                        in_speed: int = inbits - prev_inbits
+                        in_speed = in_speed if in_speed >= 0 else -in_speed
+                        out_speed: int = outbits - prev_outbits
+                        out_speed = out_speed if out_speed >= 0 else -out_speed
+                        stat_formatted["InSpeed"] = int(in_speed / interval)
+                        stat_formatted["OutSpeed"] = int(out_speed / interval)
+
+                    stats_by_device[dname][ifname]["stats"].append(stat_formatted)
+
+            global CACHE
+            CACHE[f"stats_by_device_{q}"] = stats_by_device
 
         return stats_by_device
 
@@ -291,25 +329,40 @@ def neighborships(
     if not isinstance(q, str):
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST)
 
-    neighs: List[Dict[str, str]] = []
-    for link in get_links_device(q):
-        device1: str = link["device_name"]
-        device2: str = link["neighbor_name"]
-        iface1: str = link["iface_name"]
-        iface2: str = link["neighbor_iface"]
-        # The device queried can be seen as "device_name" or as "neighbor_name" depending
-        # on the point of view
-        if q != link["device_name"]:
-            device1, device2 = device2, device1
-            iface1, iface2 = iface2, iface1
+    neighs: List[Dict[str, str]] = get_from_db_or_cache(f"neighs_{q}")
 
-        neighs.append(
-            {
+    if not neighs:
+        
+        # We use a dict to prevent duplicates
+        # The end goal is to return only its values, not keys
+        neighs_dict: Dict[str, Dict[str, str]] = {}
+
+        for link in get_links_device(q):
+            
+            device1: str = link["device_name"]
+            device2: str = link["neighbor_name"]
+            iface1: str = link["iface_name"]
+            iface2: str = link["neighbor_iface"]
+
+            # The device queried can be seen as "device_name" or as "neighbor_name" depending
+            # on the point of view
+            if q != link["device_name"]:
+                device1, device2 = device2, device1
+                iface1, iface2 = iface2, iface1
+
+            id_link = f'{device1}{device2}{iface1}{iface2}'
+            if neighs_dict.get(id_link):
+                continue
+
+            neighs_dict[id_link] = {
                 "local_intf": iface1,
                 "neighbor": device2,
                 "neighbor_intf": iface2,
             }
-        )
+        
+        neighs = list(neighs_dict.values())
+        global CACHE
+        CACHE[f"neighs_{q}"] = neighs
 
     return neighs
 
