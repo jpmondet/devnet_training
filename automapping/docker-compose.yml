@@ -16,7 +16,7 @@ services:
       context: ${REPO_PATH}/backend/
       dockerfile: Dockerfile.api
     environment:
-    - DB_STRING="mongodb://mongodb:27017/"
+    - DB_STRING=mongodb://mongodb:27017/
     ports: 
     - 8000:80
   topo_scrapper_snmp:
@@ -26,7 +26,7 @@ services:
     env_file:
     - ${REPO_PATH}/.snmp
     environment:
-    - DB_STRING="mongodb://mongodb:27017/"
+    - DB_STRING=mongodb://mongodb:27017/
   stats_crawler_snmp:
     build:
       context: ${REPO_PATH}/backend/
@@ -34,7 +34,7 @@ services:
     env_file:
     - ${REPO_PATH}/.snmp
     environment:
-    - DB_STRING="mongodb://mongodb:27017/"
+    - DB_STRING=mongodb://mongodb:27017/
   apache:  
     image: "httpd:2.4"
     volumes:
