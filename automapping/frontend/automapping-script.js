@@ -183,20 +183,22 @@ function draw_graph_from_data_to_div(InOctetsData,OutOctetsData,TimeStampStrings
     yesterday.setDate(yesterday.getDate() - 1)
 
     var layout = {
+      color: '#fff',
       margin: {
-        autoexpand: true,
+        //autoexpand: true,
         l: 35,
         r: 20,
         t: 5,
         b: 35
       },
       width: 600,
-      height: 150,
+      height: 350,
       xaxis: {
         title: 'Time',
-        showgrid: true,
+        //showgrid: true,
         zeroline: true,
         showline: true,
+        //linecolor: '#fff',
         rangeselector: selectorOptions,
         rangeslider: {},
         autorange: false,
@@ -206,15 +208,33 @@ function draw_graph_from_data_to_div(InOctetsData,OutOctetsData,TimeStampStrings
       yaxis: {
         title: 'bps',
         showline: true,
+        //linecolor: '#fff',
         showtickprefix: 'first'
       },
-      paper_bgcolor: 'rgba(255,255,255,0.7)',
+      paper_bgcolor: 'rgba(0,0,0,0)',
       plot_bgcolor: 'rgba(0,0,0,0)'
     };
 
     var data = [traceOut, traceIn];
 
-    Plotly.newPlot(iDivGraph, data, layout, {showSendToCloud: false});
+    var config = {
+      toImageButtonOptions: {
+        format: 'svg', // one of png, svg, jpeg, webp
+        filename: 'traffic',
+        height: 250,
+        width: 600,
+        scale: 1 // Multiply title/legend/axis/canvas sizes by this factor
+      },
+      modeBarButtonsToRemove:['sendDataTocloud', 'zoomIn2d', 'zoomOut2d','autoScale2d','resetScale2d','resetViewMapBox','resetViews'],
+      displaylogo: false,
+      responsive: true
+    };
+
+    //Plotly.newPlot(iDivGraph, data, layout, {showSendToCloud: false});
+    console.time('Draw_device_iface')
+    //Plotly.react(iDivGraph, data, layout, config);
+    Plotly.react(iDivGraph, data, layout, config);
+    console.timeEnd('Draw_device_iface')
 }
 
 
@@ -260,6 +280,7 @@ function OnViewChange(deviceid, view = "neighbors"){
               return;
             }
             response.json().then(function(data) {
+
               for (var iface in data[deviceid]) {
                 var interface = data[deviceid][iface]
                 var targetdiv = document.getElementById("infobox")
@@ -575,27 +596,31 @@ var simulation = d3.forceSimulation()
 // # Get graph from api and draw SVG graph #
 // #########################################
 function percentage_to_utilization_color(percentage){
-    //console.log(percentage)
-    if (percentage >= 75){
-        //console.log("#FF0000")
-        return "#FF0000"
-    } else if (percentage >= 50){
-        //console.log("#FFA500")
-        return "#FFA500"
-    } else if (percentage >= 25){
-        //console.log("#8DD25D")
-        return "#8DD25D"
-    } else if (percentage >= 1){
-        //console.log("#001693")
+    if (percentage >= 90.0){
+        return "#ff0e06"
+    } else if (percentage >= 75.0){
+        return "#ff6906"
+    } else if (percentage >= 50.0){
+        return "#f9e320"
+    } else if (percentage >= 35.0){
+        return "#00ce30"
+    } else if (percentage >= 25.0){
+        return "#5cd2c3"
+    } else if (percentage >= 10.0){
         return "#001693"
+    } else if (percentage > 0.0){
+        return "#ffffff"
     } else {
-        //console.log("#646464")
         return "#646464"
     }
 }
 
+//console.time('getGraph')
 d3.json(apiUrl + "/graph")
   .then(function(graph) {
+
+    //console.timeEnd('getGraph')
+    //console.time('createLinksGraph')
 
     var link = svg.append("g")
       .attr("id","links-g")
@@ -612,6 +637,9 @@ d3.json(apiUrl + "/graph")
         .attr("target", function(d) { d.target }
     );
 
+    //console.timeEnd('createLinksGraph')
+
+    //console.time('AddLinksEventGraph')
     link.on("click", function(event, d){
       //d3.event.preventDefault();
       //d3.event.stopPropagation();
@@ -620,7 +648,9 @@ d3.json(apiUrl + "/graph")
       OnClickLinkDetails(d.source,d.target,d.source_interfaces,d.target_interfaces);
       resize_svg_on_window_resize()
     });
+    //console.timeEnd('AddLinksEventGraph')
 
+    //console.time('AddNodesGraph')
     var node = svg.append("g")
       .attr("class", "nodes")
       .attr("id","nodes-g")
@@ -631,7 +661,9 @@ d3.json(apiUrl + "/graph")
         .attr("target", '_blank')
         .attr("xlink:href",  function(d) { return (window.location.href + '?device=' + d.id)
     });
+    //console.timeEnd('AddNodesGraph')
 
+    //console.time('AddNodesEventGraph')
     node.on("click", function(event, d){
       event.preventDefault();
       event.stopPropagation();
@@ -639,18 +671,23 @@ d3.json(apiUrl + "/graph")
       resize_svg_on_window_resize()
     });
 
+
     node.call(d3.drag()
       .on("start", dragstarted)
       .on("drag", dragged)
       .on("end", dragended)
     );
+    //console.timeEnd('AddNodesEventGraph')
 
+    //console.time('AddEventGraph')
     svg.call(d3.zoom()
       .extent([[0, 0], [width, height]])
       .scaleExtent([1, 8])
       .on("zoom", zoomed)
     );
+    //console.timeEnd('AddEventGraph')
 
+    //console.time('AddNodeImageGraph')
     node.append("image")
       .attr("xlink:href", function(d) { return ("img/" + d.image); })
       .attr("width", 32)
@@ -659,7 +696,9 @@ d3.json(apiUrl + "/graph")
       .attr("y", - 16)
       .attr("fill", function(d) { /*console.log(d.group) ; */ return color(d.group)
     });
+    //console.timeEnd('AddNodeImageGraph')
 
+    //console.time('AddNodeTextGraph')
     node.append("text")
       .attr("font-size", "1em")
       .style("fill", "#ffffff")
@@ -673,12 +712,17 @@ d3.json(apiUrl + "/graph")
       .text(function(d) { return d.id; }
     );
 
+    //console.timeEnd('AddNodeTextGraph')
+
+    //console.time('startSimulationGraph')
     simulation
       .nodes(graph.nodes)
       .on("tick", ticked);
 
     simulation.force("link")
       .links(graph.links);
+
+    //console.timeEnd('startSimulationGraph')
 
     function ticked() {
       link
