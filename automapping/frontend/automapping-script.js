@@ -87,17 +87,18 @@ function draw_device_interface_graphs_to_div(interfaceName, deviceid, targetdiv)
         var iDivGraph = document.createElement('div');
         iDivGraph.id = deviceid + "_" + interfaceName['ifDescr'] + "_graph";
         targetdiv.appendChild(iDivGraph);
-        var TimeStampStrings = []
-        var InOctetsData = []
-        var OutOctetsData = []
+        //var TimeStampStrings = []
+        //var InOctetsData = []
+        //var OutOctetsData = []
 
-        for (var stats of interfaceName['stats']){
-            TimeStampStrings.push(stats['time'])
-            InOctetsData.push(stats['InSpeed'])
-            OutOctetsData.push(stats['OutSpeed'])
-        }
+        //for (var stats of interfaceName['stats']){
+        //    TimeStampStrings.push(stats['time'])
+        //    InOctetsData.push(stats['InSpeed'])
+        //    OutOctetsData.push(stats['OutSpeed'])
+        //}
 
-        draw_graph_from_data_to_div(InOctetsData,OutOctetsData,TimeStampStrings,iDivGraph)
+        //draw_graph_from_data_to_div(InOctetsData,OutOctetsData,TimeStampStrings,iDivGraph)
+        draw_graph_from_data_to_div_with_d3(interfaceName['stats'], iDivGraph)
 
 }
 
@@ -109,6 +110,73 @@ function draw_device_graphs_to_div(deviceid, data, targetdiv){
     }
 }
 
+
+function draw_graph_from_data_to_div_with_d3(ifaceStats, iDivGraph){
+
+    // Trying to replace Plotly by pure d3
+
+    var parseTime = d3.timeParse("%y-%m-%d %I:%M:%S");
+
+    // set the dimensions and margins of the graph
+    var margin = {top: 20, right: 20, bottom: 170, left: 60},
+    width = 460 - margin.left - margin.right,
+    height = 400 - margin.top - margin.bottom;
+
+    // set the dimensions and margins of the graph
+    var marginBrush = {top: 260, right: 30, bottom: 90, left: 60},
+    heightBrush = 400 - marginBrush.top - marginBrush.bottom;
+
+    // set the ranges
+    var x = d3.scaleTime().range([0, width]);
+    var y = d3.scaleLinear().range([height, 0]);
+    
+    // define the 1st line
+    var valueline = d3.line()
+        .x(function(d) { return x(parseTime(d.time)); })
+        .y(function(d) { return y(d.InSpeed); });
+    
+    // define the 2nd line
+    var valueline2 = d3.line()
+        .x(function(d) { return x(parseTime(d.time)); })
+        .y(function(d) { return y(d.OutSpeed); });
+
+    // append the svg object to the body of the page
+    var svg = d3.select(iDivGraph)
+    .append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+    .attr("transform",
+          "translate(" + margin.left + "," + margin.top + ")");
+    
+    // Scale the range of the data
+    x.domain(d3.extent(ifaceStats, function(d) { return parseTime(d.time); }));
+    y.domain([0, d3.max(ifaceStats, function(d) {
+      return Math.max(d.InSpeed, d.OutSpeed);
+    })]);
+
+    // Add the valueline path.
+    svg.append("path")
+        .data([ifaceStats])
+        .attr("class", "line")
+        .attr("d", valueline);
+
+    // Add the valueline2 path.
+    svg.append("path")
+        .data([ifaceStats])
+        .attr("class", "line")
+        .style("stroke", "red")
+        .attr("d", valueline2);
+
+    // Add the X Axis
+    svg.append("g")
+        .attr("transform", "translate(0," + height + ")")
+        .call(d3.axisBottom(x));
+
+    // Add the Y Axis
+    svg.append("g")
+        .call(d3.axisLeft(y));
+}
 
 function draw_graph_from_data_to_div(InOctetsData,OutOctetsData,TimeStampStrings,iDivGraph){
 
@@ -232,8 +300,8 @@ function draw_graph_from_data_to_div(InOctetsData,OutOctetsData,TimeStampStrings
 
     //Plotly.newPlot(iDivGraph, data, layout, {showSendToCloud: false});
     console.time('Draw_device_iface')
-    //Plotly.react(iDivGraph, data, layout, config);
     Plotly.react(iDivGraph, data, layout, config);
+
     console.timeEnd('Draw_device_iface')
 }
 
