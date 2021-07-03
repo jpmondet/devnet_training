@@ -42,3 +42,11 @@ Or
 - Have a better storage than raw files (https://github.com/couchbase-guides/python-sdk ? )
   - Mongodb will do now that I'm used to it thanks to another project
 - For now, tests are done with IOU devices. Must test with something else (however, I can't really test other images on my laptop since they are waaaaaay heavier... :\ )
+
+
+
+
+(How to name it ? Some interesting words : discovery topograph net auto mapping... )
+( Naasgul - Network as a graph ul?
+ Naaga  - Network as a graph automated
+)
