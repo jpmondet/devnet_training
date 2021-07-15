@@ -16,7 +16,7 @@ from db_layer import (
     LINKS_COLLECTION,
     get_all_nodes
 )
-from snmp_functions import get_table, get_snmp_creds, NEEDED_MIBS_FOR_LLDP as NEEDED_MIBS
+from snmp_functions import get_table, get_snmp_creds, split_list, NEEDED_MIBS_FOR_LLDP as NEEDED_MIBS
 
 SNMP_USR = getenv("SNMP_USR")
 SNMP_AUTH_PWD = getenv("SNMP_AUTH_PWD")
@@ -26,6 +26,7 @@ INIT_NODE_IP = getenv("LLDP_INIT_NODE_IP")
 INIT_NODE_PORT = getenv("LLDP_INIT_NODE_PORT")
 STOP_NODES_FQDN = getenv("STOP_NODES_FQDN")
 STOP_NODES_IP = getenv("STOP_NODES_IP")
+NB_THREADS = getenv("AUTOMAP_NB_THREADS", 10)
 
 def dump_results_to_db(device_name, lldp_infos) -> None:
     nodes_list: List[Tuple[Dict[str, str], Dict[str,str]]] = []
@@ -129,14 +130,16 @@ def main():
 
         print(devices)
 
-        loop = asyncio.get_event_loop()
-        loop.run_until_complete(
-            asyncio.wait(
-                [
-                    get_device_lldp_infos(hostname, NEEDED_MIBS.values(), creds, target_ip=ip, port=port) for hostname, ip, port in devices
-                ]
+        for devices_to_scrap in split_list(devices, NB_THREADS):
+
+            loop = asyncio.get_event_loop()
+            loop.run_until_complete(
+                asyncio.wait(
+                    [
+                        get_device_lldp_infos(hostname, NEEDED_MIBS.values(), creds, target_ip=ip, port=port) for hostname, ip, port in devices_to_scrap
+                    ]
+                )
             )
-        )
 
         sleep(60)
 

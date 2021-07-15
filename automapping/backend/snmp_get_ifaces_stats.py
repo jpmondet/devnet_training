@@ -18,12 +18,13 @@ from db_layer import (
     STATS_COLLECTION,
     UTILIZATION_COLLECTION
 )
-from snmp_functions import get_bulk_auto, get_snmp_creds, NEEDED_MIBS_FOR_STATS as NEEDED_MIBS, IFACES_TABLE_TO_COUNT
+from snmp_functions import get_bulk_auto, get_snmp_creds, NEEDED_MIBS_FOR_STATS as NEEDED_MIBS, IFACES_TABLE_TO_COUNT, split_list
 
 SNMP_USR = getenv("SNMP_USR")
 SNMP_AUTH_PWD = getenv("SNMP_AUTH_PWD")
 SNMP_PRIV_PWD = getenv("SNMP_PRIV_PWD")
 TEST_CASE = getenv("AUTOMAP_TEST_CASE")
+THREADS_NB = getenv("AUTOMAP_NB_THREADS", 10)
 
 def dump_results_to_db(device_name, ifaces_infos) -> None:
     utilization_list: List[Tuple[Dict[str, str], Dict[str,str]]] = []
@@ -99,7 +100,6 @@ async def get_stats_and_dump(target_name, oids, credentials, count_oid, target_i
     except (RuntimeError, PySnmpError) as err:
         print(err, "\n (can't access to devices?) Passing for now...")
 
-
 def main():
 
     creds = get_snmp_creds(SNMP_USR, SNMP_AUTH_PWD, SNMP_PRIV_PWD)
@@ -118,14 +118,15 @@ def main():
             devices.append(('fake_local_device', '127.0.0.1', 1161))
 
         if devices:
-            loop = asyncio.get_event_loop()
-            loop.run_until_complete(
-                asyncio.wait(
-                    [
-                        get_stats_and_dump(hostname, NEEDED_MIBS.values(), creds, IFACES_TABLE_TO_COUNT, target_ip=ip, port=port) for hostname, ip, port in devices
-                    ]
+            for devices_to_scrap in split_list(devices, THREADS_NB):
+                loop = asyncio.get_event_loop()
+                loop.run_until_complete(
+                    asyncio.wait(
+                        [
+                            get_stats_and_dump(hostname, NEEDED_MIBS.values(), creds, IFACES_TABLE_TO_COUNT, target_ip=ip, port=port) for hostname, ip, port in devices_to_scrap
+                        ]
+                    )
                 )
-            )
         else:
             print("No devices retrieved from db... Waiting till there are any.")
 

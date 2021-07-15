@@ -127,3 +127,9 @@ def get_bulk_auto(target, oids, credentials, count_oid, start_from=0, port=161,
     res = get_bulk(target, oids, credentials, count, start_from, port, engine, context)
     
     return res
+
+# Not an actual snmp func but it's used in the context of snmp scrapping
+def split_list(list_to_split, n):
+    """Yield successive n-sized chunks from lst."""
+    for i in range(0, len(list_to_split), n):
+        yield list_to_split[i:i + n]
