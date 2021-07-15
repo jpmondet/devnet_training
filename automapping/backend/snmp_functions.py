@@ -1,9 +1,9 @@
 #! /usr/bin/env python3
 
 from typing import List, Dict, Any, Tuple
-from pysnmp import hlapi
-from pysnmp.entity.rfc3413.oneliner import cmdgen
-from pysnmp.error import PySnmpError
+from pysnmp import hlapi # type: ignore
+from pysnmp.entity.rfc3413.oneliner import cmdgen # type: ignore
+from pysnmp.error import PySnmpError # type: ignore
 
 IFACES_TABLE_TO_COUNT = '1.3.6.1.2.1.2.1.0'
 NEEDED_MIBS_FOR_STATS = { 
@@ -33,6 +33,15 @@ NEEDED_MIBS_FOR_LLDP = {
     #'lldp_neigh_sys_descr': '1.0.8802.1.1.2.1.4.1.1.10', # lldpRemSysDesc
     #'lldp_neigh_iface_descr': '1.0.8802.1.1.2.1.4.1.1.8', # lldpRemPortDesc
 }
+
+def get_snmp_creds(snmp_user: str ='public', snmp_auth_pwd: str = None, snmp_priv_pwd: str = None):
+    if snmp_auth_pwd and snmp_priv_pwd:
+        return get_snmp_v3_creds(snmp_user, snmp_auth_pwd, snmp_priv_pwd)
+    
+    return get_snmp_v2_creds(snmp_user)
+
+def get_snmp_v2_creds(snmp_community) -> hlapi.CommunityData:
+    return hlapi.CommunityData(snmp_community)
 
 def get_snmp_v3_creds(snmp_user, snmp_auth_pwd, snmp_priv_pwd) -> hlapi.UsmUserData:
     return hlapi.UsmUserData(snmp_user, snmp_auth_pwd, snmp_priv_pwd,
@@ -87,6 +96,7 @@ def get_table(target, oids, credentials, start_from=0, port=161,
     return fetch(handler, len(oids))
 
 def get(target, oids, credentials, port=161, engine=hlapi.SnmpEngine(), context=hlapi.ContextData()):
+    print(get)
     handler = hlapi.getCmd(
         engine,
         credentials,
@@ -94,6 +104,7 @@ def get(target, oids, credentials, port=161, engine=hlapi.SnmpEngine(), context=
         context,
         *construct_object_types(oids)
     )
+    print(handler)
     return fetch(handler, 1)[0]
 
 def get_bulk(target, oids, credentials, count, start_from=0, port=161,
@@ -112,6 +123,7 @@ def get_bulk_auto(target, oids, credentials, count_oid, start_from=0, port=161,
                   engine=hlapi.SnmpEngine(), context=hlapi.ContextData()):
     
     count = get(target, [count_oid], credentials, port, engine, context)[count_oid]
+    print(count)
     res = get_bulk(target, oids, credentials, count, start_from, port, engine, context)
     
     return res
