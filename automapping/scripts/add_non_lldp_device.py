@@ -23,7 +23,7 @@ db = client.automapping
 def add_iface_utilization(device_name: str, iface_name: str) -> None:
     db.utilization.update_one({'device_name': f"{device_name}",'iface_name': f'{iface_name}'},
         {"$set": {'device_name': f"{device_name}", 
-        'iface_name': f'{iface_name}', 'prev_utilization': 0, 'last_utilization': 0}})
+        'iface_name': f'{iface_name}', 'prev_utilization': 0, 'last_utilization': 0}}, True)
 
 def add_iface_stats(device_name: str, iface_name: str) -> None:
     db.stats.insert_one({'device_name': f"{device_name}", 
@@ -39,7 +39,7 @@ def add_static_node(node_name: str, node_ip: str, node_ifaces: List[str], neigh_
     try:
         db.nodes.insert_one({"device_name": node_name, "group": 10, "image": "router.png"})
     except DuplicateKeyError:
-        db.nodes.update_many({"device_name": node_name}, {"$set": {"device_name": node_name, "group": 10, "image": "router.png"} } )
+        db.nodes.update_many({"device_name": node_name}, {"$set": {"device_name": node_name, "group": 1, "image": "router.png"} } )
 
     if neigh_infos:
         for neigh in neigh_infos:
@@ -103,7 +103,8 @@ def main():
         print("OK, now we have to specify neighbor(s) infos")
         neighs = []
 
-        for iface in args.ifaces_of_node.split(','):
+        local_ifaces = args.ifaces_of_node.split(',')
+        for iface in local_ifaces:
             while (res:= input(f"Do you want to specify neighbor infos for the iface {iface} (Enter y/n)\n").lower().strip()) not in {"y", "n"}: pass
             if res == "n":
                 continue
@@ -114,7 +115,7 @@ def main():
         
         print(neighs)
 
-    add_static_node(args.node_name, args.address, args.ifaces_of_node, neighs)
+    add_static_node(args.node_name, args.address, local_ifaces, neighs)
 
     for res in db.nodes.find():
        print(res)
