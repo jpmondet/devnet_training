@@ -55,7 +55,7 @@ def add_lots_of_nodes(number_nodes: int, fabric_stages: int):
 def add_iface_utilization(device_name: str, iface_name: str, node_number: int):
     db.utilization.update_one({'device_name': f"{device_name}",'iface_name': f'{iface_name}'},
         {"$set": {'device_name': f"{device_name}", 
-        'iface_name': f'{iface_name}', 'prev_utilization': 0, 'last_utilization': node_number}})
+        'iface_name': f'{iface_name}', 'prev_utilization': 0, 'last_utilization': node_number}}, True)
 
 def add_iface_stats(device_name: str, iface_name: str, node_number: int):
     db.stats.insert_one({'device_name': f"{device_name}", 
