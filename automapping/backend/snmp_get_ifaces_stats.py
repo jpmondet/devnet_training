@@ -18,11 +18,12 @@ from db_layer import (
     STATS_COLLECTION,
     UTILIZATION_COLLECTION
 )
-from snmp_functions import get_bulk_auto, get_snmp_v3_creds, NEEDED_MIBS_FOR_STATS as NEEDED_MIBS, IFACES_TABLE_TO_COUNT
+from snmp_functions import get_bulk_auto, get_snmp_creds, NEEDED_MIBS_FOR_STATS as NEEDED_MIBS, IFACES_TABLE_TO_COUNT
 
 SNMP_USR = getenv("SNMP_USR")
 SNMP_AUTH_PWD = getenv("SNMP_AUTH_PWD")
 SNMP_PRIV_PWD = getenv("SNMP_PRIV_PWD")
+TEST_CASE = getenv("AUTOMAP_TEST_CASE")
 
 def dump_results_to_db(device_name, ifaces_infos) -> None:
     utilization_list: List[Tuple[Dict[str, str], Dict[str,str]]] = []
@@ -88,12 +89,12 @@ def dump_results_to_db(device_name, ifaces_infos) -> None:
     except InvalidOperation:
         print("Nothing to dump to db (wasn't able to scrap devices?), passing..")
 
-async def get_stats_and_dump(target_name, oids, credentials, count_oid, target_ip=None):
+async def get_stats_and_dump(target_name, oids, credentials, count_oid, target_ip=None, port=161):
     
     target = target_ip if target_ip else target_name
 
     try:
-        res = get_bulk_auto(target, oids, credentials, count_oid)
+        res = get_bulk_auto(target, oids, credentials, count_oid, port=port)
         dump_results_to_db(target_name, res)
     except (RuntimeError, PySnmpError) as err:
         print(err, "\n (can't access to devices?) Passing for now...")
@@ -101,24 +102,27 @@ async def get_stats_and_dump(target_name, oids, credentials, count_oid, target_i
 
 def main():
 
-    creds = get_snmp_v3_creds(SNMP_USR, SNMP_AUTH_PWD, SNMP_PRIV_PWD)
+    creds = get_snmp_creds(SNMP_USR, SNMP_AUTH_PWD, SNMP_PRIV_PWD)
 
     prep_db_if_not_exist()
 
     while True:
-
         scrapped: List[Dict[str, str]] = get_all_nodes()
         devices: List[Tuple[str, str]] = []
         for device in scrapped:
-            if 'iou' in device["device_name"]:
-                devices.append((device["device_name"], None))
+            if 'fake' in device["device_name"]:
+                continue
+            devices.append((device["device_name"], None, 161))
+        
+        if TEST_CASE:
+            devices.append(('fake_local_device', '127.0.0.1', 1161))
 
         if devices:
             loop = asyncio.get_event_loop()
             loop.run_until_complete(
                 asyncio.wait(
                     [
-                        get_stats_and_dump(hostname, NEEDED_MIBS.values(), creds, IFACES_TABLE_TO_COUNT, target_ip=ip) for hostname, ip in devices
+                        get_stats_and_dump(hostname, NEEDED_MIBS.values(), creds, IFACES_TABLE_TO_COUNT, target_ip=ip, port=port) for hostname, ip, port in devices
                     ]
                 )
             )
