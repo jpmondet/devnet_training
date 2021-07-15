@@ -6,9 +6,9 @@ from itertools import groupby
 from binascii import hexlify
 from time import time, sleep
 from typing import List, Dict, Any, Tuple
-from pymongo.errors import InvalidOperation
-from pysnmp.error import PySnmpError
-from dpath.util import search
+from pymongo.errors import InvalidOperation # type: ignore
+from pysnmp.error import PySnmpError # type: ignore
+from dpath.util import search # type: ignore
 from db_layer import (
     prep_db_if_not_exist,
     bulk_update_collection,
@@ -16,11 +16,16 @@ from db_layer import (
     LINKS_COLLECTION,
     get_all_nodes
 )
-from snmp_functions import get_table, get_snmp_v3_creds, NEEDED_MIBS_FOR_LLDP as NEEDED_MIBS
+from snmp_functions import get_table, get_snmp_creds, NEEDED_MIBS_FOR_LLDP as NEEDED_MIBS
 
 SNMP_USR = getenv("SNMP_USR")
 SNMP_AUTH_PWD = getenv("SNMP_AUTH_PWD")
 SNMP_PRIV_PWD = getenv("SNMP_PRIV_PWD")
+INIT_NODE_FQDN = getenv("LLDP_INIT_NODE_FQDN")
+INIT_NODE_IP = getenv("LLDP_INIT_NODE_IP")
+INIT_NODE_PORT = getenv("LLDP_INIT_NODE_PORT")
+STOP_NODES_FQDN = getenv("STOP_NODES_FQDN")
+STOP_NODES_IP = getenv("STOP_NODES_IP")
 
 def dump_results_to_db(device_name, lldp_infos) -> None:
     nodes_list: List[Tuple[Dict[str, str], Dict[str,str]]] = []
@@ -77,34 +82,50 @@ def dump_results_to_db(device_name, lldp_infos) -> None:
     except InvalidOperation:
         print("Nothing to dump to db (wasn't able to scrap devices?), passing..")
 
-async def get_device_lldp_infos(target_name, oids, credentials, target_ip=None):
+async def get_device_lldp_infos(target_name, oids, credentials, target_ip=None, port=161):
     
     target = target_ip if target_ip else target_name
 
     try:
-        res = get_table(target, oids, credentials)
+        res = get_table(target, oids, credentials, port=port)
         dump_results_to_db(target_name, res)
     except (RuntimeError, PySnmpError) as err:
         print(err, "\n (can't access to devices?) Passing for now...")
 
 def main():
 
-    creds = get_snmp_v3_creds(SNMP_USR, SNMP_AUTH_PWD, SNMP_PRIV_PWD)
+    creds = get_snmp_creds(SNMP_USR, SNMP_AUTH_PWD, SNMP_PRIV_PWD)
 
     prep_db_if_not_exist()
 
     while True:
-
         scrapped: List[Dict[str, str]] = get_all_nodes()
         devices: List[Tuple[str, str]] = []
         for device in scrapped:
-            # This if has to be removed. It's just here since I added fake devices into db which are not scrappable 
-            if 'iou' in device["device_name"]:
-                devices.append((device["device_name"], None))
+            if 'fake' in device["device_name"]:
+                continue
+            devices.append((device["device_name"], None, 161))
 
         if not devices:
-            # Add an init node (should be an ENV var)
-            devices.append(("sw1.iou", "192.168.77.1"))
+            if INIT_NODE_FQDN or INIT_NODE_IP:
+                if not INIT_NODE_PORT:
+                    INIT_NODE_PORT=161
+                device = (INIT_NODE_FQDN, INIT_NODE_IP, INIT_NODE_PORT)
+            else:
+                # This is a test case 
+                device = ("fake_local_device", "127.0.0.1", 1161)
+            devices.append(device)
+
+        if STOP_NODES_FQDN:
+            stop_fqdns = STOP_NODES_FQDN.split(',')
+            for node in stop_fqdns:
+                if node in devices:
+                    devices.remove(node)
+        if STOP_NODES_IP:
+            stop_ips = STOP_NODES_IP.split(',')
+            for node in stop_ips:
+                if node in devices:
+                    devices.remove(node)
 
         print(devices)
 
@@ -112,7 +133,7 @@ def main():
         loop.run_until_complete(
             asyncio.wait(
                 [
-                    get_device_lldp_infos(hostname, NEEDED_MIBS.values(), creds, target_ip=ip) for hostname, ip in devices
+                    get_device_lldp_infos(hostname, NEEDED_MIBS.values(), creds, target_ip=ip, port=port) for hostname, ip, port in devices
                 ]
             )
         )
