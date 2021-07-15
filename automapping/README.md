@@ -50,3 +50,13 @@ Or
 ( Naasgul - Network as a graph ul?
  Naaga  - Network as a graph automated
 )
+
+
+## Quick Usage
+
+- Virtual env with requirements
+- export REPO_PATH=$(pwd)
+- export INIT_NODE_FQDN="node_name" (or INIT_NODE_IP if there is no fqdn. INIT_NODE_PORT if different snmp port)
+- If scrapping must stop at a particular device : STOP_NODE_FQDN or STOP_NODE_IP
+- cd frontend/ ; terser automapping-script.js -o public-html/automapping-script.min.js ; cd .. ; docker-compose up -V --force-recreate --always-recreate-deps --build --remove-orphans
+- Browser to http://127.0.0.1:8080
