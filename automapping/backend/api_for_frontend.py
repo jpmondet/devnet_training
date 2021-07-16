@@ -179,14 +179,15 @@ def get_graph():
             id_link = device + neigh
             id_link_neigh = neigh + device
 
+            speed = speeds[device + iface]
+            speed = speed * 1000000  # Convert speed to bits
+
+            highest_utilization = utilizations[device + iface]
+            highest_utilization = highest_utilization * 8  # convert to bits
+            percent_highest = highest_utilization / speed * 100
+
             if not formatted_links.get(id_link) and not formatted_links.get(id_link_neigh):
 
-                speed = speeds[device + iface]
-                speed = speed * 1000000  # Convert speed to bits
-
-                highest_utilization = utilizations[device + iface]
-                highest_utilization = highest_utilization * 8  # convert to bits
-                percent_highest = highest_utilization / speed * 100
                 # logger.error(f'{device}, {iface}, {speed}, {highest_utilization}, {percent_highest}')
 
                 f_link = {
@@ -196,6 +197,7 @@ def get_graph():
                     "speed": speed,
                     "target": neigh,
                     "target_interfaces": [neigh_iface],
+                    "linknum": 1,
                 }
                 formatted_links[id_link] = f_link
             else:
@@ -209,6 +211,19 @@ def get_graph():
                         formatted_links[id_link_neigh]["source_interfaces"].append(neigh_iface)
                     if iface not in formatted_links[id_link_neigh]["target_interfaces"]:
                         formatted_links[id_link_neigh]["target_interfaces"].append(iface)
+                try:
+                    f_link_2 = formatted_links[id_link].copy()
+                    linknum = len(f_link_2["source_interfaces"])
+                    id_link_2 = id_link + str(linknum)
+                except KeyError:
+                    f_link_2 = formatted_links[id_link_neigh].copy()
+                    linknum = len(f_link_2["source_interfaces"])
+                    id_link_2 = id_link_neigh + str(linknum)
+
+                f_link_2["linknum"] = linknum
+                f_link_2["highest_utilization"] = percent_highest
+                f_link_2["speed"] = speed
+                formatted_links[id_link_2] = f_link_2
 
         # logger.error(formatted_links)
         # logger.error(f'Format links End: {time() - start_format_timer}')
