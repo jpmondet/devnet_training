@@ -219,11 +219,12 @@ def get_graph():
                     f_link_2 = formatted_links[id_link_neigh].copy()
                     linknum = len(f_link_2["source_interfaces"])
                     id_link_2 = id_link_neigh + str(linknum)
-
-                f_link_2["linknum"] = linknum
-                f_link_2["highest_utilization"] = percent_highest
-                f_link_2["speed"] = speed
-                formatted_links[id_link_2] = f_link_2
+                
+                if linknum > 1:
+                    f_link_2["linknum"] = linknum
+                    f_link_2["highest_utilization"] = percent_highest
+                    f_link_2["speed"] = speed
+                    formatted_links[id_link_2] = f_link_2
 
         # logger.error(formatted_links)
         # logger.error(f'Format links End: {time() - start_format_timer}')
