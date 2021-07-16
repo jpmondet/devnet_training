@@ -1,6 +1,8 @@
 pylint
 pytest
 pytest-cov
+pytest-mock
+https://github.com/etingof/snmpsim/archive/master.zip
 black
 mypy
 bandit
