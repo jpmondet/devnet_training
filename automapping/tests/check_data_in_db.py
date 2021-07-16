@@ -36,12 +36,13 @@ db = client.automapping
 #for link in db.links.find():
 #    print(link)
 #print("\n\n\n\nSTATS")
+#db.stats.find({'device_name': 'fake_device_stage6_16', 'iface_name': '0/16'})
 #for stat in db.stats.find():
 #    print(stat)
 print("\n\n\n\nUTILIZATION")
 for utilization in db.utilization.find():
     print(utilization)
-print(list(db.links.find({'device_name': 'fake_device_stage6_16', 'iface_name': '0/16'})))
-l = list(db.stats.find({'device_name': 'fake_device_stage6_16', 'iface_name': '0/16'}))
-print(l)
-print(l[-1])
+#print(list(db.links.find({'device_name': 'fake_device_stage6_16', 'iface_name': '0/16'})))
+#l = list(db.stats.find({'device_name': 'fake_device_stage6_16', 'iface_name': '0/16'}))
+#print(l)
+#print(l[-1])

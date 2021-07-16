@@ -1211,29 +1211,29 @@ d3.json(apiUrl + "/graph")
     //  }
     //});
 
-    console.time('addLinkNums');
-    ////any links with duplicate source and target get an incremented 'linknum'
-    linksExpanded = links.slice();
-    for (var i = 0; i < links.length; i++) {
-      if (links[i].source_interfaces.length > 1) {
-        for (var j = 1; j < links[i].source_interfaces.length; j++) {
-          var link_to_add = {};
-          Object.assign(link_to_add, links[i]);
-          link_to_add.linknum = 1 + j;
-          linksExpanded.push(link_to_add);
-        }
-      //if (i != 0 &&
-      //  links[i].source == links[i - 1].source &&
-      //  links[i].target == links[i - 1].target) {
-      //  console.log(links[i]);
-      //  links[i].linknum = links[i - 1].linknum + 1;
-      }
-      linksExpanded[i].linknum = 1;
-    };
+    //console.time('addLinkNums');
+    //////any links with duplicate source and target get an incremented 'linknum'
+    //linksExpanded = links.slice();
+    //for (var i = 0; i < links.length; i++) {
+    //  if (links[i].source_interfaces.length > 1) {
+    //    for (var j = 1; j < links[i].source_interfaces.length; j++) {
+    //      var link_to_add = {};
+    //      Object.assign(link_to_add, links[i]);
+    //      link_to_add.linknum = 1 + j;
+    //      linksExpanded.push(link_to_add);
+    //    }
+    //  //if (i != 0 &&
+    //  //  links[i].source == links[i - 1].source &&
+    //  //  links[i].target == links[i - 1].target) {
+    //  //  console.log(links[i]);
+    //  //  links[i].linknum = links[i - 1].linknum + 1;
+    //  }
+    //  linksExpanded[i].linknum = 1;
+    //};
 
-    links = linksExpanded.slice();
-    delete linksExpanded;
-    console.timeEnd('addLinkNums');
+    //links = linksExpanded.slice();
+    //delete linksExpanded;
+    //console.timeEnd('addLinkNums');
 
     var link = svg.append("g")
       .attr("id","links-g")
@@ -1360,7 +1360,7 @@ d3.json(apiUrl + "/graph")
               dry = d.linknum <= half_n ? d.linknum * (t / d.source_interfaces.length) : (d.linknum + 1 - half_n) * (t / (d.source_interfaces.length)),
               //dr = d.linknum == half_n ? t * 100 : 10.25 * t * (half_n - Math.abs(d.linknum - half_n)) / links.length,
               sweep = d.linknum <= half_n ? 1 : 0;
-              console.log(d.linknum, half_n, drx, dry, sweep);
+              //console.log(d.linknum, half_n, drx, dry, sweep);
             return "M" + d.source.x + "," + d.source.y + "A" + drx + "," + dry + " 0 0," + sweep + " " + d.target.x + "," + d.target.y;
           }
       });
