@@ -3,11 +3,9 @@
 from sys import exit as sexit
 from os import getenv
 from typing import List, Tuple
-import re
-from random import randint
 from time import time
 from argparse import ArgumentParser
-from pymongo import MongoClient, ASCENDING, UpdateMany  # type: ignore
+from pymongo import MongoClient  # type: ignore
 from pymongo.errors import DuplicateKeyError  # type: ignore
 
 # https://pymongo.readthedocs.io/en/stable/tutorial.html
@@ -62,15 +60,15 @@ def add_iface_stats(device_name: str, iface_name: str) -> None:
 
 
 def add_static_node(
-    node_name: str, node_ip: str, node_ifaces: List[str], neigh_infos: List[Tuple[str, str, str]]
+    node_name: str, node_ip: str, node_group: int, node_ifaces: List[str], neigh_infos: List[Tuple[str, str, str]]
 ) -> None:
     node_name = node_name if node_name else node_ip
     try:
-        db.nodes.insert_one({"device_name": node_name, "group": 10, "image": "router.png"})
+        db.nodes.insert_one({"device_name": node_name, "group": node_group, "image": "router.png"})
     except DuplicateKeyError:
         db.nodes.update_many(
             {"device_name": node_name},
-            {"$set": {"device_name": node_name, "group": 10, "image": "router.png"}},
+            {"$set": {"device_name": node_name, "group": node_group, "image": "router.png"}},
         )
 
     if neigh_infos:
@@ -126,6 +124,13 @@ def main():
         help="IP address of the node",
     )
     parser.add_argument(
+        "-g",
+        "--group",
+        type=int,
+        help="Group of the node (Number that drives its placement on the graph. 0 is on the left, 10 (or even more) on the right)",
+        default=10,
+    )
+    parser.add_argument(
         "-i",
         "--ifaces_of_node",
         type=str,
@@ -177,7 +182,7 @@ def main():
 
         print(neighs)
 
-    add_static_node(args.node_name, args.address, local_ifaces, neighs)
+    add_static_node(args.node_name, args.address, args.group, local_ifaces, neighs)
 
     for res in db.nodes.find():
         print(res)
