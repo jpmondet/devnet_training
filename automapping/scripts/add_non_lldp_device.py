@@ -60,7 +60,7 @@ def add_iface_stats(device_name: str, iface_name: str) -> None:
 
 
 def add_static_node(
-    node_name: str, node_ip: str, node_group: int, node_ifaces: List[str], neigh_infos: List[Tuple[str, str, str]]
+    node_name: str, node_ip: str, node_group: int, node_ifaces: List[str] = None, neigh_infos: List[Tuple[str, str, str]] = None
 ) -> None:
     node_name = node_name if node_name else node_ip
     try:
@@ -138,6 +138,9 @@ def main():
     )
 
     args = parser.parse_args()
+
+    local_ifaces: List[str] = None
+    neighs: List[Tuple[str, str, str]] = None
 
     if not args.node_name and not args.address:
         print("Please specify at least node name or node ip")
