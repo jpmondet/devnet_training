@@ -39,7 +39,7 @@ def add_static_node(node_name: str, node_ip: str, node_ifaces: List[str], neigh_
     try:
         db.nodes.insert_one({"device_name": node_name, "group": 10, "image": "router.png"})
     except DuplicateKeyError:
-        db.nodes.update_many({"device_name": node_name}, {"$set": {"device_name": node_name, "group": 1, "image": "router.png"} } )
+        db.nodes.update_many({"device_name": node_name}, {"$set": {"device_name": node_name, "group": 10, "image": "router.png"} } )
 
     if neigh_infos:
         for neigh in neigh_infos:
