@@ -71,7 +71,7 @@ TIMEOUT: bool = True
 class Node(BaseModel):
     name: str
     addr: Optional[str] = None
-    group: int = 10 # Group of the node (Number that drives its placement on the graph. 0 is on the left, 10 (or even more) on the right)
+    group: Optional[int] = 10 # Group of the node (Number that drives its placement on the graph. 0 is on the left, 10 (or even more) on the right)
     ifaces: Optional[List[str]] = None
 
 class Neighbor(BaseModel):
@@ -433,6 +433,8 @@ def delete_node_by_fqdn(credentials=Depends(check_credentials), node_name_or_ip:
 
     delete_node(node_name_or_ip)
 
+    return {"response": "Ok"}
+
 
 @app.get("/add_static_node")
 def add_static_node(
@@ -454,7 +456,7 @@ def add_static_node(
     else:
         add_static_node_to_db(node, node_neighbors)
 
-
+    return {"response": "Ok"}
 
 gunicorn_logger = logging.getLogger("gunicorn.info")
 logger.handlers = gunicorn_logger.handlers
