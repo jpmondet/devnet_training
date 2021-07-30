@@ -56,6 +56,9 @@ def get_entire_collection(mongodb_collection) -> List[Dict[str, Any]]:
 def get_all_nodes() -> List[Dict[str, Any]]:
     return get_entire_collection(NODES_COLLECTION)
 
+def get_node(node_name: str) -> Dict[str, Any]:
+    return NODES_COLLECTION.find_one({"device_name": node_name})
+
 def get_all_links() -> List[Dict[str, Any]]:
     return get_entire_collection(LINKS_COLLECTION)
 
