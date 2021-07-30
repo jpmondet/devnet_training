@@ -6,6 +6,7 @@ that can be (and should be) abstracted """
 from os import getenv
 from re import compile as rcompile, IGNORECASE as rIGNORECASE
 from typing import List, Dict, Any, Optional
+from time import time
 
 from pymongo import MongoClient, UpdateMany, ASCENDING as MDBASCENDING # type: ignore
 from pymongo.errors import BulkWriteError, DuplicateKeyError as MDDPK # type: ignore
@@ -121,6 +122,66 @@ def get_highest_utilization(device_name: str, iface_name: str):
 def add_iface_stats(stats: List[Dict[str, Any]]) -> None:
     STATS_COLLECTION.insert_many(stats)
 
+def add_node(node_name: str, group: int, image: str = "router.png") -> None:
+    try:
+        NODES_COLLECTION.insert_one({"device_name": node_name, "group": group, "image": image})
+    except MDDPK:
+        NODES_COLLECTION.update_many(
+            {"device_name": node_name},
+            {"$set": {"device_name": node_name, "group": group, "image": image}},
+        )
+
+def add_link(node_name: str, neigh_name:str, local_iface: str, neigh_iface: str) -> None:
+
+    LINKS_COLLECTION.insert_one(
+                {
+                    "device_name": node_name,
+                    "iface_name": local_iface,
+                    "neighbor_iface": neigh_iface,
+                    "neighbor_name": neigh_name,
+                }
+            )
+
+def add_fake_iface_utilization(device_name: str, iface_name: str) -> None:
+    UTILIZATION_COLLECTION.update_one(
+        {"device_name": f"{device_name}", "iface_name": f"{iface_name}"},
+        {
+            "$set": {
+                "device_name": f"{device_name}",
+                "iface_name": f"{iface_name}",
+                "prev_utilization": 0,
+                "last_utilization": 0,
+            }
+        },
+        True,
+    )
+
+
+def add_fake_iface_stats(device_name: str, iface_name: str) -> None:
+    STATS_COLLECTION.insert_one(
+        {
+            "device_name": f"{device_name}",
+            "iface_name": f"{iface_name}",
+            "timestamp": int(time()),
+            "mtu": 1500,
+            "mac": "",
+            "speed": 10,
+            "in_discards": 0,
+            "in_errors": 0,
+            "out_discards": 0,
+            "out_errors": 0,
+            "in_bytes": 0,
+            "in_ucast_pkts": 0,
+            "in_mcast_pkts": 0,
+            "in_bcast_pkts": 0,
+            "out_bytes": 0,
+            "out_ucast_pkts": 0,
+            "out_mcast_pkts": 0,
+            "out_bcast_pkts": 0,
+        }
+    )
+
+
 def bulk_update_collection(mongodb_collection, list_tuple_key_query) -> None:
     # Request is using UpdateMany (https://pymongo.readthedocs.io/en/stable/api/pymongo/collection.html?highlight=update#pymongo.collection.Collection.update_many)
     request: List[UpdateMany] = []
@@ -128,3 +189,10 @@ def bulk_update_collection(mongodb_collection, list_tuple_key_query) -> None:
         request.append(UpdateMany(query, { "$set": data }, True))
 
     mongodb_collection.bulk_write(request)
+
+def delete_node(node_name: str):
+    NODES_COLLECTION.delete_one({"device_name": node_name})
+    LINKS_COLLECTION.delete_many({"device_name": node_name})
+    LINKS_COLLECTION.delete_many({"neighbor_name": node_name})
+    STATS_COLLECTION.delete_many({"device_name": node_name})
+    UTILIZATION_COLLECTION.delete_many({"neighbor_name": node_name})
