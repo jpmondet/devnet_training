@@ -31,6 +31,7 @@ from db_layer import (
     get_links_device,
     get_all_highest_utilizations,
     get_all_speeds,
+    get_node,
     add_node,
     add_link,
     add_fake_iface_stats,
@@ -126,16 +127,19 @@ def add_static_node_to_db(node: Node, neigh_infos: List[Neighbor] = None) -> Non
     add_node(node.name, node.group)
 
     if neigh_infos:
-        for neigh in neigh_infos:
+        for neigh in neigh_infos:                
             neigh.name = neigh.name if neigh.name else neigh.addr
-            add_link(node.name, neigh.name, neigh.node_iface, neigh.iface)
-            add_link(neigh.name, node.name, neigh.iface, neigh.node_iface)
+            if get_node(neigh.name):
+                add_link(node.name, neigh.name, neigh.node_iface, neigh.iface)
+                add_link(neigh.name, node.name, neigh.iface, neigh.node_iface)
 
-            add_fake_iface_stats(node.name, neigh.node_iface)
-            add_fake_iface_utilization(node.name, neigh.node_iface)
+                add_fake_iface_stats(node.name, neigh.node_iface)
+                add_fake_iface_utilization(node.name, neigh.node_iface)
 
-            add_fake_iface_stats(neigh.name, neigh.iface)
-            add_fake_iface_utilization(neigh.name, neigh.iface)
+                add_fake_iface_stats(neigh.name, neigh.iface)
+                add_fake_iface_utilization(neigh.name, neigh.iface)
+            else:
+                logger.error("Node's neighbor doesn't exist, we can't add the link")
 
     elif node.ifaces:
         for iface in node.ifaces:
