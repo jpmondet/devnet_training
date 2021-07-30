@@ -6,17 +6,22 @@ from itertools import groupby
 from binascii import hexlify
 from time import time, sleep
 from typing import List, Dict, Any, Tuple
-from pymongo.errors import InvalidOperation # type: ignore
-from pysnmp.error import PySnmpError # type: ignore
-from dpath.util import search # type: ignore
+from pymongo.errors import InvalidOperation  # type: ignore
+from pysnmp.error import PySnmpError  # type: ignore
+from dpath.util import search  # type: ignore
 from db_layer import (
     prep_db_if_not_exist,
     bulk_update_collection,
     NODES_COLLECTION,
     LINKS_COLLECTION,
-    get_all_nodes
+    get_all_nodes,
 )
-from snmp_functions import get_table, get_snmp_creds, split_list, NEEDED_MIBS_FOR_LLDP as NEEDED_MIBS
+from snmp_functions import (
+    get_table,
+    get_snmp_creds,
+    split_list,
+    NEEDED_MIBS_FOR_LLDP as NEEDED_MIBS,
+)
 
 SNMP_USR = getenv("SNMP_USR")
 SNMP_AUTH_PWD = getenv("SNMP_AUTH_PWD")
@@ -28,9 +33,10 @@ STOP_NODES_FQDN = getenv("STOP_NODES_FQDN")
 STOP_NODES_IP = getenv("STOP_NODES_IP")
 NB_THREADS = getenv("AUTOMAP_NB_THREADS", 10)
 
+
 def dump_results_to_db(device_name, lldp_infos) -> None:
-    nodes_list: List[Tuple[Dict[str, str], Dict[str,str]]] = []
-    links_list: List[Tuple[Dict[str, str], Dict[str,str]]] = []
+    nodes_list: List[Tuple[Dict[str, str], Dict[str, str]]] = []
+    links_list: List[Tuple[Dict[str, str], Dict[str, str]]] = []
 
     # Each item of the lists are composed by the "query" (so the DB knows which entry to update
     # And the actual data
@@ -48,17 +54,24 @@ def dump_results_to_db(device_name, lldp_infos) -> None:
 
         # IP is a lil' special since it is written in the oid (yeah weird)
         neigh_ip_oid, _ = next(search(lldp_nei, f"{NEEDED_MIBS['lldp_neigh_ip']}*", yielded=True))
-        neigh_ip = '.'.join(neigh_ip_oid.split('.')[-4:])
+        neigh_ip = ".".join(neigh_ip_oid.split(".")[-4:])
         query_neigh = {"device_name": neigh_name}
         nodes_list.append((query_neigh, {"device_name": neigh_name, "device_ip": neigh_ip}))
-
 
         # Getting neigh and local ifaces infos and adding them to link list
         _, local_iface = next(search(lldp_nei, f"{NEEDED_MIBS['lldp_local_iface']}*", yielded=True))
         _, neigh_iface = next(search(lldp_nei, f"{NEEDED_MIBS['lldp_neigh_iface']}*", yielded=True))
         # Stripping "Et, Ethernet, E,... " which can be different per equipment
-        dev_iface = "/".join("".join(x) for is_number, x in groupby(local_iface, key=str.isdigit) if is_number is True)
-        neigh_iface = "/".join("".join(x) for is_number, x in groupby(neigh_iface, key=str.isdigit) if is_number is True)
+        dev_iface = "/".join(
+            "".join(x)
+            for is_number, x in groupby(local_iface, key=str.isdigit)
+            if is_number is True
+        )
+        neigh_iface = "/".join(
+            "".join(x)
+            for is_number, x in groupby(neigh_iface, key=str.isdigit)
+            if is_number is True
+        )
 
         query_link = {
             "device_name": dev_name,
@@ -83,8 +96,9 @@ def dump_results_to_db(device_name, lldp_infos) -> None:
     except InvalidOperation:
         print("Nothing to dump to db (wasn't able to scrap devices?), passing..")
 
+
 async def get_device_lldp_infos(target_name, oids, credentials, target_ip=None, port=161):
-    
+
     target = target_ip if target_ip else target_name
 
     try:
@@ -92,6 +106,7 @@ async def get_device_lldp_infos(target_name, oids, credentials, target_ip=None, 
         dump_results_to_db(target_name, res)
     except (RuntimeError, PySnmpError) as err:
         print(err, "\n (can't access to devices?) Passing for now...")
+
 
 def main():
 
@@ -103,27 +118,27 @@ def main():
         scrapped: List[Dict[str, str]] = get_all_nodes()
         devices: List[Tuple[str, str]] = []
         for device in scrapped:
-            if 'fake' in device["device_name"]:
+            if "fake" in device["device_name"]:
                 continue
             devices.append((device["device_name"], None, 161))
 
         if not devices:
             if INIT_NODE_FQDN or INIT_NODE_IP:
                 if not INIT_NODE_PORT:
-                    INIT_NODE_PORT=161
+                    INIT_NODE_PORT = 161
                 device = (INIT_NODE_FQDN, INIT_NODE_IP, INIT_NODE_PORT)
             else:
-                # This is a test case 
+                # This is a test case
                 device = ("fake_local_device", "127.0.0.1", 1161)
             devices.append(device)
 
         if STOP_NODES_FQDN:
-            stop_fqdns = STOP_NODES_FQDN.split(',')
+            stop_fqdns = STOP_NODES_FQDN.split(",")
             for node in stop_fqdns:
                 if node in devices:
                     devices.remove(node)
         if STOP_NODES_IP:
-            stop_ips = STOP_NODES_IP.split(',')
+            stop_ips = STOP_NODES_IP.split(",")
             for node in stop_ips:
                 if node in devices:
                     devices.remove(node)
@@ -136,12 +151,16 @@ def main():
             loop.run_until_complete(
                 asyncio.wait(
                     [
-                        get_device_lldp_infos(hostname, NEEDED_MIBS.values(), creds, target_ip=ip, port=port) for hostname, ip, port in devices_to_scrap
+                        get_device_lldp_infos(
+                            hostname, NEEDED_MIBS.values(), creds, target_ip=ip, port=port
+                        )
+                        for hostname, ip, port in devices_to_scrap
                     ]
                 )
             )
 
         sleep(60)
+
 
 if __name__ == "__main__":
     main()

@@ -73,6 +73,7 @@ TIMEOUT: bool = True
 class Node(BaseModel):
     """Defines a node the 'fastapi' way
     to handle body in add_node calls"""
+
     name: str
     addr: Optional[str] = None
     group: Optional[int] = 10  # Group of the node
@@ -84,11 +85,12 @@ class Node(BaseModel):
 class Neighbor(BaseModel):
     """Defines a node's neighbor the 'fastapi' way
     to handle body in add_node calls"""
+
     name: str
     addr: Optional[str] = None
     iface: str  # This is the actual iface of the class instance (neighbor)
     node_iface: str  # This iface is the one of the actual node of
-                     # which this class instance is the neighbor
+    # which this class instance is the neighbor
 
 
 def check_credentials(credentials: HTTPBasicCredentials = Depends(security)):
@@ -437,7 +439,7 @@ def neighborships(
 
 @app.get("/delete_node_by_fqdn")
 def delete_node_by_fqdn(
-    credentials=Depends(check_credentials), # pylint: disable=unused-argument
+    credentials=Depends(check_credentials),  # pylint: disable=unused-argument
     node_name_or_ip: str = Query(
         ..., min_length=4, max_length=50
     ),  # , regex="^[a-z]{2,3}[0-9]{1}.iou$")
