@@ -71,26 +71,29 @@ TIMEOUT: bool = True
 class Node(BaseModel):
     name: str
     addr: Optional[str] = None
-    group: Optional[int] = 10 # Group of the node (Number that drives its placement on the graph. 0 is on the left, 10 (or even more) on the right)
+    group: Optional[
+        int
+    ] = 10  # Group of the node (Number that drives its placement on the graph. 0 is on the left, 10 (or even more) on the right)
     ifaces: Optional[List[str]] = None
+
 
 class Neighbor(BaseModel):
     name: str
     addr: Optional[str] = None
-    iface: str # This is the actual iface of the class instance (neighbor)
-    node_iface: str # This iface is the one of the actual node of which this class instance is the neighbor
+    iface: str  # This is the actual iface of the class instance (neighbor)
+    node_iface: str  # This iface is the one of the actual node of which this class instance is the neighbor
 
 
 def check_credentials(credentials: HTTPBasicCredentials = Depends(security)):
-   correct_username = compare_digest(credentials.username, API_USER)
-   correct_password = compare_digest(credentials.password, API_PASS)
-   if not (correct_username and correct_password):
-       raise HTTPException(
-           status_code=status.HTTP_401_UNAUTHORIZED,
-           detail="Incorrect email or password",
-           headers={"WWW-Authenticate": "Basic"},
-       )
-   return credentials
+    correct_username = compare_digest(credentials.username, API_USER)
+    correct_password = compare_digest(credentials.password, API_PASS)
+    if not (correct_username and correct_password):
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Incorrect email or password",
+            headers={"WWW-Authenticate": "Basic"},
+        )
+    return credentials
 
 
 def get_from_db_or_cache(element: str, func=None, query=None):
@@ -117,9 +120,8 @@ def background_time_update():
         TIME = now
     logger.error(f"bgtimeupdEnd: {now}, {TIME}, {TIMEOUT}")
 
-def add_static_node_to_db(
-    node: Node, neigh_infos: List[Neighbor] = None
-) -> None:
+
+def add_static_node_to_db(node: Node, neigh_infos: List[Neighbor] = None) -> None:
 
     add_node(node.name, node.group)
 
@@ -261,7 +263,7 @@ def get_graph():
                     f_link_2 = formatted_links[id_link_neigh].copy()
                     linknum = len(f_link_2["source_interfaces"])
                     id_link_2 = id_link_neigh + str(linknum)
-                
+
                 if linknum > 1:
                     f_link_2["linknum"] = linknum
                     f_link_2["highest_utilization"] = percent_highest
@@ -423,8 +425,13 @@ def neighborships(
 
     return neighs
 
+
 @app.get("/delete_node_by_fqdn")
-def delete_node_by_fqdn(credentials=Depends(check_credentials), node_name_or_ip: str = Query(..., min_length=4, max_length=50)  # , regex="^[a-z]{2,3}[0-9]{1}.iou$")
+def delete_node_by_fqdn(
+    credentials=Depends(check_credentials),
+    node_name_or_ip: str = Query(
+        ..., min_length=4, max_length=50
+    ),  # , regex="^[a-z]{2,3}[0-9]{1}.iou$")
 ):
     """Removes a node from the DB (Can't do it automatically since we can't know if the node
     is just temporary unreachable & now there are also static nodes)"""
@@ -438,16 +445,19 @@ def delete_node_by_fqdn(credentials=Depends(check_credentials), node_name_or_ip:
 
 @app.get("/add_static_node")
 def add_static_node(
-        node: Node,
-        node_neighbors: List[Neighbor] = None,
-        credentials=Depends(check_credentials),
+    node: Node,
+    node_neighbors: List[Neighbor] = None,
+    credentials=Depends(check_credentials),
 ):
     """Adds a node to the DB (static nodes that aren't lldp-discoverable)
     (see in scripts/add_non_lldp_device.py for the original script, it may be easier to use
     in some cases)"""
 
     if not node.name and not node.addr:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Please specify at least node name or node ip")
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Please specify at least node name or node ip",
+        )
     elif not node.name:
         node.name = node.addr
 
@@ -457,6 +467,7 @@ def add_static_node(
         add_static_node_to_db(node, node_neighbors)
 
     return {"response": "Ok"}
+
 
 gunicorn_logger = logging.getLogger("gunicorn.info")
 logger.handlers = gunicorn_logger.handlers
