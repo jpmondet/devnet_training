@@ -1,12 +1,12 @@
 #! /usr/bin/env python3
 
-from typing import List, Dict, Any, Tuple
+from typing import List
 from pysnmp import hlapi # type: ignore
 from pysnmp.entity.rfc3413.oneliner import cmdgen # type: ignore
-from pysnmp.error import PySnmpError # type: ignore
+#from pysnmp.error import PySnmpError # type: ignore
 
 IFACES_TABLE_TO_COUNT = '1.3.6.1.2.1.2.1.0'
-NEEDED_MIBS_FOR_STATS = { 
+NEEDED_MIBS_FOR_STATS = {
     'iface_name': '1.3.6.1.2.1.2.2.1.2', # ifDescr
     'mtu': '1.3.6.1.2.1.2.2.1.4', # ifMtu
     'speed': '1.3.6.1.2.1.31.1.1.1.15', #ifHighSpeed
@@ -37,7 +37,7 @@ NEEDED_MIBS_FOR_LLDP = {
 def get_snmp_creds(snmp_user: str ='public', snmp_auth_pwd: str = None, snmp_priv_pwd: str = None):
     if snmp_auth_pwd and snmp_priv_pwd:
         return get_snmp_v3_creds(snmp_user, snmp_auth_pwd, snmp_priv_pwd)
-    
+
     return get_snmp_v2_creds(snmp_user)
 
 def get_snmp_v2_creds(snmp_community) -> hlapi.CommunityData:
@@ -49,7 +49,7 @@ def get_snmp_v3_creds(snmp_user, snmp_auth_pwd, snmp_priv_pwd) -> hlapi.UsmUserD
         privProtocol=cmdgen.usmAesCfb128Protocol)
 
 def construct_object_types(list_of_oids):
-    object_types = []
+    object_types: List[str] = []
     for oid in list_of_oids:
         object_types.append(hlapi.ObjectType(hlapi.ObjectIdentity(oid)))
     return object_types
@@ -83,7 +83,7 @@ def fetch(handler, count):
             break
     return result
 
-def get_table(target, oids, credentials, start_from=0, port=161,
+def get_table(target, oids, credentials, port=161,
               engine=hlapi.SnmpEngine(), context=hlapi.ContextData()):
     handler = hlapi.nextCmd(
         engine,
@@ -95,7 +95,8 @@ def get_table(target, oids, credentials, start_from=0, port=161,
     )
     return fetch(handler, len(oids))
 
-def get(target, oids, credentials, port=161, engine=hlapi.SnmpEngine(), context=hlapi.ContextData()):
+def get(target, oids, credentials, port=161, engine=hlapi.SnmpEngine(),
+        context=hlapi.ContextData()):
     print(get)
     handler = hlapi.getCmd(
         engine,
@@ -121,15 +122,15 @@ def get_bulk(target, oids, credentials, count, start_from=0, port=161,
 
 def get_bulk_auto(target, oids, credentials, count_oid, start_from=0, port=161,
                   engine=hlapi.SnmpEngine(), context=hlapi.ContextData()):
-    
+
     count = get(target, [count_oid], credentials, port, engine, context)[count_oid]
     print(count)
     res = get_bulk(target, oids, credentials, count, start_from, port, engine, context)
-    
+
     return res
 
 # Not an actual snmp func but it's used in the context of snmp scrapping
-def split_list(list_to_split, n):
+def split_list(list_to_split, size):
     """Yield successive n-sized chunks from lst."""
-    for i in range(0, len(list_to_split), n):
-        yield list_to_split[i:i + n]
+    for i in range(0, len(list_to_split), size):
+        yield list_to_split[i:i + size]

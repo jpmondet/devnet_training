@@ -1,16 +1,17 @@
 #!/usr/bin/python3
 """
-    Inputs : 
+    Inputs :
         - graph_ct infos populated by lldp scrapping
         - interfaces infos populated by get_ifaces_stats that must be run regularly
 
-    Expected output : 
-        (see in respective GET methods : 
+    Expected output :
+        (see in respective GET methods :
             graph,
             stats,
             neighborships
         )
 """
+# pylint: disable=global-statement,logging-fstring-interpolation
 
 import logging
 from typing import Dict, List, Any, Optional
@@ -70,19 +71,24 @@ TIMEOUT: bool = True
 
 
 class Node(BaseModel):
+    """Defines a node the 'fastapi' way
+    to handle body in add_node calls"""
     name: str
     addr: Optional[str] = None
-    group: Optional[
-        int
-    ] = 10  # Group of the node (Number that drives its placement on the graph. 0 is on the left, 10 (or even more) on the right)
+    group: Optional[int] = 10  # Group of the node
+    # (Number that drives its placement on the graph. 0 is on the left,
+    # 10 (or even more) on the right)
     ifaces: Optional[List[str]] = None
 
 
 class Neighbor(BaseModel):
+    """Defines a node's neighbor the 'fastapi' way
+    to handle body in add_node calls"""
     name: str
     addr: Optional[str] = None
     iface: str  # This is the actual iface of the class instance (neighbor)
-    node_iface: str  # This iface is the one of the actual node of which this class instance is the neighbor
+    node_iface: str  # This iface is the one of the actual node of
+                     # which this class instance is the neighbor
 
 
 def check_credentials(credentials: HTTPBasicCredentials = Depends(security)):
@@ -127,7 +133,7 @@ def add_static_node_to_db(node: Node, neigh_infos: List[Neighbor] = None) -> Non
     add_node(node.name, node.group)
 
     if neigh_infos:
-        for neigh in neigh_infos:                
+        for neigh in neigh_infos:
             neigh.name = neigh.name if neigh.name else neigh.addr
             if get_node(neigh.name):
                 add_link(node.name, neigh.name, neigh.node_iface, neigh.iface)
@@ -236,8 +242,6 @@ def get_graph():
 
             if not formatted_links.get(id_link) and not formatted_links.get(id_link_neigh):
 
-                # logger.error(f'{device}, {iface}, {speed}, {highest_utilization}, {percent_highest}')
-
                 f_link = {
                     "highest_utilization": percent_highest,
                     "source": device,
@@ -284,7 +288,7 @@ def get_graph():
 
 
 @app.get("/stats/")
-def stats(q: List[str] = Query(None)):
+def stats(devices: List[str] = Query(None)):
     """
     {
         "ifDescr": "Ethernet0/0",
@@ -300,9 +304,9 @@ def stats(q: List[str] = Query(None)):
     """
     background_time_update()
 
-    if isinstance(q, list):
+    if isinstance(devices, list):
         # Validate incoming query
-        for device in q:
+        for device in devices:
             if not isinstance(device, str):
                 raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST)
             # if len(device) != 7 and len(device) != 8:
@@ -310,14 +314,14 @@ def stats(q: List[str] = Query(None)):
             # if "iou" not in device:
             #    raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST)
 
-        stats_by_device: Dict[str, Any] = get_from_db_or_cache(f"stats_by_device_{q}")
+        stats_by_device: Dict[str, Any] = get_from_db_or_cache(f"stats_by_device_{devices}")
 
         if not stats_by_device:
 
             stats_by_device = {}
 
             sorted_stats = sorted(
-                list(get_stats_devices(q)),
+                list(get_stats_devices(devices)),
                 key=lambda d: (d["device_name"], d["iface_name"], d["timestamp"]),
             )
             for stat in sorted_stats:
@@ -326,12 +330,13 @@ def stats(q: List[str] = Query(None)):
                 ifname = stat["iface_name"]
                 dbtime = stat["timestamp"]
                 inttimestamp: int = int(dbtime)
-                time = strftime("%y-%m-%d %H:%M:%S", localtime(inttimestamp))
-                stat_formatted = {"InSpeed": 0, "OutSpeed": 0, "time": time}
+                timestamp = strftime("%y-%m-%d %H:%M:%S", localtime(inttimestamp))
+                stat_formatted = {"InSpeed": 0, "OutSpeed": 0, "time": timestamp}
                 inbits: int = int(stat["in_bytes"]) * 8
                 outbits: int = int(stat["out_bytes"]) * 8
                 # This iface wasn't in the struct.
-                # We add default infos (and speed to 0 since we don't know at how much speed it was before)
+                # We add default infos (and speed to 0 since
+                # we don't know at how much speed it was before)
                 if not stats_by_device.get(dname):
                     stats_by_device[dname] = {
                         ifname: {"ifDescr": ifname, "index": ifname, "stats": [stat_formatted]}
@@ -364,7 +369,7 @@ def stats(q: List[str] = Query(None)):
                     stats_by_device[dname][ifname]["stats"].append(stat_formatted)
 
             global CACHE
-            CACHE[f"stats_by_device_{q}"] = stats_by_device
+            CACHE[f"stats_by_device_{devices}"] = stats_by_device
 
         return stats_by_device
 
@@ -375,7 +380,7 @@ def stats(q: List[str] = Query(None)):
 @app.get("/neighborships/")
 # Leveraging query string validation built in FastApi to avoid having multiple IFs
 def neighborships(
-    q: str = Query(..., min_length=7, max_length=25)  # , regex="^[a-z]{2,3}[0-9]{1}.iou$")
+    device: str = Query(..., min_length=7, max_length=25)  # , regex="^[a-z]{2,3}[0-9]{1}.iou$")
 ):
     """
     {
@@ -389,10 +394,10 @@ def neighborships(
     """
     background_time_update()
 
-    if not isinstance(q, str):
+    if not isinstance(device, str):
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST)
 
-    neighs: List[Dict[str, str]] = get_from_db_or_cache(f"neighs_{q}")
+    neighs: List[Dict[str, str]] = get_from_db_or_cache(f"neighs_{device}")
 
     if not neighs:
 
@@ -400,7 +405,7 @@ def neighborships(
         # The end goal is to return only its values, not keys
         neighs_dict: Dict[str, Dict[str, str]] = {}
 
-        for link in get_links_device(q):
+        for link in get_links_device(device):
 
             device1: str = link["device_name"]
             device2: str = link["neighbor_name"]
@@ -409,7 +414,7 @@ def neighborships(
 
             # The device queried can be seen as "device_name" or as "neighbor_name" depending
             # on the point of view
-            if q != link["device_name"]:
+            if device != link["device_name"]:
                 device1, device2 = device2, device1
                 iface1, iface2 = iface2, iface1
 
@@ -425,14 +430,14 @@ def neighborships(
 
         neighs = list(neighs_dict.values())
         global CACHE
-        CACHE[f"neighs_{q}"] = neighs
+        CACHE[f"neighs_{device}"] = neighs
 
     return neighs
 
 
 @app.get("/delete_node_by_fqdn")
 def delete_node_by_fqdn(
-    credentials=Depends(check_credentials),
+    credentials=Depends(check_credentials), # pylint: disable=unused-argument
     node_name_or_ip: str = Query(
         ..., min_length=4, max_length=50
     ),  # , regex="^[a-z]{2,3}[0-9]{1}.iou$")
@@ -451,7 +456,7 @@ def delete_node_by_fqdn(
 def add_static_node(
     node: Node,
     node_neighbors: List[Neighbor] = None,
-    credentials=Depends(check_credentials),
+    credentials=Depends(check_credentials),  # pylint: disable=unused-argument
 ):
     """Adds a node to the DB (static nodes that aren't lldp-discoverable)
     (see in scripts/add_non_lldp_device.py for the original script, it may be easier to use
@@ -462,7 +467,7 @@ def add_static_node(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Please specify at least node name or node ip",
         )
-    elif not node.name:
+    elif not node.name and node.addr:
         node.name = node.addr
 
     if not isinstance(node.ifaces, list):

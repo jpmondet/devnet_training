@@ -4,12 +4,12 @@ that can be (and should be) abstracted """
 #! /usr/bin/env python3
 
 from os import getenv
-from re import compile as rcompile, IGNORECASE as rIGNORECASE
+#from re import compile as rcompile, IGNORECASE as rIGNORECASE
 from typing import List, Dict, Any, Optional
 from time import time
 
-from pymongo import MongoClient, UpdateMany, ASCENDING as MDBASCENDING # type: ignore
-from pymongo.errors import BulkWriteError, DuplicateKeyError as MDDPK # type: ignore
+from pymongo import MongoClient, UpdateMany # type: ignore
+from pymongo.errors import DuplicateKeyError as MDDPK # type: ignore
 
 DB_STRING: Optional[str] = getenv("DB_STRING")
 if not DB_STRING:
@@ -46,8 +46,14 @@ def prep_db_if_not_exist():
     # We ensure that entries will be unique
     # (this is a mongodb feature)
     NODES_COLLECTION.create_index([("device_name", 1)], unique=True)
-    LINKS_COLLECTION.create_index([("device_name", 1), ("iface_name", 1), ("neighbor_name", 1), ("neighbor_iface", 1)], unique=True)
-    STATS_COLLECTION.create_index([("device_name", 1), ("iface_name", 1), ("timestamp", 1)], unique=True)
+    LINKS_COLLECTION.create_index(
+        [
+            ("device_name", 1), ("iface_name", 1), ("neighbor_name", 1), ("neighbor_iface", 1)
+        ], unique=True)
+    STATS_COLLECTION.create_index(
+        [
+            ("device_name", 1), ("iface_name", 1), ("timestamp", 1)
+        ], unique=True)
     UTILIZATION_COLLECTION.create_index([("device_name", 1), ("iface_name", 1)], unique=True)
 
 def get_entire_collection(mongodb_collection) -> List[Dict[str, Any]]:
@@ -75,7 +81,7 @@ def get_all_highest_utilizations() -> Dict[str, int]:
         except KeyError:
             highest_utilization = 0
         utilizations[id_utilz] = highest_utilization
-    
+
     return utilizations
 
 def get_all_speeds() -> Dict[str, int]:
@@ -85,7 +91,7 @@ def get_all_speeds() -> Dict[str, int]:
         if speeds.get(id_speed):
             continue
         speeds[id_speed] = stat["speed"]
-    
+
     return speeds
 
 def get_links_device(device: str) -> List[Dict[str, Any]]:
@@ -99,8 +105,9 @@ def get_stats_devices(devices: List[str]):
 def get_speed_iface(device_name: str, iface_name: str):
     speed: int = 1
     try:
-        #speed = list(STATS_COLLECTION.find({ "device_name": device_name, "iface_name": iface_name }))[-1]["speed"]
-        *_, laststat = STATS_COLLECTION.find({ "device_name": device_name, "iface_name": iface_name })
+        *_, laststat = STATS_COLLECTION.find(
+            { "device_name": device_name, "iface_name": iface_name }
+        )
         return laststat["speed"]
     except (KeyError, IndexError) as err:
         print("oops? " + str(err))
@@ -108,20 +115,24 @@ def get_speed_iface(device_name: str, iface_name: str):
     return speed
 
 def get_latest_utilization(device_name: str, iface_name: str):
-    utilization_line = UTILIZATION_COLLECTION.find_one({ "device_name": device_name, "iface_name": iface_name })
+    utilization_line = UTILIZATION_COLLECTION.find_one(
+        { "device_name": device_name, "iface_name": iface_name }
+    )
     try:
         return utilization_line["last_utilization"]
     except (KeyError, TypeError):
         return 0
 
 def get_highest_utilization(device_name: str, iface_name: str):
-    utilization_line = UTILIZATION_COLLECTION.find_one({ "device_name": device_name, "iface_name": iface_name })
+    utilization_line = UTILIZATION_COLLECTION.find_one(
+        { "device_name": device_name, "iface_name": iface_name }
+    )
     try:
         utilization = utilization_line["last_utilization"] - utilization_line["prev_utilization"]
         return utilization
     except (KeyError, TypeError):
         return 0
-        
+
 def add_iface_stats(stats: List[Dict[str, Any]]) -> None:
     STATS_COLLECTION.insert_many(stats)
 
@@ -135,15 +146,17 @@ def add_node(node_name: str, group: int, image: str = "router.png") -> None:
         )
 
 def add_link(node_name: str, neigh_name:str, local_iface: str, neigh_iface: str) -> None:
-
-    LINKS_COLLECTION.insert_one(
-                {
-                    "device_name": node_name,
-                    "iface_name": local_iface,
-                    "neighbor_iface": neigh_iface,
-                    "neighbor_name": neigh_name,
-                }
-            )
+    try:
+        LINKS_COLLECTION.insert_one(
+                    {
+                        "device_name": node_name,
+                        "iface_name": local_iface,
+                        "neighbor_iface": neigh_iface,
+                        "neighbor_name": neigh_name,
+                    }
+                )
+    except MDDPK:
+        print("Already exists, passing.")
 
 def add_fake_iface_utilization(device_name: str, iface_name: str) -> None:
     UTILIZATION_COLLECTION.update_one(
@@ -186,7 +199,9 @@ def add_fake_iface_stats(device_name: str, iface_name: str) -> None:
 
 
 def bulk_update_collection(mongodb_collection, list_tuple_key_query) -> None:
-    # Request is using UpdateMany (https://pymongo.readthedocs.io/en/stable/api/pymongo/collection.html?highlight=update#pymongo.collection.Collection.update_many)
+    # Request is using UpdateMany
+    # (https://pymongo.readthedocs.io/en/stable/api/pymongo/collection.html\
+    # ?highlight=update#pymongo.collection.Collection.update_many)
     request: List[UpdateMany] = []
     for query, data in list_tuple_key_query:
         request.append(UpdateMany(query, { "$set": data }, True))
