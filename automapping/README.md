@@ -46,9 +46,13 @@ Or
 
 
 
-(How to name it ? Some interesting words : discovery topograph net auto mapping... )
-( Naasgul - Network as a graph ul?
+(How to name it ? Some interesting words : discovery topograph net auto mapping drawing graph lldp... )
+( Naasgul - Network as a graph using lldp 
  Naaga  - Network as a graph automated
+ Automated network discovery and graphing : 
+ Drawing automatically network graph : Danet
+ Graphing topology : Graphology
+ Service Automatically Rendering Obscure Networks: Sauron
 )
 
 
