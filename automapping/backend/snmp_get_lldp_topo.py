@@ -124,6 +124,7 @@ def main():
 
         if not devices:
             if INIT_NODE_FQDN or INIT_NODE_IP:
+                global INIT_NODE_PORT
                 if not INIT_NODE_PORT:
                     INIT_NODE_PORT = 161
                 device = (INIT_NODE_FQDN, INIT_NODE_IP, INIT_NODE_PORT)
