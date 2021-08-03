@@ -44,8 +44,10 @@ def dump_results_to_db(device_name, ifaces_infos) -> None:  # pylint: disable=to
             or ifname.startswith("lo")
             or ifname.startswith("mgm")
             or ifname.startswith("mana")
+            or ifname.startswith("po")
+            or ifname == "vlan1"
         ):
-            # TODO: Mgmt ifaces could actually be interesting... Need to think about this
+            # TODO: Mgmt ifaces/lo & po could actually be interesting... Need to think about this
             continue
         _, mtu = next(search(iface, f"{NEEDED_MIBS['mtu']}*", yielded=True))
         _, mac = next(search(iface, f"{NEEDED_MIBS['mac']}*", yielded=True))
