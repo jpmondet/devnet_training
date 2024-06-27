@@ -16,6 +16,7 @@ from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_google_genai import GoogleGenerativeAIEmbeddings
 from langchain_community.document_loaders import WebBaseLoader
 from langchain_community.document_loaders import YoutubeLoader
+from langchain_community.document_loaders import PyPDFLoader
 from langchain.chains import StuffDocumentsChain
 from langchain.chains.llm import LLMChain
 from langchain.prompts import PromptTemplate
@@ -30,8 +31,10 @@ def summarize(url: str) -> str:
     # Load the blog
     # loader = WebBaseLoader(url)
     # loader = YoutubeLoader.from_youtube_url(url, add_video_info=True)
-    loader = YoutubeLoader.from_youtube_url(url, add_video_info=False)
+    #loader = YoutubeLoader.from_youtube_url(url, add_video_info=False)
+    loader = PyPDFLoader(url)
     docs = loader.load()
+
 
     # Define the Summarize Chain
     template = """Write the key points as a list of the following:

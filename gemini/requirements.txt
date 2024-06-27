@@ -5,3 +5,4 @@ langchain_community
 jupyter
 pytube
 youtube-transcript-api
+pypdf
