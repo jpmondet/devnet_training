@@ -36,7 +36,10 @@ def summarize(url: str) -> str:
     # Define the Summarize Chain
     template = """Write the key points as a list of the following:
         "{text}"
-        CONCISE SUMMARY:"""
+        """
+    #template = """Summarize this YouTube video, and include timestamps for key points.
+    #    "{text}"
+    #"""
 
     prompt = PromptTemplate.from_template(template)
 

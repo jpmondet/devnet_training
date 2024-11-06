@@ -6,3 +6,4 @@ jupyter
 pytube
 youtube-transcript-api
 pypdf
+assemblyai

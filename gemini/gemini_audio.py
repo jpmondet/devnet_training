@@ -8,6 +8,7 @@
 # pip install jupyter
 
 # export GOOGLE_API_KEY="YOUR_GOOGLE_API_KEY"
+# export ASSEMBLYAI_API_KEY="YOUR_ASSEMBLYAI_API_KEY"
 
 # Import Modules
 from argparse import ArgumentParser
@@ -15,32 +16,33 @@ from argparse import ArgumentParser
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_google_genai import GoogleGenerativeAIEmbeddings
 from langchain_community.document_loaders import WebBaseLoader
+from langchain_community.document_loaders import YoutubeLoader
+from langchain_community.document_loaders import PyPDFLoader
+from langchain_community.document_loaders import AssemblyAIAudioTranscriptLoader
 from langchain.chains import StuffDocumentsChain
 from langchain.chains.llm import LLMChain
 from langchain.prompts import PromptTemplate
+from langchain.text_splitter import RecursiveCharacterTextSplitter
 
 
 def summarize(url: str) -> str:
-  """
-    Summarize the content of a webpage.
-
-    Args:
-        url (str): The URL of the webpage to summarize.
-
-    Returns:
-        str: A concise summary of the webpage's content.
-    """
     # Initialize Model
-    llm = ChatGoogleGenerativeAI(model="gemini-pro")
+    #llm = ChatGoogleGenerativeAI(model="gemini-pro")
+    llm = ChatGoogleGenerativeAI(model="gemini-1.5-pro")
 
     # Load the blog
-    loader = WebBaseLoader(url)
+    # loader = WebBaseLoader(url)
+    # loader = YoutubeLoader.from_youtube_url(url, add_video_info=True)
+    # loader = YoutubeLoader.from_youtube_url(url, add_video_info=False)
+    # loader = PyPDFLoader(url)
+    loader = AssemblyAIAudioTranscriptLoader(url)
     docs = loader.load()
 
+
     # Define the Summarize Chain
-    template = """Write the key points as a bullet list of the following:
-    "{text}"
-    CONCISE SUMMARY:"""
+    template = """Write the key points as a list of the following:
+        "{text}"
+        CONCISE SUMMARY:"""
 
     prompt = PromptTemplate.from_template(template)
 
@@ -48,6 +50,11 @@ def summarize(url: str) -> str:
     stuff_chain = StuffDocumentsChain(
         llm_chain=llm_chain, document_variable_name="text"
     )
+
+    # text_splitter = RecursiveCharacterTextSplitter(chunk_size=3000, chunk_overlap=600, length_function=len, add_start_index=True)
+    # texts = text_splitter.create_documents([docs[0].page_content])
+    # chain = load_summarize_chain(llm, chain_type="map_reduce")
+    # chain.run(texts)
 
     # Invoke Chain
     response = stuff_chain.invoke(docs)
